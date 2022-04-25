@@ -3,3 +3,4 @@ compile_commands.json
 out.hex
 a.out
 .cache
+*.log
