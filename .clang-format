@@ -1,7 +1,7 @@
 ---
 AccessModifierOffset: 0
 BasedOnStyle: LLVM
-BreakBeforeBraces: Linux
+BreakBeforeBraces: Attach
 ColumnLimit: 100
 IndentWidth: '4'
 Language: Cpp

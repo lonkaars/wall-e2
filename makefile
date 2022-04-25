@@ -11,6 +11,7 @@ LDFLAGS=-Wl,-gc-sections -lpololu_$(DEVICE) -Wl,-relax
 PORT ?= /dev/ttyACM0
 
 SOURCES := $(wildcard *.c)
+HEADERS := $(wildcard *.h)
 OBJECTS := $(patsubst %.c,%.o, $(SOURCES))
 
 AVRDUDE=avrdude
@@ -35,7 +36,7 @@ flash: out.hex
 	$(AVRDUDE) -p $(AVRDUDE_DEVICE) -c avrisp2 -P $(PORT) -U flash:w:out.hex
 
 format:
-	find . -name '*.c' -o -name '*.h' | clang-format -i
+	clang-format -i $(SOURCES) $(HEADERS)
 
 compile_commands: clean
 	bear -- make
