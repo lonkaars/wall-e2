@@ -24,7 +24,7 @@ clean:
 	rm -f *.o out.hex a.out compile_commands.json
 
 a.out: $(OBJECTS)
-	$(CC) $(OBJECTS) $(LDFLAGS)
+	$(CC) $(OBJECTS) $(CFLAGS) $(LDFLAGS)
 
 .o:
 	$(CC) -c $(CFLAGS) $<
