@@ -1,6 +1,7 @@
 # project robotrun software
 
-yeah
+- [link naar robot productpagina](https://www.pololu.com/product/975/resources)
+- [link naar wixel productpagina](https://www.pololu.com/product/1336/resources)
 
 ## make gedoe
 
