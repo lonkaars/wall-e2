@@ -95,9 +95,11 @@ gewoon aan mij (loek) vragen.
    ```
 3. plak het commando in powershell, dit doe je door één keer op de
    rechtermuisknop de klikken, **ctrl+v werkt niet in het powershell-venster!**
-4. ram op enter en wacht voor ongeveer 3-10 minuten (afhankelijk van snelheid
-   van je pc/laptop en internetsnelheid)
-5. het is klaar wanneer er een windows verkenner venster opent met de
+4. ram op enter
+5. typ een letter 'y' en druk daarna weer op enter
+6. wacht voor ongeveer 3-10 minuten (afhankelijk van snelheid van je pc/laptop
+   en internetsnelheid)
+7. het is klaar wanneer er een windows verkenner venster opent met de
    projectbestanden er in, nu kun je het powershell-venster weer sluiten
 
 nu ben je klaar om aan het project te werken! je kunt elke tekstbewerker
