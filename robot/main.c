@@ -1,19 +1,33 @@
 #include <pololu/orangutan.h>
+#include <stdlib.h>
 
 int main() {
-	print("Hello!");
-	play("L16 ceg>c");
+	play("L50 c>c");
+	serial_set_baud_rate(9600);
+
+	char *buf = malloc(20);
+	unsigned int counter = 0;
 
 	while (1) {
-		red_led(0);
-		green_led(1);
+		serial_receive_blocking(buf, 1, 65e3);
 
-		delay_ms(100);
-
-		red_led(1);
-		green_led(0);
-
-		delay_ms(100);
+		switch (buf[0]) {
+			case 0x7f: {
+				counter--;
+				lcd_goto_xy(counter, 0);
+				print(" ");
+				lcd_goto_xy(counter, 0);
+				break;
+			}
+			default: {
+				print(&buf[0]);
+				counter++;
+				if (counter > 20) {
+					counter = 0;
+					lcd_goto_xy(0, 0);
+				}
+			}
+		}
 	}
 
 	return 0;
