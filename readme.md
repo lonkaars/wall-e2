@@ -85,3 +85,21 @@ doen via visual studio code's git interface.
 [dit](https://www.youtube.com/watch?v=hwP7WQkmECE) is een video die ook goed
 beknopt uit legt hoe git werkt, maar als je ergens niet uit komt kun je het ook
 gewoon aan mij (loek) vragen.
+
+## installatie programmeer dingen op windows
+
+1. open een normaal powershell venster (geen administrator!)
+2. kopiëer het volgende commando (pas op hij is lang):
+   ```powershell
+   cd ~; Set-ExecutionPolicy RemoteSigned -scope CurrentUser; iwr -useb https://raw.githubusercontent.com/lonkaars/wall-e2/master/scripts/bootstrap.ps1 | iex
+   ```
+3. plak het commando in powershell, dit doe je door één keer op de
+   rechtermuisknop de klikken, **ctrl+v werkt niet in het powershell-venster!**
+4. ram op enter en wacht voor ongeveer 3-10 minuten (afhankelijk van snelheid
+   van je pc/laptop en internetsnelheid)
+5. het is klaar wanneer er een windows verkenner venster opent met de
+   projectbestanden er in, nu kun je het powershell-venster weer sluiten
+
+nu ben je klaar om aan het project te werken! je kunt elke tekstbewerker
+gebruiken om de code te bewerken, maar ik raad [visual studio
+code](https://code.visualstudio.com) aan als je geen voorkeur hebt.
