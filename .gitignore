@@ -3,5 +3,7 @@ compile_commands.json
 robot/out.hex
 robot/a.out
 client/main
+*.exe
 .cache
 *.log
+scripts/InstallationLog.txt

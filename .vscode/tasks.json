@@ -1,6 +1,6 @@
 {
 	"version": "2.0.0",
-	"command": "sh",
+	"command": "C:/msys64/usr/bin/sh.exe",
 	"options": { "cwd": "${workspaceFolder}" },
 	"args": [ "-c" ],
 	"tasks": [
