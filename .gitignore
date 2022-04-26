@@ -1,6 +1,7 @@
 compile_commands.json
 *.o
-out.hex
-a.out
+robot/out.hex
+robot/a.out
+client/main
 .cache
 *.log

@@ -1,0 +1,58 @@
+{
+	"version": "2.0.0",
+	"command": "sh",
+	"options": { "cwd": "${workspaceFolder}" },
+	"args": [ "-c" ],
+	"tasks": [
+		{
+			"label": "build client",
+			"group": {
+				"isDefault": false,
+				"kind": "build"
+			},
+			"args": [ "make", "-C", "client" ],
+			"command": "",
+			"type": "shell"
+		},
+		{
+			"label": "build robot",
+			"group": {
+				"isDefault": false,
+				"kind": "build"
+			},
+			"args": [ "make", "-C", "robot" ],
+			"command": "",
+			"type": "shell"
+		},
+		{
+			"label": "flash robot",
+			"group": {
+				"isDefault": false,
+				"kind": "test"
+			},
+			"args": [ "make", "flash", "-C", "robot" ],
+			"command": "",
+			"type": "shell"
+		},
+		{
+			"label": "clean directories",
+			"group": {
+				"isDefault": false,
+				"kind": "none"
+			},
+			"args": [ "make", "clean" ],
+			"command": "",
+			"type": "shell"
+		},
+		{
+			"label": "format source files",
+			"group": {
+				"isDefault": false,
+				"kind": "none"
+			},
+			"args": [ "make", "format" ],
+			"command": "",
+			"type": "shell"
+		},
+	]
+}
