@@ -106,3 +106,8 @@ gewoon aan mij (loek) vragen.
 nu ben je klaar om aan het project te werken! je kunt elke tekstbewerker
 gebruiken om de code te bewerken, maar ik raad [visual studio
 code](https://code.visualstudio.com) aan als je geen voorkeur hebt.
+
+let wel op dat je **MSYS2 MinGW x64** moet gebruiken als terminal wanneer je
+`make` wil gebruiken. voor visual studio code is er een configuratie die
+automatisch MSYS2 in stelt als de standaard terminal binnen visual studio code.
+als je een losse terminal wil gebruiken moet je hier dus wel op letten
