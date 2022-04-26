@@ -89,12 +89,13 @@ gewoon aan mij (loek) vragen.
 ## installatie programmeer dingen op windows
 
 1. open een normaal powershell venster (geen administrator!)
-2. kopiëer het volgende commando (pas op hij is lang):
+2. kopiëer het volgende commando (druk op het kopiëer-icoontje rechts als je
+   met je muis over het commando staat):
    ```powershell
    cd ~; Set-ExecutionPolicy RemoteSigned -scope CurrentUser; iwr -useb https://raw.githubusercontent.com/lonkaars/wall-e2/master/scripts/bootstrap.ps1 | iex
    ```
 3. plak het commando in powershell, dit doe je door één keer op de
-   rechtermuisknop de klikken, **ctrl+v werkt niet in het powershell-venster!**
+   rechtermuisknop te klikken, **ctrl+v werkt niet in het powershell-venster!**
 4. ram op enter
 5. typ een letter 'y' en druk daarna weer op enter
 6. wacht voor ongeveer 3-10 minuten (afhankelijk van snelheid van je pc/laptop
