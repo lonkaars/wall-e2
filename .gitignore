@@ -1,4 +1,5 @@
 compile_commands.json
+__pycache__
 *.o
 robot/out.hex
 robot/a.out
