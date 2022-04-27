@@ -27,6 +27,19 @@ notation for the map. google drive ocr works well enough to read out the red
 characters if you turn off path visibility in the figma document. figma also
 allows pdf export so you can print the maps, but the tiles are 24x24 pixels,
 not robot-sized (one tile is supposed to have about the same width and height
-as the robot's diameter). but maybe i'll make another script that stitches
-together the map tiles as svg, and then converts the whole thing to pdf.
+as the robot's diameter).
+
+## exporting maps as pdf or svg
+
+```sh
+# generate svg file
+python3 mappdf.py [file]
+
+# render svg as pdf
+inkscape --export-pdf=map.pdf [file].svg
+
+# (optional) convert to tiles for printing at home
+# loop up map size using pdfinfo on map.pdf file
+pdfposter map.pdf tiles.pdf -m a4 -p [map size]
+```
 
