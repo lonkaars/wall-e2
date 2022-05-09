@@ -1,14 +1,16 @@
 ---
 AccessModifierOffset: 0
+AlignConsecutiveAssignments: true
+AllowShortLoopsOnASingleLine: true
 BasedOnStyle: LLVM
 BreakBeforeBraces: Attach
 ColumnLimit: 100
+IndentCaseLabels: true
 IndentWidth: '4'
 Language: Cpp
 Standard: Cpp11
 TabWidth: '4'
 UseTab: Always
-IndentCaseLabels: true
 ...
 
 # vim: ft=yaml

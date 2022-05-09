@@ -8,7 +8,7 @@ AVRDUDE_DEVICE ?= m168
 CFLAGS=-g -Wall -mcall-prologues -mmcu=$(MCU) $(DEVICE_SPECIFIC_CFLAGS) -Os
 LDFLAGS=-Wl,-gc-sections -lpololu_$(DEVICE) -Wl,-relax
 
-PORT ?= /dev/ttyACM1
+PORT ?= /dev/ttyACM0
 
 SOURCES := $(wildcard *.c)
 HEADERS := $(wildcard *.h)

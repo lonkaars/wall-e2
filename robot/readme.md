@@ -28,10 +28,10 @@ majority of the control logic.
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
 │                              "Hypervisor"                            │
-└────────┬───────────────────┬──────────────────┬───────────────┬──────┘
-┌────────┴─────────┐┌────────┴───────┐┌─────────┴────────┐┌─────┴──────┐
-│ PC communication ││ Error handling ││ I/O Read & Write ││ Mode logic │
-└──────────────────┘└────────────────┘└──────────────────┘└─────┬──────┘
+└────────┬──────────────────┬──────────────────┬────────────────┬──────┘
+┌────────┴───────┐┌─────────┴────────┐┌────────┴─────────┐┌─────┴──────┐
+│ Error handling ││ I/O Read & Write ││ PC communication ││ Mode logic │
+└────────────────┘└──────────────────┘└──────────────────┘└─────┬──────┘
                       ┌──────────┬──────────────┬───────────────┤
                   ┌───┴──┐┌──────┴────┐┌────────┴───────┐┌──────┴──────┐
       *modes* ->  │ Maze ││ Warehouse ││ Emergency stop ││ Calibration │
@@ -84,6 +84,6 @@ this list will probably get updated from time to time:
   short descriptive names, but shouldn't be prefixed with `w2_*`.
 - arbitrary numbers should be aliased to `#define` statements or `enum`s if
   part of a series.
-- constants should be placed in `consts.h`
+- general constants should be placed in `consts.h`
 - run `make format` as a seperate commit in case of breaking changes
 
