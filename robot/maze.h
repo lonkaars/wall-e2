@@ -5,4 +5,4 @@
  *
  * finds route out of maze
  */
-void w2_mode_maze_main();
+void w2_mode_maze();

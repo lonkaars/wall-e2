@@ -5,7 +5,6 @@
  *
  * configures:
  * - serial connection (wixel)
- * - timer0 for cycle duration measurement
  * - lcd display
  * - underside leds
  */

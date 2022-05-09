@@ -1,6 +1,7 @@
 ---
 AccessModifierOffset: 0
 AlignConsecutiveAssignments: true
+AllowShortIfStatementsOnASingleLine: WithoutElse
 AllowShortLoopsOnASingleLine: true
 BasedOnStyle: LLVM
 BreakBeforeBraces: Attach
