@@ -50,7 +50,7 @@ supposed to do:
 |pc communication|`sercomm    `|reads and parses incoming serial data; sends all data in the message buffer|
 |error handling  |`errcatch   `|receives error codes; controls how errors are handled|
 |i/o read & write|`io         `|reads all inputs to global state; writes all outputs|
-|mode logic      |`model      `|executes the appropriate module for current mode|
+|mode logic      |`modes      `|executes the appropriate module for current mode|
 |maze            |`mode_maze  `|controls robot during maze portion of map; hands off control to warehouse module|
 |warehouse       |`mode_grid  `|controls robot during warehouse portion of map; hands off control to maze module|
 |emergency stop  |`mode_halt  `|stops all execution until emergency mode is reset by software or user|
@@ -85,4 +85,5 @@ this list will probably get updated from time to time:
 - arbitrary numbers should be aliased to `#define` statements or `enum`s if
   part of a series.
 - constants should be placed in `consts.h`
+- run `make format` as a seperate commit in case of breaking changes
 
