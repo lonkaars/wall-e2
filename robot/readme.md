@@ -19,11 +19,11 @@ automatically reboot the robot.
 
 ## module hierarchy
 
-the software is divided into seperate 'modules' for maintenance, testing and
-debugging purposes. the sizes of the blocks in the following diagram are a bit
-misleading, as some of these blocks are mostly organizational and form more of
-a software 'skeleton', while the 'maze' and 'warehouse' modules provide the
-majority of the control logic.
+the software is divided into seperate 'modules' for organizational,
+maintenance, testing and debugging purposes. the sizes of the blocks in the
+following diagram are a bit misleading, as some of these blocks are mostly
+organizational and form more of a software 'skeleton', while the 'maze' and
+'warehouse' modules provide the majority of the actual control logic.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
@@ -39,10 +39,11 @@ majority of the control logic.
 ```
 
 this diagram roughly describes how different parts of the robot software are
-called. most of these modules can talk to each other (e.g. the maze module
-sending an error code to the error handling module, which then forwards it to
-pc communication). here's a quick run-down of all modules and what they're
-supposed to do:
+called. most of these modules can talk to each other using functions exposed by
+the modules themselves (e.g. the maze module sending an error code to the error
+handling module, which then both handles the error and forwards it to pc
+communication for logging purposes). here's a quick run-down of all modules and
+what they're supposed to do:
 
 |module          |internal name|purpose|
 |----------------|-------------|-|
@@ -85,5 +86,136 @@ this list will probably get updated from time to time:
 - arbitrary numbers should be aliased to `#define` statements or `enum`s if
   part of a series.
 - general constants should be placed in `consts.h`
-- run `make format` as a seperate commit in case of breaking changes
+
+## todo
+
+global todo:
+
+- [ ] add test/simulation mode for wet floor (spinning)
+- [ ] add a manual control mode
+- [ ] start robot in calibration mode
+- [ ] assume robot starts in maze
+- [ ] maze-grid transition detection in seperate file (used by grid and maze
+  mode)
+- [ ] clear global timer at start of cycle instead of just for mode selection
+  module (for last ping time measurement)
+- [ ] calibrate (line-detecting) light sensors in setup.c, or manually by
+  placing the robot and pressing a button
+
+### hypervisor
+
+the hypervisor executes all other modules, and measures execution time. it also
+provides all other modules with a central place for defining global variables.
+
+### pc communication
+
+> this mode can't be implemented until the pc-communication protocol spec is
+> finished
+
+the pc communication module sends messages in a binary format over the serial
+connection provided by the wixel modules. this module should also send a 'ping'
+command each cycle to check if the connection is still intact. the pc will also
+periodically send ping, and various other commands which this module will have
+to act on accordingly.
+
+### error handling
+
+the error handling module (a) provides functions for other modules to report
+errors, and (b) handles errors accordingly.
+
+- [ ] create an error `struct` that holds:
+  - [ ] error code
+  - [ ] message length
+  - [ ] message contents
+- [ ] create a global error ring buffer with an appropriate size that holds
+  error messages
+- [ ] handle errors in the error buffer, referencing the functional
+  specification for details on what the robot should do to resolve each kind of
+  error
+- [ ] forward error codes to the pc-communication module
+
+empty function declarations are in place for providing other modules an error
+reporting function.
+
+### i/o read & write
+
+the i/o module reads all inputs once and writes all outputs once. this keeps
+cycle time constant, and makes sure no time is wasted re-reading inputs, or
+writing outputs more than once.
+
+- [ ] create `struct`s for each type of input:  
+  - [ ] button
+  - [ ] infrared light sensor
+  - [ ] time-of-flight distance sensor
+- [ ] create a single `struct` that holds all input data
+- [ ] create a single `struct` that holds output data values for:
+  - [ ] left motor speed
+  - [ ] right motor speed
+  - [ ] red led
+  - [ ] green led
+
+extra (requires external interrupt setup):
+- [ ] add a `pressed` property to the button struct that turns on if the button
+  was pressed outside the i/o module execution span
+- [ ] add a `press_duration` property to the button struct that measures button
+  press duration, and that works when the button is pressed outside the i/o
+  module execution span
+
+technically the wixel serial channel, programmer debug serial channel, lcd
+contents and speaker tones are also considered outputs, but these all take
+significant time or memory to update, so these will not be updated using the
+cyclic i/o module.
+
+### modes
+
+modes is a shim module that forwards execution to the currently selected mode.
+the global variable `g_w2_current_mode` holds a pointer to the current mode.
+this makes sure only a single mode handler gets ran on every execution cycle.
+
+### maze
+
+the maze mode controls the robot when it's in the maze, and sets execution to
+grid mode when it detects the maze-grid transition. the solving algorithm will
+constantly keep either left or right until (a) the maze-grid transition is
+detected, (b) the charging pad is detected, or (c) the starting point is
+detected. depending on which location is desired, the robot may continue to
+venture through the maze when it finds any of these. exact implementation
+details for this mode are yet to be determined.
+
+### warehouse
+
+the warehouse mode controls the robot when it's in the warehouse, and sets
+execution to maze mode when it detects the maze-grid transition. exact
+implementation details for this mode are yet to be determined.
+
+### emergency stop
+
+> this mode can't be implemented until the pc-communication protocol spec is
+> finished
+
+the emergency stop mode stops the robot from doing anything until the user
+determines it is safe to resume execution.
+
+- [ ] create a global variable that holds the previous mode
+- [ ] create a global variable that holds a 'safe' state (startup/default
+  value = false)
+- [ ] add a condition in the supervisor that switches to the emergency mode if
+  the 'safe' state variable is false
+- [ ] add a condition in the emergency mode handler that switches to the
+  previous mode if the 'safe' state returns to false
+
+### calibration
+
+the calibration sequence is used during the maze mode for re-finding the line
+when the robot gets lost. the robot will first try to find the line by itself
+when it gets lost. when it does this it will send a warning to the error
+buffer. in case it can't find the line anymore, it will go into emergency mode
+and send a critical warning.
+
+- [ ] implement line-finding sequence  
+  - turn 360 degrees (about robot's own axis)
+  - if a line is found at any point during this rotation, stop turning
+  - if a full rotation is completed without a found line, enter emergency
+    mode
+- [ ] add a warning for line lost
 
