@@ -19,7 +19,7 @@ CC=avr-gcc
 OBJ2HEX=avr-objcopy
 
 BUILD_STR=$(shell git update-index -q --refresh; git describe --tags --dirty='*' --broken='x' | cut -c1-20)
-CFLAGS += -DBUILD_STR="$(BUILD_STR)"
+CFLAGS += -DW2_BUILD_STR="$(BUILD_STR)"
 
 all: out.hex
 
@@ -41,6 +41,7 @@ flash: out.hex
 
 format:
 	clang-format -i $(SOURCES) $(HEADERS)
+	clang-tidy --fix-errors $(SOURCES) $(HEADERS)
 
 compile_commands: clean
 	bear -- make

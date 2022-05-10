@@ -21,6 +21,7 @@ clean:
 
 format:
 	clang-format -i $(SOURCES) $(HEADERS)
+	clang-tidy --fix-errors $(SOURCES) $(HEADERS)
 
 compile_commands: clean
 	bear -- make

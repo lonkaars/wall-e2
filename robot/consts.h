@@ -1,8 +1,8 @@
 #pragma once
 
-#ifndef BUILD_STR
+#ifndef W2_BUILD_STR
 // should be defined with -DBUILD_STR in makefile
-#define BUILD_STR ("????????")
+#define W2_BUILD_STR ("????????")
 #endif
 
 #define W2_MAX_MODULE_CYCLE_MS (20)
