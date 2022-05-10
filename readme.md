@@ -16,7 +16,9 @@ gebruikte externe libraries:
 
 ## samenvatting werking
 
-Globaal gezien draait de robot altijd in een van twee 'standen'. De eerste
+hoop onder constructie
+
+~Globaal gezien draait de robot altijd in een van twee 'standen'. De eerste
 stand is voor het doolhof-gedeelte van de kaart, en de tweede is voor het
 warenhuis-gedeelte. Tijdens de assessment kan het zijn dat de robot opgetild
 wordt en ergens anders wordt neergezet in het doolhof gedeelte, en hier moet de
@@ -25,9 +27,9 @@ de linkerhandregel gebruikt, zodat de robot altijd een uitgang van het doolhof
 kan vinden, zonder dat de robot zijn eigen positie binnen het doolhof hoeft te
 weten, of überhaupt bewust hoeft te zijn van de lay-out van het doolhof zelf.
 De overgang tussen het doolhof en het warenhuis wordt aangegeven met een soort
-zebrapad die dezelfde breedte als de rest van de lijnen heeft. Vooraf wordt via
-de client aangegeven aan de robot hoe groot het warenhuis is, en waar de in- en
-uitgangen van het warenhuis zitten, zodat de robot zelfstandig naar het
+zebrapad die dezelfde breedte als de rest van de lijnen heeft.~ Vooraf wordt
+via de client aangegeven aan de robot hoe groot het warenhuis is, en waar de
+in- en uitgangen van het warenhuis zitten, zodat de robot zelfstandig naar het
 afleverpunt en het oplaadstation kan rijden zodra alle bestellingen opgehaald
 zijn. De volgende specificaties moeten nog exact afgesproken worden voordat er
 een kaart gemaakt kan worden:
@@ -42,20 +44,6 @@ warenhuis-gedeelte.
 
 ## te bespreken
 
-- Consequent snake case gebruiken inplaats van camel case
-- Hoe wordt de controle over de robot 'overhandigd' tussen verschillende
-  standen?
-- Hoe weet de robot via welke in-/uitgang hij het warenhuis in/uit rijdt?
-  (barcode-scanner implementeren?)
-- Globale status met alle sensor data en andere diagnostische info in een
-  struct zetten en toeganklijk maken vanuit aansturingsstanden?
-- Middleware maken zodat er een soort pseudo-supervisor draait die het
-  overschakelen tussen standen kan beheren, en alle sensordata update in de
-  globale status struct?
-- Misschien een globaal software diagram maken?
-- Is het slim om de test stand voor de natte vloer (spinnen) ook een losse
-  'stand' te maken?
-  - Noodstop ook een stand maken?
 - Welke software wordt er gebruikt om de kaart te maken?  
   (moet met exacte afstanden kunnen werken, lieft in centimeters; als het kan
   ook fijn om in samen te werken)
