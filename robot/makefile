@@ -18,6 +18,9 @@ AVRDUDE=avrdude
 CC=avr-gcc
 OBJ2HEX=avr-objcopy
 
+BUILD_STR=$(shell git update-index -q --refresh; git describe --tags --dirty='*' --broken='x' | cut -c1-20)
+CFLAGS += -DBUILD_STR="$(BUILD_STR)"
+
 all: out.hex
 
 clean:
@@ -31,6 +34,7 @@ a.out: $(OBJECTS)
 
 out.hex: a.out
 	$(OBJ2HEX) -R .eeprom -O ihex $< $@
+	$(info build $(BUILD_STR) complete)
 
 flash: out.hex
 	$(AVRDUDE) -p $(AVRDUDE_DEVICE) -c avrisp2 -P $(PORT) -U flash:w:out.hex
