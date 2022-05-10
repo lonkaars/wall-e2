@@ -1,0 +1,16 @@
+Checks: '-*,readability-identifier-naming'
+CheckOptions:
+	- { key: readability-identifier-naming.FunctionCase, value: lower_case }
+	- { key: readability-identifier-naming.FunctionPrefix, value: w2_ }
+	- { key: readability-identifier-naming.GlobalVariableCase, value: lower_case }
+	- { key: readability-identifier-naming.GlobalVariablePrefix, value: g_w2_ }
+	- { key: readability-identifier-naming.GlobalConstantCase, value: UPPER_CASE }
+	- { key: readability-identifier-naming.GlobalConstantPrefix, value: W2_ }
+	- { key: readability-identifier-naming.MacroDefinitionCase, value: UPPER_CASE }
+	- { key: readability-identifier-naming.MacroDefinitionPrefix, value: W2_ }
+	- { key: readability-identifier-naming.StructCase, value: lower_case }
+	- { key: readability-identifier-naming.StructPrefix, value: w2_s_ }
+	- { key: readability-identifier-naming.EnumCase, value: lower_case }
+	- { key: readability-identifier-naming.EnumPrefix, value: w2_e_ }
+
+# vim: ft=yaml
