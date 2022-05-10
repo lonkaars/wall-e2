@@ -100,7 +100,7 @@ global todo:
 - [ ] clear global timer at start of cycle instead of just for mode selection
   module (for last ping time measurement)
 - [ ] calibrate (line-detecting) light sensors in setup.c, or manually by
-  placing the robot and pressing a button
+  placing the robot and pressing a button (maybe make this a seperate mode)
 
 ### hypervisor
 
@@ -108,9 +108,6 @@ the hypervisor executes all other modules, and measures execution time. it also
 provides all other modules with a central place for defining global variables.
 
 ### pc communication
-
-> this mode can't be implemented until the pc-communication protocol spec is
-> finished
 
 the pc communication module sends messages in a binary format over the serial
 connection provided by the wixel modules. this module should also send a 'ping'
@@ -189,9 +186,6 @@ execution to maze mode when it detects the maze-grid transition. exact
 implementation details for this mode are yet to be determined.
 
 ### emergency stop
-
-> this mode can't be implemented until the pc-communication protocol spec is
-> finished
 
 the emergency stop mode stops the robot from doing anything until the user
 determines it is safe to resume execution.
