@@ -1,12 +1,13 @@
 #pragma once
 
 #ifndef W2_BUILD_STR
-// should be defined with -DBUILD_STR in makefile
+// is defined by CFLAGS += -DW2_BUILD_STR in makefile
 #define W2_BUILD_STR ("????????")
 #endif
 
 #define W2_MAX_MODULE_CYCLE_MS (20)
 #define W2_SERIAL_BAUD (9600)
+#define W2_ERROR_BUFFER_SIZE (16)
 
 #define W2_ERR_TYPE_CRIT (0b00 << 6)
 #define W2_ERR_TYPE_WARN (0b01 << 6)
