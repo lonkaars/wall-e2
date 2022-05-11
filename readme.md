@@ -17,7 +17,7 @@ gebruikte externe libraries:
 ## git test :tada:
 
 - [ ] abdullaahi
-- [ ] fiona
+- [x] fiona
 - [ ] jorn
 - [x] loek
 
