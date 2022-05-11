@@ -14,6 +14,13 @@ gebruikte externe libraries:
 |-|-|
 |[yan9a/serial](https://github.com/yan9a/serial)|cross-compatibiliteit voor seriële poorten lezen/schrijven voor windows en linux|
 
+## git test :tada:
+
+- [ ] abdullaahi
+- [ ] fiona
+- [ ] jorn
+- [x] loek
+
 ## samenvatting werking
 
 hoop onder constructie
