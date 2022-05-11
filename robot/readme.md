@@ -45,17 +45,17 @@ handling module, which then both handles the error and forwards it to pc
 communication for logging purposes). here's a quick run-down of all modules and
 what they're supposed to do:
 
-|module          |internal name|purpose|
-|----------------|-------------|-|
-|hypervisor      |`hypervisor `|backbone of all other modules; stores global variables; controls when other modules run|
-|pc communication|`sercomm    `|reads and parses incoming serial data; sends all data in the message buffer|
-|error handling  |`errcatch   `|receives error codes; controls how errors are handled|
-|i/o read & write|`io         `|reads all inputs to global state; writes all outputs|
-|mode logic      |`modes      `|executes the appropriate module for current mode|
-|maze            |`mode_maze  `|controls robot during maze portion of map; hands off control to warehouse module|
-|warehouse       |`mode_grid  `|controls robot during warehouse portion of map; hands off control to maze module|
-|emergency stop  |`mode_halt  `|stops all execution until emergency mode is reset by software or user|
-|calibration     |`mode_calb  `|find line by turning on own axis if lost|
+|module          |internal name|author|purpose|
+|----------------|-------------|-|-|
+|hypervisor      |`hypervisor `|N/a| backbone of all other modules; stores global variables; controls when other modules run|
+|pc communication|`sercomm    `|Jorn & Abdullaahi| reads and parses incoming serial data; sends all data in the message buffer|
+|error handling  |`errcatch   `|Loek| receives error codes; controls how errors are handled|
+|i/o read & write|`io         `|Fiona| reads all inputs to global state; writes all outputs|
+|mode logic      |`modes      `|N/a| executes the appropriate module for current mode|
+|maze            |`mode_maze  `|TBD| controls robot during maze portion of map; hands off control to warehouse module|
+|warehouse       |`mode_grid  `|TDB| controls robot during warehouse portion of map; hands off control to maze module|
+|emergency stop  |`mode_halt  `|Fiona| stops all execution until emergency mode is reset by software or user|
+|calibration     |`mode_calb  `|Fiona| find line by turning on own axis if lost|
 
 ## some standards
 
