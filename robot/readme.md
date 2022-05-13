@@ -17,6 +17,13 @@ device manager on windows, or by running `ls /dev/ttyACM*` on linux. once the
 com port is configured, run `make flash` to upload the executable and
 automatically reboot the robot.
 
+another fun option in the makefile is the SIM mode. by uncommenting the line `#
+SIM = true`, the robot code can be compiled for desktop debugging instead. all
+used pololu functions must be manually implemented in sim.c for this to work,
+but it allows easier debugging. *it's important that the `orangutan_shim.h`
+header is used instead of including `<pololu/orangutan.h>` directly for this to
+keep working!*
+
 ## module hierarchy
 
 the software is divided into seperate 'modules' for organizational,
@@ -131,8 +138,14 @@ errors, and (b) handles errors accordingly.
   error
 - [ ] forward error codes to the pc-communication module
 
-empty function declarations are in place for providing other modules an error
-reporting function.
+~empty function declarations are in place for providing other modules an error
+reporting function.~
+
+this module is as good as finished but full functionality is currently
+dependent on:
+
+- [ ] pc communication
+- [ ] other mode implementations
 
 ### i/o read & write
 
