@@ -11,3 +11,4 @@ void green_led(unsigned char on); // NOLINT
 void clear(); // NOLINT
 void play(const char* melody); // NOLINT
 void serial_set_baud_rate(unsigned int rate); // NOLINT
+void serial_send(char* message, unsigned int length); // NOLINT

@@ -4,7 +4,7 @@ AVRDUDE_DEVICE = m328p
 DEVICE ?= atmega168
 MCU ?= atmega168
 AVRDUDE_DEVICE ?= m168
-SIM = 
+SIM = true
 
 PORT ?= /dev/ttyACM0
 

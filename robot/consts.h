@@ -13,6 +13,7 @@
 #define W2_ERR_TYPE_WARN (0b01 << 6)
 #define W2_ERR_TYPE_INFO (0b10 << 6)
 #define W2_ERR_TYPE_VERB (0b11 << 6)
+#define W2_ERR_TYPE_MASK (0b11 << 6)
 
 /**
  * enum storing all error codes
