@@ -1,15 +1,10 @@
-#include <stdlib.h>
-#include <time.h>
-#include <stdio.h>
-#include <unistd.h>
-
 #include "consts.h"
 #include "errcatch.h"
 #include "hypervisor.h"
 #include "io.h"
 #include "modes.h"
-#include "sercomm.h"
 #include "orangutan_shim.h"
+#include "sercomm.h"
 
 void w2_hypervisor_main() {
 	time_reset();
@@ -23,20 +18,14 @@ void w2_hypervisor_main() {
 	w2_modes_main();
 	unsigned long mode_time = get_ms() - io_time;
 
-	char* message = malloc(80);
-	sprintf(message, "sercomm: %lums  ", sercomm_time);
-	serial_send(message, 80);
-	sprintf(message, "errcatch: %lums ", errcatch_time);
-	serial_send(message, 80);
-	sprintf(message, "io: %lums       ", io_time);
-	serial_send(message, 80);
-	sprintf(message, "mode: %lums     ", mode_time);
-	serial_send(message, 80);
-	sprintf(message, "                ");
-	serial_send(message, 80);
-	free(message);
+	#ifdef W2_SIM
+	siminfo("sercomm:  %lums\n", sercomm_time);
+	siminfo("errcatch: %lums\n", errcatch_time);
+	siminfo("io:       %lums\n", io_time);
+	siminfo("mode:     %lums\n", mode_time);
 
 	usleep(100e3);
+	#endif
 
 	if (mode_time > W2_MAX_MODULE_CYCLE_MS) w2_errcatch_throw(W2_ERR_CYCLE_EXPIRED);
 }

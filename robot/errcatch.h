@@ -27,7 +27,7 @@ extern uint8_t g_w2_error_offset;
 void w2_errcatch_main();
 
 /** handle error */
-void w2_errcatch_handle_error(w2_s_error error);
+void w2_errcatch_handle_error(w2_s_error* error);
 
 /** append error to error buffer */
 void w2_errcatch_throw(enum w2_e_errorcodes code);
@@ -41,4 +41,3 @@ void w2_errcatch_throw_msg(enum w2_e_errorcodes code, uint16_t length, const cha
  * TODO: doesn't handle null pointers from calloc
  */
 w2_s_error *w2_alloc_error(enum w2_e_errorcodes code, uint16_t length, const char *message);
-

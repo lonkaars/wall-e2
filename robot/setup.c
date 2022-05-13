@@ -1,9 +1,9 @@
 #include <stdlib.h>
 
-#include "orangutan_shim.h"
 #include "consts.h"
 #include "halt.h"
 #include "modes.h"
+#include "orangutan_shim.h"
 #include "setup.h"
 
 void w2_setup_main() {

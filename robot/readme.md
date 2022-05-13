@@ -124,7 +124,7 @@ errors, and (b) handles errors accordingly.
   - [x] error code
   - [x] message length
   - [x] message contents
-- [ ] create a global error ring buffer with an appropriate size that holds
+- [x] create a global error ring buffer with an appropriate size that holds
   error messages
 - [ ] handle errors in the error buffer, referencing the functional
   specification for details on what the robot should do to resolve each kind of

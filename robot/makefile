@@ -4,26 +4,30 @@ AVRDUDE_DEVICE = m328p
 DEVICE ?= atmega168
 MCU ?= atmega168
 AVRDUDE_DEVICE ?= m168
-SIM = true
 
 PORT ?= /dev/ttyACM0
 
 CFLAGS=-g -Wall $(DEVICE_SPECIFIC_CFLAGS) -Os
 LDFLAGS=-Wl,-gc-sections -Wl,-relax
 
+SOURCES := $(filter-out sim.c, $(wildcard *.c))
+HEADERS := $(filter-out sim.h, $(wildcard *.h))
+
+# simulation
+# SIM = true
 CFLAGS += $(if $(SIM), -DW2_SIM, -mcall-prologues -mmcu=$(MCU))
 LDFLAGS += $(if $(SIM), , -lpololu_$(DEVICE))
-
-SOURCES := $(wildcard *.c)
-HEADERS := $(wildcard *.h)
-OBJECTS := $(patsubst %.c,%.o, $(SOURCES))
-
 PREFIX := $(if $(SIM), , avr-)
+SOURCES += $(if $(SIM), sim.c, )
+HEADERS += $(if $(SIM), sim.h, )
+
+OBJECTS := $(patsubst %.c,%.o, $(SOURCES))
 
 AVRDUDE=avrdude
 CC=$(PREFIX)gcc
 OBJ2HEX=$(PREFIX)objcopy
 
+# debug build info string
 BUILD_STR=$(shell git update-index -q --refresh; git describe --tags --dirty='*' --broken='x' | cut -c1-20)
 CFLAGS += -DW2_BUILD_STR="$(BUILD_STR)"
 
@@ -46,8 +50,8 @@ flash: out.hex
 	$(AVRDUDE) -p $(AVRDUDE_DEVICE) -c avrisp2 -P $(PORT) -U flash:w:out.hex
 
 format:
-	SOURCES := $(filter-out sim.c, $(SOURCES))
-	HEADERS := $(filter-out sim.h, $(HEADERS))
+	$(eval SOURCES := $(filter-out sim.c, $(SOURCES)))
+	$(eval HEADERS := $(filter-out sim.h, $(HEADERS)))
 	clang-format -i $(SOURCES) $(HEADERS)
 	clang-tidy --fix-errors $(SOURCES) $(HEADERS)
 

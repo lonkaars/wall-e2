@@ -7,13 +7,13 @@
 struct timespec reference_time; // NOLINT
 
 void time_reset() {
-	// printf("SIM: time_reset()\n");
+	simprintfunc("time_reset", "");
 	clock_gettime(CLOCK_MONOTONIC, &reference_time);
 	return;
 }
 
 unsigned long get_ms() {
-	// printf("SIM: get_ms()\n");
+	simprintfunc("get_ms", "");
 	struct timespec elapsed;
 	clock_gettime(CLOCK_MONOTONIC, &elapsed);
 	return ((elapsed.tv_sec * 1000) + (elapsed.tv_nsec / 1000000)) -
@@ -21,35 +21,44 @@ unsigned long get_ms() {
 }
 
 void red_led(unsigned char on) {
-	printf("SIM: red_led(%i)\n", on);
+	simprintfunc("red_led", "%i", on);
 	return;
 }
 
 void green_led(unsigned char on) {
-	printf("SIM: green_led(%i)\n", on);
+	simprintfunc("green_led", "%i", on);
 	return;
 }
 
 void clear() {
-	printf("SIM: clear()\n");
+	simprintfunc("clear", "");
 	return;
 }
 
 void play(const char* melody) {
-	printf("SIM: play(\"%s\")\n", melody);
+	simprintfunc("play", "\"%s\"", melody);
 	return;
 }
 
 void serial_set_baud_rate(unsigned int rate) {
-	printf("SIM: serial_set_baud_rate(%u)\n", rate);
+	simprintfunc("serial_set_baud_rate", "%u", rate);
 	return;
 }
 
-// TODO: hexdump binary data
 void serial_send(char* message, unsigned int length) {
-	char message_copy[length];
-	strncpy(message_copy, message, length);
-	printf("SIM: serial_send(\"%s\", %u)\n", message_copy, length);
+	simprintfunc("serial_send", "<see below>, %u", length);
+	unsigned int bytes = 0;
+	simprintf("");
+	for (unsigned int byte = 0; byte < length; byte++) {
+		if (bytes > DBG_BYTES_PER_LINE) {
+			bytes = 0;
+			printf("\n");
+			simprintf("");
+		}
+		printf("%02x ", message[byte]);
+		bytes++;
+	}
+	printf("\n");
 	return;
 }
 
