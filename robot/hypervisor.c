@@ -1,11 +1,10 @@
-#include <pololu/orangutan.h>
-
 #include "consts.h"
 #include "errcatch.h"
 #include "hypervisor.h"
 #include "io.h"
 #include "modes.h"
 #include "sercomm.h"
+#include "orangutan_shim.h"
 
 void w2_hypervisor_main() {
 	w2_sercomm_main();
