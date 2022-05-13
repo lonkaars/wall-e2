@@ -22,7 +22,7 @@ void w2_errcatch_throw_msg(enum w2_e_errorcodes code, uint16_t length, const cha
 typedef struct {
 	enum w2_e_errorcodes code;
 	uint8_t message_length;
-	uint8_t message[];
+	char message[];
 } w2_s_error;
 
 /** error ring buffer */
@@ -31,3 +31,10 @@ extern w2_s_error g_w2_error_buffer[W2_ERROR_BUFFER_SIZE];
 extern uint8_t g_w2_error_index;
 /** stores start of ring buffer */
 extern uint8_t g_w2_error_offset;
+
+/**
+ * allocate and initialize error struct
+ *
+ * TODO: doesn't handle null pointers from calloc
+ */
+w2_s_error *w2_alloc_error(enum w2_e_errorcodes code, uint16_t length, const char *message);
