@@ -93,6 +93,8 @@ this list will probably get updated from time to time:
 - arbitrary numbers should be aliased to `#define` statements or `enum`s if
   part of a series.
 - general constants should be placed in `consts.h`
+- don't import `<pololu/orangutan.h>` directly, instead use
+  `"orangutan_shim.h"` to keep code compatible with the simulator
 
 ## todo
 
