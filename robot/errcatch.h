@@ -27,7 +27,7 @@ extern uint8_t g_w2_error_offset;
 void w2_errcatch_main();
 
 /** handle error */
-void w2_errcatch_handle_error(w2_s_error* error);
+void w2_errcatch_handle_error(w2_s_error *error);
 
 /** append error to error buffer */
 void w2_errcatch_throw(enum w2_e_errorcodes code);

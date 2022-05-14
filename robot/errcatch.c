@@ -14,7 +14,7 @@ uint8_t g_w2_error_offset						   = 0;
 
 void w2_errcatch_main() {
 	while (g_w2_error_index != g_w2_error_offset) {
-		w2_s_error* error = &g_w2_error_buffer[g_w2_error_offset];
+		w2_s_error *error = &g_w2_error_buffer[g_w2_error_offset];
 		w2_errcatch_handle_error(error);
 		free(error);
 		g_w2_error_offset = (g_w2_error_offset + 1) % W2_ERROR_BUFFER_SIZE;
@@ -36,7 +36,7 @@ void w2_errcatch_throw_msg(enum w2_e_errorcodes code, uint16_t length, const cha
 	g_w2_error_index					= (g_w2_error_index + 1) % W2_ERROR_BUFFER_SIZE;
 }
 
-void w2_errcatch_handle_error(w2_s_error* error) {
+void w2_errcatch_handle_error(w2_s_error *error) {
 	uint8_t severity = error->code & W2_ERR_TYPE_MASK;
 
 	// trigger emergency mode for critical errors
@@ -49,9 +49,9 @@ void w2_errcatch_handle_error(w2_s_error* error) {
 		}
 		default: {
 			w2_errcatch_throw(W2_ERR_UNCAUGHT_ERROR);
-			#ifdef W2_SIM
+#ifdef W2_SIM
 			simwarn("Uncaught/unhandled error found with code 0x%02x", error->code);
-			#endif
+#endif
 		}
 	}
 
