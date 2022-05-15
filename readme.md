@@ -16,10 +16,11 @@ gebruikte externe libraries:
 
 ## git test :tada:
 
-- [ ] abdullaahi
+- [x] abdullaahi
 - [x] fiona
 - [ ] jorn
 - [x] loek
+
 
 ## samenvatting werking
 
@@ -155,3 +156,7 @@ let wel op dat je **MSYS2 MinGW x64** moet gebruiken als terminal wanneer je
 `make` wil gebruiken. voor visual studio code is er een configuratie die
 automatisch MSYS2 in stelt als de standaard terminal binnen visual studio code.
 als je een losse terminal wil gebruiken moet je hier dus wel op letten
+
+test
+
+
