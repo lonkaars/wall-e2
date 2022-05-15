@@ -18,7 +18,7 @@ gebruikte externe libraries:
 
 - [x] abdullaahi
 - [x] fiona
-- [ ] jorn
+- [x] jorn
 - [x] loek
 
 
