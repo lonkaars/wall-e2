@@ -18,7 +18,7 @@ gebruikte externe libraries:
 
 - [ ] abdullaahi
 - [x] fiona
-- [ ] jorn
+- [x] jorn
 - [x] loek
 
 ## samenvatting werking
