@@ -42,14 +42,15 @@ De lijnen van het doolhof hoeven niet te voldoen aan de tegelgrootte, maar de
 in- en uitgangen moeten wel een rechte overloop hebben op het
 warenhuis-gedeelte.
 
-## te bespreken
+## de kaart
 
-- Welke software wordt er gebruikt om de kaart te maken?  
-  (moet met exacte afstanden kunnen werken, lieft in centimeters; als het kan
-  ook fijn om in samen te werken)
-  - Figma?
-  - Adobe Illustrator?
-  - MS Visio?
+voor de kaart worden de volgende afmetingen aangehouden:
+
+- 3/4" (~19mm) breedte
+- gebogen lijnen niet scherper dan een radius van 3" (~750mm)
+- het oplaadstation is een zwarte stip met een diameter van 3" (~750mm)
+- paginamarge en minimale ruimte tussen lijnen van 3" (~750mm)
+- (binnen grid) tegelgrootte van 8" (~20cm)
 
 ## noob hoek
 
