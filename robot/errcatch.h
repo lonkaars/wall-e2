@@ -17,7 +17,7 @@ typedef struct {
 } w2_s_error;
 
 /** error ring buffer */
-extern w2_s_error g_w2_error_buffer[W2_ERROR_BUFFER_SIZE];
+extern w2_s_error *g_w2_error_buffer[W2_ERROR_BUFFER_SIZE];
 /** stores head of ring buffer */
 extern uint8_t g_w2_error_index;
 /** stores start of ring buffer */

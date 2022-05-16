@@ -8,15 +8,14 @@
 #include "modes.h"
 #include "orangutan_shim.h"
 
-w2_s_error g_w2_error_buffer[W2_ERROR_BUFFER_SIZE] = {};
-uint8_t g_w2_error_index						   = 0;
-uint8_t g_w2_error_offset						   = 0;
+w2_s_error *g_w2_error_buffer[W2_ERROR_BUFFER_SIZE] = {};
+uint8_t g_w2_error_index							= 0;
+uint8_t g_w2_error_offset							= 0;
 
 void w2_errcatch_main() {
 	while (g_w2_error_index != g_w2_error_offset) {
-		w2_s_error *error = &g_w2_error_buffer[g_w2_error_offset];
+		w2_s_error *error = g_w2_error_buffer[g_w2_error_offset];
 		w2_errcatch_handle_error(error);
-		free(error);
 		g_w2_error_offset = (g_w2_error_offset + 1) % W2_ERROR_BUFFER_SIZE;
 	}
 }
@@ -31,7 +30,8 @@ w2_s_error *w2_alloc_error(enum w2_e_errorcodes code, uint16_t length, const cha
 
 void w2_errcatch_throw(enum w2_e_errorcodes code) { w2_errcatch_throw_msg(code, 0, ""); }
 void w2_errcatch_throw_msg(enum w2_e_errorcodes code, uint16_t length, const char *message) {
-	w2_s_error error					= *w2_alloc_error(code, length, message);
+	free(g_w2_error_buffer[g_w2_error_index]);
+	w2_s_error *error					= w2_alloc_error(code, length, message);
 	g_w2_error_buffer[g_w2_error_index] = error;
 	g_w2_error_index					= (g_w2_error_index + 1) % W2_ERROR_BUFFER_SIZE;
 }
@@ -50,7 +50,7 @@ void w2_errcatch_handle_error(w2_s_error *error) {
 		default: {
 			w2_errcatch_throw(W2_ERR_UNCAUGHT_ERROR);
 #ifdef W2_SIM
-			simwarn("Uncaught/unhandled error found with code 0x%02x", error->code);
+			simwarn("Uncaught/unhandled error found with code 0x%02x\n", error->code);
 #endif
 		}
 	}
