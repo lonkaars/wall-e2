@@ -34,7 +34,7 @@ CFLAGS += -DW2_BUILD_STR="$(BUILD_STR)"
 all: $(if $(SIM), a.out, out.hex)
 
 clean:
-	rm -f *.o out.hex a.out compile_commands.json
+	rm -f *.o out.hex a.out
 
 a.out: $(OBJECTS)
 	$(CC) $(OBJECTS) $(CFLAGS) $(LDFLAGS)

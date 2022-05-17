@@ -29,6 +29,7 @@ enum w2_e_errorcodes {
 	W2_E_WARN_OBSTACLE_DETECTED = 0x01 | W2_E_TYPE_WARN,
 	W2_E_WARN_CYCLE_EXPIRED		= 0x02 | W2_E_TYPE_WARN,
 	W2_E_WARN_UNCAUGHT_ERROR	= 0x03 | W2_E_TYPE_WARN,
+	W2_E_WARN_ERR_BUFFER_FULL	= 0x04 | W2_E_TYPE_WARN,
 };
 
 /**
@@ -44,7 +45,7 @@ typedef struct {
 } w2_s_error;
 
 /** error ring buffer */
-extern w2_s_error *g_w2_error_buffer[W2_E_BUFFER_SIZE];
+extern w2_s_error *g_w2_error_buffer[W2_ERROR_BUFFER_SIZE];
 /** stores head of ring buffer */
 extern uint8_t g_w2_error_index;
 /** stores start of ring buffer */

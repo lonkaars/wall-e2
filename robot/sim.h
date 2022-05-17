@@ -4,6 +4,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+// debug fine-tuning
+#define DBG_ENABLE_PRINTFUNC (0)
+#define DBG_ENABLE_SIMWARN (1)
+#define DBG_ENABLE_SIMINFO (1)
+
 // debug print options
 #define DBG_BYTES_PER_LINE 16
 
@@ -21,10 +26,10 @@
 // debug stdout print macros
 #define simprintf(message, ...) printf(COL_RED "[SIM] " COL_RST message, ##__VA_ARGS__)
 #define simprint(message) simprintf(message "\n")
-#define simprintfunc(name, fmt, ...) simprintf(COL_BLU "[FUNC] " \
-		COL_CYN name COL_RST "(" COL_YEL fmt COL_RST ")\n", ##__VA_ARGS__)
-#define simwarn(message, ...) simprintf(COL_YEL "[WARN] " COL_RST message, ##__VA_ARGS__)
-#define siminfo(message, ...) simprintf(COL_MAG "[INFO] " COL_RST message, ##__VA_ARGS__)
+#define simprintfunc(name, fmt, ...) if (DBG_ENABLE_PRINTFUNC) { simprintf(COL_BLU "[FUNC] " \
+		COL_CYN name COL_RST "(" COL_YEL fmt COL_RST ")\n", ##__VA_ARGS__); }
+#define simwarn(message, ...) if (DBG_ENABLE_SIMWARN) { simprintf(COL_YEL "[WARN] " COL_RST message, ##__VA_ARGS__); }
+#define siminfo(message, ...) if (DBG_ENABLE_SIMINFO) { simprintf(COL_MAG "[INFO] " COL_RST message, ##__VA_ARGS__); }
 
 /**
  * simulates pololu library functions for local testing
