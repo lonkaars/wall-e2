@@ -4,6 +4,33 @@
 
 #include "consts.h"
 
+#define W2_E_TYPE_MASK (0b11 << 6)
+
+#define W2_E_TYPE_CRIT (0b00 << 6)
+#define W2_E_TYPE_WARN (0b01 << 6)
+#define W2_E_TYPE_INFO (0b10 << 6)
+#define W2_E_TYPE_VERB (0b11 << 6)
+
+/**
+ * enum storing all error codes
+ *
+ * error codes are between 0-63 because the two most significant bits are
+ * reserved for error type checking
+ */
+enum w2_e_errorcodes {
+	// critical error codes
+	W2_E_CRIT_CONN_LOST		  = 0x00 | W2_E_TYPE_CRIT,
+	W2_E_CRIT_COM_UNAVAILABLE = 0x01 | W2_E_TYPE_CRIT, // client-only
+	W2_E_CRIT_LINE_LOST		  = 0x02 | W2_E_TYPE_CRIT,
+	W2_E_CRIT_OBSTACLE_STUCK  = 0x03 | W2_E_TYPE_CRIT,
+
+	// warnings
+	W2_E_WARN_BATTERY_LOW		= 0x00 | W2_E_TYPE_WARN,
+	W2_E_WARN_OBSTACLE_DETECTED = 0x01 | W2_E_TYPE_WARN,
+	W2_E_WARN_CYCLE_EXPIRED		= 0x02 | W2_E_TYPE_WARN,
+	W2_E_WARN_UNCAUGHT_ERROR	= 0x03 | W2_E_TYPE_WARN,
+};
+
 /**
  * error struct
  *

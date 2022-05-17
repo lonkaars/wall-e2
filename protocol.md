@@ -25,8 +25,8 @@ is converted to a single `0xff` on the receiving end, so these duplicated bytes
 and the starting byte don't count towards message length.
 
 opcodes are picked sequentially, but the direction bit (LSB) is reserved to
-indicate a transfer from robot to client. this means that the opcode for a
-sensor data request would be `0x12`, but the response opcode would be `0x13`.
+indicate a transfer from robot to client (`tx`). this means that the opcode for
+a sensor data request would be `0x12`, but the response opcode would be `0x13`.
 these opcodes are stored as enum constants inside consts.h for code
 readability.
 
@@ -53,6 +53,9 @@ be considered extra features
 a double stroke arrow means that the command can be initiated from either the
 robot or the client, while a single arrow indicates a request-response
 structure.
+
+in *both* the robot and client code `r <-- c` is referred to as `rx` and  `r
+--> c` as `tx` (from the *robots* view).
 
 ### PING
 
