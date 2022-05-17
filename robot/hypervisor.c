@@ -27,5 +27,5 @@ void w2_hypervisor_main() {
 	usleep(100e3);
 #endif
 
-	if (mode_time > W2_MAX_MODULE_CYCLE_MS) w2_errcatch_throw(W2_ERR_CYCLE_EXPIRED);
+	if (mode_time > W2_MAX_MODULE_CYCLE_MS) w2_errcatch_throw(W2_E_WARN_CYCLE_EXPIRED);
 }
