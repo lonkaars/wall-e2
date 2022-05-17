@@ -11,6 +11,7 @@ CheckOptions:
 	- { key: readability-identifier-naming.GlobalVariableIgnoredRegexp, value: _.* }
 	- { key: readability-identifier-naming.GlobalVariablePrefix, value: g_w2_ }
 	- { key: readability-identifier-naming.MacroDefinitionCase, value: UPPER_CASE }
+	- { key: readability-identifier-naming.MacroDefinitionIgnoredRegexp, value: _.* }
 	- { key: readability-identifier-naming.MacroDefinitionPrefix, value: W2_ }
 	- { key: readability-identifier-naming.StructCase, value: lower_case }
 	- { key: readability-identifier-naming.StructPrefix, value: w2_s_ }

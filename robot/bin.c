@@ -15,14 +15,14 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wshift-count-overflow"
 uint32_t w2_bin_hton32(uint32_t h32) {
-	if(g_w2_endianness == W2_ENDIAN_BIG) return h32;
-	return ((h32 & _BYTE_0) << _SHIFT_3B) | ((h32 & _BYTE_1) << _SHIFT_1B)
-		| ((h32 & _BYTE_2) >> _SHIFT_1B) | ((h32 & _BYTE_3) >> _SHIFT_3B);
+	if (g_w2_endianness == W2_ENDIAN_BIG) return h32;
+	return ((h32 & _BYTE_0) << _SHIFT_3B) | ((h32 & _BYTE_1) << _SHIFT_1B) |
+		   ((h32 & _BYTE_2) >> _SHIFT_1B) | ((h32 & _BYTE_3) >> _SHIFT_3B);
 }
 #pragma GCC diagnostic pop
 
 uint16_t w2_bin_hton16(uint16_t h16) {
-	if(g_w2_endianness == W2_ENDIAN_BIG) return h16;
+	if (g_w2_endianness == W2_ENDIAN_BIG) return h16;
 	return ((h16 & _BYTE_0) << _SHIFT_1B) | ((h16 & _BYTE_1) >> _SHIFT_1B);
 }
 

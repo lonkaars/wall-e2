@@ -9,7 +9,6 @@ typedef struct {
 
 extern uint8_t g_w2_endianness;
 
-
 /**
  * helper file for binary data
  *
@@ -24,4 +23,3 @@ uint16_t w2_bin_hton16(uint16_t h16);
 uint32_t w2_bin_ntoh32(uint32_t n32);
 /** convert 16-bit value from network (big-endian) to host endian */
 uint16_t w2_bin_ntoh16(uint16_t n16);
-

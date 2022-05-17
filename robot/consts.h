@@ -8,4 +8,3 @@
 #define W2_MAX_MODULE_CYCLE_MS (20)
 #define W2_SERIAL_BAUD (9600)
 #define W2_E_BUFFER_SIZE (16)
-

@@ -9,8 +9,8 @@
 #include "orangutan_shim.h"
 
 w2_s_error *g_w2_error_buffer[W2_E_BUFFER_SIZE] = {};
-uint8_t g_w2_error_index					   = 0;
-uint8_t g_w2_error_offset					   = 0;
+uint8_t g_w2_error_index						= 0;
+uint8_t g_w2_error_offset						= 0;
 
 void w2_errcatch_main() {
 	while (g_w2_error_index != g_w2_error_offset) {
