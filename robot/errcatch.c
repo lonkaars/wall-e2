@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -31,7 +30,7 @@ void w2_errcatch_main() {
 }
 
 w2_s_error *w2_alloc_error(enum w2_e_errorcodes code, uint16_t length, const char *message) {
-	w2_s_error *error = calloc(sizeof(w2_s_error) + length, 1);
+	w2_s_error *error = malloc(sizeof(w2_s_error) + length);
 	memcpy(error, &(w2_s_error const){.code = code, .message_length = length}, sizeof(w2_s_error));
 	strncpy(error->message, message, length);
 

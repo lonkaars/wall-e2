@@ -7,7 +7,7 @@
 
 void w2_hypervisor_main() {
 #ifdef W2_SIM
-	siminfo("cycle start\n");
+	if (DBG_ENABLE_CYCLEINFO) siminfo("cycle start\n");
 #endif
 
 	time_reset();
@@ -24,7 +24,7 @@ void w2_hypervisor_main() {
 	if (mode_time > W2_MAX_MODULE_CYCLE_MS) w2_errcatch_throw(W2_E_WARN_CYCLE_EXPIRED);
 
 #ifdef W2_SIM
-	siminfo("cycle end\n");
+	if (DBG_ENABLE_CYCLEINFO) siminfo("cycle end\n");
 	usleep(100e3);
 #endif
 }

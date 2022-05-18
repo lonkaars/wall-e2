@@ -5,9 +5,10 @@
 #include <unistd.h>
 
 // debug fine-tuning
-#define DBG_ENABLE_PRINTFUNC (0)
+#define DBG_ENABLE_PRINTFUNC (1)
 #define DBG_ENABLE_SIMWARN (1)
 #define DBG_ENABLE_SIMINFO (1)
+#define DBG_ENABLE_CYCLEINFO (0)
 
 // debug print options
 #define DBG_BYTES_PER_LINE 16

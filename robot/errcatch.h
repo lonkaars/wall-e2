@@ -39,6 +39,8 @@ enum w2_e_errorcodes {
 	W2_E_WARN_ERR_BUFFER_FULL = 0x04 | W2_E_TYPE_WARN,
 	/** line lost, trying to calibrate */
 	W2_E_WARN_LINE_LOST = 0x05 | W2_E_TYPE_WARN,
+	/** serial buffer full, gets thrown on next cycle */
+	W2_E_WARN_SERCOMM_BUFFER_FULL = 0x06 | W2_E_TYPE_WARN,
 };
 
 /**
@@ -75,6 +77,6 @@ void w2_errcatch_throw_msg(enum w2_e_errorcodes code, uint16_t length, const cha
 /**
  * allocate and initialize error struct
  *
- * TODO: doesn't handle null pointers from calloc
+ * TODO: doesn't handle null pointers from malloc
  */
 w2_s_error *w2_alloc_error(enum w2_e_errorcodes code, uint16_t length, const char *message);
