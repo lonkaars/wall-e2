@@ -63,10 +63,10 @@ what they're supposed to do:
 |warehouse         |`mode_grid   `|Loek| controls robot during warehouse portion of map; hands off control to maze module|
 |emergency stop    |`mode_halt   `|Fiona| stops all execution until emergency mode is reset by software or user|
 |line finding      |`mode_calb   `|Fiona| find line by turning on own axis if lost|
-|charge station    |`mode_charger`|TBD| go to the charging station transition in the grid, and continue until a black circle is found|
-|direct control    |`mode_directc`|TBD| respond to [DIRC](../protocol.md#DIRC) commands|
+|charge station    |`mode_chrg   `|TBD| go to the charging station transition in the grid, and continue until a black circle is found|
+|direct control    |`mode_dirc   `|TBD| respond to [DIRC](../protocol.md#DIRC) commands|
 |wet floor         |`mode_spin   `|TBD| spin uncontrollably (simulating wet floor??)|
-|sensor calibration|`mode_senscal`|TBD| calibrate underside uv sensors|
+|sensor calibration|`mode_scal   `|TBD| calibrate underside uv sensors|
 
 
 ## some standards
