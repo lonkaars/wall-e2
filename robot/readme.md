@@ -52,17 +52,22 @@ handling module, which then both handles the error and forwards it to pc
 communication for logging purposes). here's a quick run-down of all modules and
 what they're supposed to do:
 
-|module          |internal name|author|purpose|
-|----------------|-------------|-|-|
-|hypervisor      |`hypervisor `|N/a| backbone of all other modules; stores global variables; controls when other modules run|
-|pc communication|`sercomm    `|Fiona| reads and parses incoming serial data; sends all data in the message buffer|
-|error handling  |`errcatch   `|Loek| receives error codes; controls how errors are handled|
-|i/o read & write|`io         `|Jorn & Abdullaahi| reads all inputs to global state; writes all outputs|
-|mode logic      |`modes      `|N/a| executes the appropriate module for current mode|
-|maze            |`mode_maze  `|Jorn & Abdullaahi| controls robot during maze portion of map; hands off control to warehouse module|
-|warehouse       |`mode_grid  `|Loek| controls robot during warehouse portion of map; hands off control to maze module|
-|emergency stop  |`mode_halt  `|Fiona| stops all execution until emergency mode is reset by software or user|
-|calibration     |`mode_calb  `|Fiona| find line by turning on own axis if lost|
+|module            |internal name |author|purpose|
+|------------------|--------------|-|-|
+|hypervisor        |`hypervisor  `|N/a| backbone of all other modules; stores global variables; controls when other modules run|
+|pc communication  |`sercomm     `|Fiona| reads and parses incoming serial data; sends all data in the message buffer|
+|error handling    |`errcatch    `|Loek| receives error codes; controls how errors are handled|
+|i/o read & write  |`io          `|Jorn & Abdullaahi| reads all inputs to global state; writes all outputs|
+|mode logic        |`modes       `|N/a| executes the appropriate module for current mode|
+|maze              |`mode_maze   `|Jorn & Abdullaahi| controls robot during maze portion of map; hands off control to warehouse module|
+|warehouse         |`mode_grid   `|Loek| controls robot during warehouse portion of map; hands off control to maze module|
+|emergency stop    |`mode_halt   `|Fiona| stops all execution until emergency mode is reset by software or user|
+|line finding      |`mode_calb   `|Fiona| find line by turning on own axis if lost|
+|charge station    |`mode_charger`|TBD| go to the charging station transition in the grid, and continue until a black circle is found|
+|direct control    |`mode_directc`|TBD| respond to [DIRC](../protocol.md#DIRC) commands|
+|wet floor         |`mode_spin   `|TBD| spin uncontrollably (simulating wet floor??)|
+|sensor calibration|`mode_senscal`|TBD| calibrate underside uv sensors|
+
 
 ## some standards
 
@@ -100,16 +105,12 @@ this list will probably get updated from time to time:
 
 global todo:
 
-- [ ] add test/simulation mode for wet floor (spinning)
-- [ ] add a manual control mode
 - [ ] start robot in calibration mode
 - [ ] assume robot starts in maze
 - [ ] maze-grid transition detection in seperate file (used by grid and maze
   mode)
-- [ ] clear global timer at start of cycle instead of just for mode selection
-  module (for last ping time measurement)
-- [ ] calibrate (line-detecting) light sensors in setup.c, or manually by
-  placing the robot and pressing a button (maybe make this a seperate mode)
+- [ ] calibrate (line-detecting) light sensors manually by placing the robot
+  and pressing a button (maybe make this a seperate mode)
 
 ### hypervisor
 

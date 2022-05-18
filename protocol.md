@@ -25,9 +25,9 @@ is converted to a single `0xff` on the receiving end, so these duplicated bytes
 and the starting byte don't count towards message length.
 
 opcodes are picked sequentially, but the direction bit (LSB) is reserved to
-indicate a transfer from robot to client. this means that the opcode for a
-sensor data request would be `0x12`, but the response opcode would be `0x13`.
-these opcodes are stored as enum constants inside consts.h for code
+indicate a transfer from robot to client (`tx`). this means that the opcode for
+a sensor data request would be `0x12`, but the response opcode would be `0x13`.
+these opcodes are stored as enum constants inside sercomm.h for code
 readability.
 
 |code|name|implemented|directions|full name|
