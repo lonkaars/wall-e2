@@ -22,7 +22,7 @@ void w2_sercomm_main() {
 		simprint("line 1");
 
 		simprintf("bytes: %i\n", data->bytes);
-		char* data_cast = malloc(data->bytes);
+		char *data_cast = malloc(data->bytes);
 		simprint("line 2");
 		memcpy(data_cast, data->data, data->bytes);
 		simprint("line 3");
