@@ -16,7 +16,7 @@ void w2_sercomm_main() {
 #endif
 	// send data
 	while (g_w2_sercomm_offset != g_w2_sercomm_index) {
-		w2_s_bin *data = g_w2_sercomm_buffer[g_w2_sercomm_offset];
+		w2_s_bin *data	= g_w2_sercomm_buffer[g_w2_sercomm_offset];
 		char *data_cast = malloc(data->bytes);
 		memcpy(data_cast, data->data, data->bytes);
 		serial_send(data_cast, data->bytes);
@@ -33,7 +33,7 @@ void w2_sercomm_append_msg(w2_s_bin *data) {
 	free(g_w2_sercomm_buffer[g_w2_sercomm_index]);
 	w2_s_bin *data_copy = malloc(sizeof(w2_s_bin) + sizeof(uint8_t) * data->bytes);
 	memcpy(&data_copy->data, data->data, data->bytes);
-	data_copy->bytes = data->bytes;
+	data_copy->bytes						= data->bytes;
 	g_w2_sercomm_buffer[g_w2_sercomm_index] = data_copy;
 	if (g_w2_sercomm_buffer_full) return;
 	g_w2_sercomm_index = next_index;
