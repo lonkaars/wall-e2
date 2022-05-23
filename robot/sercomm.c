@@ -15,22 +15,12 @@ void w2_sercomm_main() {
 	simprintfunc("w2_sercomm_main", "");
 #endif
 	// send data
-	while (g_w2_sercomm_index != g_w2_sercomm_offset) {
-#ifdef W2_SIM
-		simprint("line 0");
-		w2_s_bin *data = g_w2_sercomm_buffer[g_w2_sercomm_index];
-		simprint("line 1");
-
-		simprintf("bytes: %i\n", data->bytes);
+	while (g_w2_sercomm_offset != g_w2_sercomm_index) {
+		w2_s_bin *data = g_w2_sercomm_buffer[g_w2_sercomm_offset];
 		char *data_cast = malloc(data->bytes);
-		simprint("line 2");
 		memcpy(data_cast, data->data, data->bytes);
-		simprint("line 3");
 		serial_send(data_cast, data->bytes);
-		simprint("line 4");
 		g_w2_sercomm_offset = (g_w2_sercomm_offset + 1) % W2_SERCOMM_BUFFER_SIZE;
-		simprint("line 5");
-#endif
 	}
 }
 
@@ -42,7 +32,8 @@ void w2_sercomm_append_msg(w2_s_bin *data) {
 	g_w2_sercomm_buffer_full = next_index == g_w2_sercomm_offset;
 	free(g_w2_sercomm_buffer[g_w2_sercomm_index]);
 	w2_s_bin *data_copy = malloc(sizeof(w2_s_bin) + sizeof(uint8_t) * data->bytes);
-	memcpy(&data_copy->bytes, data->data, data->bytes);
+	memcpy(&data_copy->data, data->data, data->bytes);
+	data_copy->bytes = data->bytes;
 	g_w2_sercomm_buffer[g_w2_sercomm_index] = data_copy;
 	if (g_w2_sercomm_buffer_full) return;
 	g_w2_sercomm_index = next_index;

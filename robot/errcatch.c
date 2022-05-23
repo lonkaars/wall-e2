@@ -14,7 +14,7 @@ uint8_t g_w2_error_buffer_full						= 0;
 uint8_t g_w2_error_uncaught							= 0;
 
 void w2_errcatch_main() {
-	while (g_w2_error_index != g_w2_error_offset) {
+	while (g_w2_error_offset != g_w2_error_index) {
 		w2_s_error *error = g_w2_error_buffer[g_w2_error_offset];
 		w2_errcatch_handle_error(error);
 		g_w2_error_offset = (g_w2_error_offset + 1) % W2_ERROR_BUFFER_SIZE;

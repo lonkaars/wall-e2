@@ -55,7 +55,7 @@ void serial_send(char* message, unsigned int length) {
 			printf("\n");
 			simprintf("");
 		}
-		printf("%02x ", message[byte]);
+		printf("%02x ", message[byte] & 0xff);
 		bytes++;
 	}
 	printf("\n");
