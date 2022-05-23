@@ -13,3 +13,6 @@
 #define W2_ERROR_BUFFER_SIZE (16)
 /** size of the serial communication buffer (in messages, not bytes) */
 #define W2_SERCOMM_BUFFER_SIZE (16)
+/** size of input (receive) buffer (in bytes) */
+#define W2_SERIAL_READ_BUFFER_SIZE (255)
+

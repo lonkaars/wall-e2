@@ -44,6 +44,11 @@ extern uint8_t g_w2_sercomm_index;
 /** stores start of ring buffer */
 extern uint8_t g_w2_sercomm_offset;
 
+/** serial input (receive) buffer */
+extern char g_w2_serial_buffer[W2_SERIAL_READ_BUFFER_SIZE];
+/** serial input (receive) buffer current position */
+extern uint8_t g_w2_serial_buffer_index;
+
 /**
  * serial pc-robot communication module
  *

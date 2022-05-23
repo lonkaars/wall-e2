@@ -5,10 +5,13 @@
 #include "orangutan_shim.h"
 #include "sercomm.h"
 
-w2_s_bin *g_w2_sercomm_buffer[W2_SERCOMM_BUFFER_SIZE] = {};
+w2_s_bin *g_w2_sercomm_buffer[W2_SERCOMM_BUFFER_SIZE] = {0};
 uint8_t g_w2_sercomm_index							  = 0;
 uint8_t g_w2_sercomm_offset							  = 0;
 uint8_t g_w2_sercomm_buffer_full					  = 0;
+
+char g_w2_serial_buffer[W2_SERIAL_READ_BUFFER_SIZE] = {0};
+uint8_t g_w2_serial_buffer_index = 0;
 
 void w2_sercomm_main() {
 #ifdef W2_SIM
@@ -21,6 +24,14 @@ void w2_sercomm_main() {
 		memcpy(data_cast, data->data, data->bytes);
 		serial_send(data_cast, data->bytes);
 		g_w2_sercomm_offset = (g_w2_sercomm_offset + 1) % W2_SERCOMM_BUFFER_SIZE;
+	}
+
+	while(serial_get_received_bytes() != g_w2_serial_buffer_index) {
+		uint8_t byte = g_w2_serial_buffer[g_w2_serial_buffer_index];
+#ifdef W2_SIM
+		simprintf("serial byte: %02x\n", byte);
+#endif
+		g_w2_serial_buffer_index = (g_w2_serial_buffer_index + 1) % W2_SERIAL_READ_BUFFER_SIZE;
 	}
 }
 

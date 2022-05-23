@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "sim.h"
 
@@ -60,5 +61,15 @@ void serial_send(char* message, unsigned int length) {
 	}
 	printf("\n");
 	return;
+}
+
+void serial_receive_ring(char* buffer, unsigned char size) {
+	simprintfunc("serial_receive_ring", "0x%016lx, %u", (unsigned long) buffer, size);
+	return;
+}
+
+unsigned char serial_get_received_bytes() {
+	simprintfunc("serial_get_received_bytes", "");
+	return 0;
 }
 
