@@ -10,6 +10,8 @@ PORT ?= /dev/ttyACM0
 CFLAGS=-g -Wall $(DEVICE_SPECIFIC_CFLAGS) -Os
 LDFLAGS=-Wl,-gc-sections -Wl,-relax
 
+all: $(if $(SIM), a.out, out.hex)
+
 SOURCES := $(filter-out sim.c, $(wildcard *.c))
 HEADERS := $(filter-out sim.h, $(wildcard *.h))
 include ../shared/makefile
@@ -32,9 +34,7 @@ OBJ2HEX=$(PREFIX)objcopy
 BUILD_STR=$(shell git update-index -q --refresh; git describe --tags --dirty='*' --broken='x' | cut -c1-20)
 CFLAGS += -DW2_BUILD_STR="$(BUILD_STR)"
 
-all: $(if $(SIM), a.out, out.hex)
-
-clean:
+clean::
 	rm -f *.o out.hex a.out
 
 a.out: $(OBJECTS)
