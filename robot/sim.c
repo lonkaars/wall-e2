@@ -2,10 +2,15 @@
 #include <time.h>
 #include <string.h>
 #include <stdint.h>
+#include <termios.h>
+#include <unistd.h>
 
 #include "sim.h"
+#include "consts.h"
+#include "sercomm.h"
 
 struct timespec reference_time; // NOLINT
+bool g_w2_sim_headless = false;
 
 void time_reset() {
 	simprintfunc("time_reset", "");
@@ -70,6 +75,29 @@ void serial_receive_ring(char* buffer, unsigned char size) {
 
 unsigned char serial_get_received_bytes() {
 	simprintfunc("serial_get_received_bytes", "");
-	return 0;
+	return g_w2_serial_buffer_head;
+}
+
+void w2_sim_setup(int argc, char **argv) {
+	if (argc > 1 && strcmp(argv[1], "headless") == 0)
+		g_w2_sim_headless = true;
+
+	// disable echo and enable raw mode
+	struct termios term;
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~(ECHO | ICANON);
+	term.c_cc[VTIME] = 0;
+	term.c_cc[VMIN] = 0;
+	tcsetattr(STDIN_FILENO, 0, &term);
+
+	return;
+}
+
+void w2_sim_cycle_begin() {
+	// read bytes from stdin
+	while(read(STDIN_FILENO, (g_w2_serial_buffer + sizeof(char) * g_w2_serial_buffer_head), 1) > 0)
+		g_w2_serial_buffer_head = (g_w2_serial_buffer_head + 1) % W2_SERIAL_READ_BUFFER_SIZE;
+
+	return;
 }
 

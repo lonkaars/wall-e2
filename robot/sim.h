@@ -3,9 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdbool.h>
+
+extern bool g_w2_sim_headless;
 
 // debug fine-tuning
-#define DBG_ENABLE_PRINTFUNC (1)
+#define DBG_ENABLE_PRINTFUNC (0)
 #define DBG_ENABLE_SIMWARN (1)
 #define DBG_ENABLE_SIMINFO (1)
 #define DBG_ENABLE_CYCLEINFO (0)
@@ -25,7 +28,7 @@
 #define COL_RST "\e[0m"
 
 // debug stdout print macros
-#define simprintf(message, ...) printf(COL_RED "[SIM] " COL_RST message, ##__VA_ARGS__)
+#define simprintf(message, ...) if (!g_w2_sim_headless) printf(COL_RED "[SIM] " COL_RST message, ##__VA_ARGS__)
 #define simprint(message) simprintf(message "\n")
 #define simprintfunc(name, fmt, ...) if (DBG_ENABLE_PRINTFUNC) { simprintf(COL_BLU "[FUNC] " \
 		COL_CYN name COL_RST "(" COL_YEL fmt COL_RST ")\n", ##__VA_ARGS__); }
@@ -46,3 +49,6 @@ void serial_set_baud_rate(unsigned int rate); // NOLINT
 void serial_send(char* message, unsigned int length); // NOLINT
 void serial_receive_ring(char* buffer, unsigned char size); // NOLINT
 unsigned char serial_get_received_bytes(); // NOLINT
+void w2_sim_setup(int argc, char **argv);
+void w2_sim_cycle_begin();
+

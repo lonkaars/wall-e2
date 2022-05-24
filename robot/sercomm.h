@@ -48,6 +48,8 @@ extern uint8_t g_w2_sercomm_offset;
 extern char g_w2_serial_buffer[W2_SERIAL_READ_BUFFER_SIZE];
 /** serial input (receive) buffer current position */
 extern uint8_t g_w2_serial_buffer_index;
+/** serial input (receive) buffer head (sim only) */
+extern uint8_t g_w2_serial_buffer_head;
 
 /**
  * serial pc-robot communication module

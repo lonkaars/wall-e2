@@ -12,6 +12,7 @@ uint8_t g_w2_sercomm_buffer_full					  = 0;
 
 char g_w2_serial_buffer[W2_SERIAL_READ_BUFFER_SIZE] = {0};
 uint8_t g_w2_serial_buffer_index = 0;
+uint8_t g_w2_serial_buffer_head = 0;
 
 void w2_sercomm_main() {
 #ifdef W2_SIM

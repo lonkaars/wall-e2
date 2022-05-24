@@ -7,6 +7,7 @@
 
 void w2_hypervisor_main() {
 #ifdef W2_SIM
+	w2_sim_cycle_begin();
 	if (DBG_ENABLE_CYCLEINFO) siminfo("cycle start\n");
 #endif
 
