@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-#include "consts.h"
+#include "../shared/consts.h"
 
 #define W2_E_TYPE_MASK (0b11 << 6)
 

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
-#include "bin.h"
-#include "consts.h"
+#include "../shared/bin.h"
+#include "../shared/consts.h"
 #include "halt.h"
 #include "modes.h"
 #include "orangutan_shim.h"

@@ -12,6 +12,7 @@ LDFLAGS=-Wl,-gc-sections -Wl,-relax
 
 SOURCES := $(filter-out sim.c, $(wildcard *.c))
 HEADERS := $(filter-out sim.h, $(wildcard *.h))
+include ../shared/makefile
 
 # simulation
 SIM = true

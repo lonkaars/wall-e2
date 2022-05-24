@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 #include "sim.h"
-#include "consts.h"
+#include "../shared/consts.h"
 #include "sercomm.h"
 
 struct timespec reference_time; // NOLINT

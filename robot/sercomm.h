@@ -1,7 +1,7 @@
 #pragma once
 
-#include "bin.h"
-#include "consts.h"
+#include "../shared/bin.h"
+#include "../shared/consts.h"
 
 #define W2_CMDDIR_RX (0)
 #define W2_CMDDIR_TX (1)

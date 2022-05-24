@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "consts.h"
 #include "errcatch.h"
 #include "halt.h"
 #include "modes.h"

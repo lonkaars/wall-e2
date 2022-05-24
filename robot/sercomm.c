@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "bin.h"
+#include "../shared/bin.h"
 #include "orangutan_shim.h"
 #include "sercomm.h"
 

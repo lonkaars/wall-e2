@@ -6,6 +6,7 @@ EXECNAME = main
 
 SOURCES := $(wildcard *.c)
 HEADERS := $(wildcard *.h)
+include ../shared/makefile
 OBJECTS := $(patsubst %.c,%.o, $(SOURCES))
 
 all: main
