@@ -17,8 +17,6 @@ void w2_setup_main() {
 	// check endianness
 	g_w2_endianness = *_ptest;
 
-	serial_set_baud_rate(W2_SERIAL_BAUD);
-
 	// reset underside leds
 	red_led(0);
 	green_led(0);
@@ -27,6 +25,7 @@ void w2_setup_main() {
 	clear();
 
 	// start serial input
+	serial_set_baud_rate(W2_SERIAL_BAUD);
 	serial_receive_ring(g_w2_serial_buffer, W2_SERIAL_READ_BUFFER_SIZE);
 
 	// indicate startup done
