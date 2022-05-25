@@ -1,18 +1,7 @@
 #include <stdbool.h>
 
-#include "bin.h"
 #include "consts.h"
 #include "serial_parse.h"
-#ifdef W2_SIM
-#include "../robot/orangutan_shim.h"
-#endif
-
-void w2_serial_handle(w2_s_bin *code) {
-#ifdef W2_SIM
-	serial_send((char *)code->data, code->bytes);
-	// simprintf("yeah: %02x\n", code);
-#endif
-}
 
 void w2_serial_parse(uint8_t byte) {
 	static uint8_t current_message[W2_SERIAL_READ_BUFFER_SIZE] = {0};
@@ -38,10 +27,10 @@ void w2_serial_parse(uint8_t byte) {
 	if (!listening) return;
 	current_message[current_message_index++] = byte;
 
+	complete_message_length = w2_scmd_length(current_message, current_message_index);
+
 	if (current_message_index == complete_message_length) {
-		w2_s_bin *copy = w2_bin_s_alloc(current_message_index, current_message);
-		w2_serial_handle(copy);
-		free(copy);
+		w2_scmd_handler(current_message, current_message_index);
 
 		memset(&current_message, 0, W2_SERIAL_READ_BUFFER_SIZE);
 		current_message_index	= 0;

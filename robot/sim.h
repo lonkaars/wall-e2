@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+#include "../shared/bin.h"
+
 extern bool g_w2_sim_headless;
 
 // debug fine-tuning
@@ -45,11 +47,12 @@ unsigned long get_ms(); // NOLINT
 void red_led(unsigned char on); // NOLINT
 void green_led(unsigned char on); // NOLINT
 void clear(); // NOLINT
-void play(const char* melody); // NOLINT
+void play(const char *melody); // NOLINT
 void serial_set_baud_rate(unsigned int rate); // NOLINT
-void serial_send(char* message, unsigned int length); // NOLINT
-void serial_receive_ring(char* buffer, unsigned char size); // NOLINT
+void serial_send(char *message, unsigned int length); // NOLINT
+void serial_receive_ring(char *buffer, unsigned char size); // NOLINT
 unsigned char serial_get_received_bytes(); // NOLINT
 void w2_sim_setup(int argc, char **argv);
 void w2_sim_cycle_begin();
+void w2_sim_print_serial(w2_s_bin *data);
 

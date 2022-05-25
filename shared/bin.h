@@ -10,18 +10,6 @@
 
 extern uint8_t g_w2_endianness;
 
-#define W2_T_UINT8_T (0)
-#define W2_T_UINT16_T (1)
-#define W2_T_UINT32_T (2)
-
-enum w2_e_struct_types {
-	W2_ST_UINT8_T,
-	W2_ST_UINT16_T,
-	W2_ST_UINT32_T,
-};
-
-extern const uint8_t W2_STRUCT_T_SIZES[];
-
 typedef struct {
 	uint16_t bytes;
 	uint8_t data[];
@@ -29,17 +17,8 @@ typedef struct {
 
 /** allocate new w2_s_bin struct and fill with `*data` for `bytes` bytes */
 w2_s_bin *w2_bin_s_alloc(uint16_t bytes, uint8_t *data);
-
-typedef struct {
-	enum w2_e_struct_types type;
-	uint16_t length;
-	const uint8_t *data;
-} w2_s_struct_property;
-
-typedef struct {
-	uint16_t length;
-	w2_s_struct_property *properties[];
-} w2_s_property_list;
+/** concatenate 2 w2_s_bin structs, deallocates `a` and `b` */
+w2_s_bin *w2_bin_s_cat(w2_s_bin *a, w2_s_bin *b);
 
 w2_s_bin *w2_bin_from_uint8_t(uint8_t data);
 w2_s_bin *w2_bin_from_uint16_t(uint16_t data);

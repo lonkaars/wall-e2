@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "bin.h"
+#include "consts.h"
 
 #define W2_SERIAL_START_BYTE 0xff
 
@@ -14,7 +15,7 @@
 #define W2_CMD_CODE_MASK (~1)
 #define W2_CMD_DIRECTION_MASK (1)
 
-enum w2_e_serial_commands {
+enum w2_e_scmds {
 	/** ping command */
 	W2_CMD_PING = 0x00,
 	/** exception command */
@@ -45,59 +46,167 @@ enum w2_e_serial_commands {
 	W2_CMD_CLED = 0x1a,
 };
 
-// TODO
-// array met indicies die structs opslaan met eigenschappen over de protocol bericht
-//
-// belangrijke eigenschappen:
-// lengte!!!
-// generic struct (voor parsen)
-// parse functie
-// dump functie
-//
-//
-// als het kan deze allemaal met macro's op deze manier definieren:
-//
-#define W2_PROTOCOL_CMD(name, direction, ...)
-#define W2_PROTOCOL_DEFINE(a)
-#define W2_PROTOCOL_DECLARE(a)
-#define W2_PROTOCOL_PROP(type, name)
-
-#define W2_CMDDIR_NAME_0 rx
-#define W2_CMDDIR_NAME_1 tx
-
-#define W2_CMDDIR(dir) W2_CMDDIR_NAME_##dir
-
-#define W2_PROTOCOL_UINT8_T
-#define W2_PROTOCOL_UINT16_T
-#define W2_PROTOCOL_UINT32_T
-#define W2_PROTOCOL_INT8_T
-#define W2_PROTOCOL_INT16_T
-#define W2_PROTOCOL_INT32_T
-
-#define W2_PROTOCOL_UINT8_T_TYPE uint8_t
-#define W2_PROTOCOL_UINT16_T_TYPE uint16_t
-#define W2_PROTOCOL_UINT32_T_TYPE uint32_t
-#define W2_PROTOCOL_INT8_T_TYPE int8_t
-#define W2_PROTOCOL_INT16_T_TYPE int16_t
-#define W2_PROTOCOL_INT32_T_TYPE int32_t
-
-#define W2_PROTOCOL_UINT8_T_SIZE 1
-#define W2_PROTOCOL_UINT16_T_SIZE 2
-#define W2_PROTOCOL_UINT32_T_SIZE 4
-#define W2_PROTOCOL_INT8_T_SIZE 1
-#define W2_PROTOCOL_INT16_T_SIZE 2
-#define W2_PROTOCOL_INT32_T_SIZE 4
-
-#define W2_PROTOCOL_CMD_PING_RX                                                                    \
-	W2_PROTOCOL_CMD(ping, W2_CMDDIR_RX,                                                            \
-					W2_PROTOCOL_PROP(W2_PROTOCOL_UINT8_T, opcode)                                  \
-						W2_PROTOCOL_PROP(W2_PROTOCOL_UINT8_T, id))
-
-W2_PROTOCOL_DECLARE(W2_PROTOCOL_CMD_PING_RX)
-
 typedef struct {
 	uint8_t opcode;
 	uint8_t id;
 } w2_s_cmd_ping_rx;
 
-w2_s_cmd_ping_rx *w2_protocol_parse_cmd_ping_rx(w2_s_bin *data);
+typedef struct {
+	uint8_t opcode;
+	uint8_t id;
+} w2_s_cmd_ping_tx;
+
+typedef struct {
+	uint8_t opcode;
+	uint8_t error;
+	uint8_t length;
+	uint8_t message[];
+} w2_s_cmd_expt_tx;
+
+typedef struct {
+	uint8_t opcode;
+	uint8_t mode;
+} w2_s_cmd_mode_rx;
+
+typedef struct {
+	uint8_t opcode;
+	uint8_t mode;
+} w2_s_cmd_mode_tx;
+
+typedef struct {
+	uint8_t opcode;
+	uint8_t speed;
+} w2_s_cmd_sped_rx;
+
+typedef struct {
+	uint8_t opcode;
+	uint16_t left;
+	uint16_t right;
+} w2_s_cmd_dirc_rx;
+
+typedef struct {
+	uint8_t opcode;
+	uint32_t position;
+	uint8_t orientation;
+} w2_s_cmd_cord_rx;
+
+typedef struct {
+	uint8_t opcode;
+	uint32_t position;
+	uint8_t orientation;
+} w2_s_cmd_cord_tx;
+
+typedef struct {
+	uint8_t opcode;
+	uint32_t id;
+	uint32_t position;
+} w2_s_cmd_bomd_rx;
+
+typedef struct {
+	uint8_t opcode;
+	uint32_t id;
+	uint8_t status;
+} w2_s_cmd_bomd_tx;
+
+typedef struct {
+	uint8_t opcode;
+	uint8_t type;
+} w2_s_cmd_sres_rx;
+
+typedef struct {
+	uint16_t position;
+	uint8_t kind;
+} w2_s_cmd_mcfg_feature;
+
+typedef struct {
+	uint8_t opcode;
+	uint8_t width;
+	uint8_t height;
+	uint8_t length;
+	w2_s_cmd_mcfg_feature features[];
+} w2_s_cmd_mcfg_rx;
+
+typedef struct {
+	uint8_t opcode;
+} w2_s_cmd_sens_rx;
+
+typedef struct {
+	uint8_t opcode;
+	// TODO: sensor data
+} w2_s_cmd_sens_tx;
+
+typedef struct {
+	uint8_t opcode;
+} w2_s_cmd_info_rx;
+
+typedef struct {
+	uint8_t opcode;
+	uint8_t build_str[32];
+	uint8_t errcatch_ms;
+	uint8_t io_ms;
+	uint8_t sercomm_ms;
+	uint8_t mode_ms;
+	uint32_t uptime_s;
+} w2_s_cmd_info_tx;
+
+typedef struct {
+} w2_s_cmd_disp_rx;
+
+typedef struct {
+} w2_s_cmd_play_rx;
+
+typedef struct {
+} w2_s_cmd_cled_rx;
+
+
+/** global handler for complete messages */
+void w2_scmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t length);
+/** calculate message length */
+uint8_t w2_scmd_length(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t length);
+
+/** handler for ping_rx (on complete message) */
+void	w2_scmd_ping_rx(w2_s_bin *data);
+/** handler for ping_tx (on complete message) */
+void	w2_scmd_ping_tx(w2_s_bin *data);
+/** handler for expt_tx (on complete message) */
+void	w2_scmd_expt_tx(w2_s_bin *data);
+/** handler for mode_rx (on complete message) */
+void	w2_scmd_mode_rx(w2_s_bin *data);
+/** handler for mode_tx (on complete message) */
+void	w2_scmd_mode_tx(w2_s_bin *data);
+/** handler for sped_rx (on complete message) */
+void	w2_scmd_sped_rx(w2_s_bin *data);
+/** handler for dirc_rx (on complete message) */
+void	w2_scmd_dirc_rx(w2_s_bin *data);
+/** handler for cord_rx (on complete message) */
+void	w2_scmd_cord_rx(w2_s_bin *data);
+/** handler for cord_tx (on complete message) */
+void	w2_scmd_cord_tx(w2_s_bin *data);
+/** handler for bomd_rx (on complete message) */
+void	w2_scmd_bomd_rx(w2_s_bin *data);
+/** handler for bomd_tx (on complete message) */
+void	w2_scmd_bomd_tx(w2_s_bin *data);
+/** handler for sres_rx (on complete message) */
+void	w2_scmd_sres_rx(w2_s_bin *data);
+/** handler for mcfg_rx (on complete message) */
+void	w2_scmd_mcfg_rx(w2_s_bin *data);
+/** handler for sens_rx (on complete message) */
+void	w2_scmd_sens_rx(w2_s_bin *data);
+/** handler for sens_tx (on complete message) */
+void	w2_scmd_sens_tx(w2_s_bin *data);
+/** handler for info_rx (on complete message) */
+void	w2_scmd_info_rx(w2_s_bin *data);
+/** handler for info_tx (on complete message) */
+void	w2_scmd_info_tx(w2_s_bin *data);
+/** handler for disp_rx (on complete message) */
+void	w2_scmd_disp_rx(w2_s_bin *data);
+/** handler for play_rx (on complete message) */
+void	w2_scmd_play_rx(w2_s_bin *data);
+/** handler for cled_rx (on complete message) */
+void	w2_scmd_cled_rx(w2_s_bin *data);
+
+/** calculate message length for expt_tx (incomplete message) */
+uint8_t w2_scmd_expt_tx_length(w2_s_bin *data);
+/** calculate message length for mcfg_rx (incomplete message) */
+uint8_t w2_scmd_mcfg_rx_length(w2_s_bin *data);
+

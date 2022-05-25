@@ -7,10 +7,33 @@
 
 #include "sim.h"
 #include "../shared/consts.h"
+#include "../shared/protocol.h"
 #include "sercomm.h"
 
 struct timespec reference_time; // NOLINT
 bool g_w2_sim_headless = false;
+
+static const char* const W2_CMD_NAMES[] = {
+	"PING",
+	"EXPT",
+	"MODE",
+	"SPED",
+	"DIRC",
+	"CORD",
+	"BOMD",
+	"SRES",
+	"MCFG",
+	"SENS",
+	"INFO",
+	"DISP",
+	"PLAY",
+	"CLED",
+};
+
+static const char* const W2_CMD_DIRECTIONS[] = {
+	"RX",
+	"TX",
+};
 
 void time_reset() {
 	simprintfunc("time_reset", "");
@@ -105,5 +128,13 @@ void w2_sim_cycle_begin() {
 		g_w2_serial_buffer_head = (g_w2_serial_buffer_head + 1) % W2_SERIAL_READ_BUFFER_SIZE;
 
 	return;
+}
+
+void w2_sim_print_serial(w2_s_bin *data) {
+	if (g_w2_sim_headless) return;
+	simprintf(COL_GRN "[%s_%s]" COL_RST, W2_CMD_NAMES[data->data[0] >> 1], W2_CMD_DIRECTIONS[data->data[0] & W2_CMD_DIRECTION_MASK]);
+	for (int i = 0; i < data->bytes; i++)
+		printf(" %02x", data->data[i]);
+	printf("\n");
 }
 

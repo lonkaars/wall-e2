@@ -15,8 +15,6 @@
 #define _BYTE_2 ((uint32_t)(0xff << (_SHIFT_2B)))
 #define _BYTE_3 ((uint32_t)(0xff << (_SHIFT_3B)))
 
-const uint8_t W2_STRUCT_T_SIZES[] = {sizeof(uint8_t), sizeof(uint16_t), sizeof(uint32_t)};
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wshift-count-overflow"
 w2_s_bin *w2_bin_from_uint8_t(uint8_t data) {
@@ -69,4 +67,14 @@ w2_s_bin *w2_bin_s_alloc(uint16_t bytes, uint8_t *data) {
 	temp->bytes	   = bytes;
 	memcpy(&temp->data, data, bytes);
 	return temp;
+}
+
+w2_s_bin *w2_bin_s_cat(w2_s_bin *a, w2_s_bin *b) {
+	uint8_t data[a->bytes + b->bytes];
+	memcpy(data, a->data, a->bytes);
+	memcpy(data + a->bytes, b->data, b->bytes);
+	w2_s_bin* c = w2_bin_s_alloc(a->bytes + b->bytes, data);
+	free(a);
+	free(b);
+	return c;
 }

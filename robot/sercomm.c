@@ -46,3 +46,64 @@ void w2_sercomm_append_msg(w2_s_bin *data) {
 	if (g_w2_sercomm_buffer_full) return;
 	g_w2_sercomm_index = next_index;
 }
+
+void w2_scmd_ping_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_mode_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_sped_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_dirc_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_cord_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_bomd_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_sres_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_mcfg_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_sens_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_info_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_disp_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_play_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_cled_rx(w2_s_bin *data) {
+	return;
+}
+
+void w2_scmd_ping_tx(w2_s_bin *data) { }
+void w2_scmd_expt_tx(w2_s_bin *data) { }
+void w2_scmd_mode_tx(w2_s_bin *data) { }
+void w2_scmd_cord_tx(w2_s_bin *data) { }
+void w2_scmd_bomd_tx(w2_s_bin *data) { }
+void w2_scmd_sens_tx(w2_s_bin *data) { }
+void w2_scmd_info_tx(w2_s_bin *data) { }
+

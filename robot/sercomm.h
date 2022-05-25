@@ -26,27 +26,6 @@ extern uint8_t g_w2_serial_buffer_head;
  */
 void w2_sercomm_main();
 
+/** append binary message to send buffer */
 void w2_sercomm_append_msg(w2_s_bin *data);
 
-w2_s_bin w2_sercomm_struct_pack(w2_s_property_list generic_struct);
-
-w2_s_bin w2_sercomm_rx_ping();
-w2_s_bin w2_sercomm_tx_ping();
-w2_s_bin w2_sercomm_tx_expt();
-w2_s_bin w2_sercomm_rx_mode();
-w2_s_bin w2_sercomm_tx_mode();
-w2_s_bin w2_sercomm_rx_sped();
-w2_s_bin w2_sercomm_rx_dirc();
-w2_s_bin w2_sercomm_rx_cord();
-w2_s_bin w2_sercomm_tx_cord();
-w2_s_bin w2_sercomm_rx_bomd();
-w2_s_bin w2_sercomm_tx_bomd();
-w2_s_bin w2_sercomm_rx_sres();
-w2_s_bin w2_sercomm_rx_mcfg();
-w2_s_bin w2_sercomm_rx_sens();
-w2_s_bin w2_sercomm_tx_sens();
-w2_s_bin w2_sercomm_rx_info();
-w2_s_bin w2_sercomm_tx_info();
-w2_s_bin w2_sercomm_rx_disp();
-w2_s_bin w2_sercomm_rx_play();
-w2_s_bin w2_sercomm_rx_cled();
