@@ -19,6 +19,12 @@ void w2_sercomm_main() {
 #ifdef W2_SIM
 	simprintfunc("w2_sercomm_main", "");
 #endif
+	// read and parse data
+	while (serial_get_received_bytes() != g_w2_serial_buffer_index) {
+		w2_serial_parse(g_w2_serial_buffer[g_w2_serial_buffer_index]);
+		g_w2_serial_buffer_index = (g_w2_serial_buffer_index + 1) % W2_SERIAL_READ_BUFFER_SIZE;
+	}
+
 	// send data
 	while (g_w2_sercomm_offset != g_w2_sercomm_index) {
 		w2_s_bin *data	= g_w2_sercomm_buffer[g_w2_sercomm_offset];
@@ -26,12 +32,6 @@ void w2_sercomm_main() {
 		memcpy(data_cast, data->data, data->bytes);
 		serial_send(data_cast, data->bytes);
 		g_w2_sercomm_offset = (g_w2_sercomm_offset + 1) % W2_SERCOMM_BUFFER_SIZE;
-	}
-
-	// read and parse data
-	while (serial_get_received_bytes() != g_w2_serial_buffer_index) {
-		w2_serial_parse(g_w2_serial_buffer[g_w2_serial_buffer_index]);
-		g_w2_serial_buffer_index = (g_w2_serial_buffer_index + 1) % W2_SERIAL_READ_BUFFER_SIZE;
 	}
 }
 
