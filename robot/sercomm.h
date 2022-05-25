@@ -28,4 +28,3 @@ void w2_sercomm_main();
 
 /** append binary message to send buffer */
 void w2_sercomm_append_msg(w2_s_bin *data);
-

@@ -73,7 +73,7 @@ w2_s_bin *w2_bin_s_cat(w2_s_bin *a, w2_s_bin *b) {
 	uint8_t data[a->bytes + b->bytes];
 	memcpy(data, a->data, a->bytes);
 	memcpy(data + a->bytes, b->data, b->bytes);
-	w2_s_bin* c = w2_bin_s_alloc(a->bytes + b->bytes, data);
+	w2_s_bin *c = w2_bin_s_alloc(a->bytes + b->bytes, data);
 	free(a);
 	free(b);
 	return c;

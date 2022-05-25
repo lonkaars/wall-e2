@@ -51,29 +51,89 @@ uint8_t w2_scmd_mcfg_rx_length(w2_s_bin *data) {
 
 void w2_scmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_length) {
 	w2_s_bin *copy = w2_bin_s_alloc(data_length, data);
-	bool unknown = false;
+	bool unknown   = false;
 
-	switch(data[0]) {
-		case W2_CMD_PING | W2_CMDDIR_RX: { w2_scmd_ping_rx(copy); break; }
-		case W2_CMD_PING | W2_CMDDIR_TX: { w2_scmd_ping_tx(copy); break; }
-		case W2_CMD_EXPT | W2_CMDDIR_TX: { w2_scmd_expt_tx(copy); break; }
-		case W2_CMD_MODE | W2_CMDDIR_RX: { w2_scmd_mode_rx(copy); break; }
-		case W2_CMD_MODE | W2_CMDDIR_TX: { w2_scmd_mode_tx(copy); break; }
-		case W2_CMD_SPED | W2_CMDDIR_RX: { w2_scmd_sped_rx(copy); break; }
-		case W2_CMD_DIRC | W2_CMDDIR_RX: { w2_scmd_dirc_rx(copy); break; }
-		case W2_CMD_CORD | W2_CMDDIR_RX: { w2_scmd_cord_rx(copy); break; }
-		case W2_CMD_CORD | W2_CMDDIR_TX: { w2_scmd_cord_tx(copy); break; }
-		case W2_CMD_BOMD | W2_CMDDIR_RX: { w2_scmd_bomd_rx(copy); break; }
-		case W2_CMD_BOMD | W2_CMDDIR_TX: { w2_scmd_bomd_tx(copy); break; }
-		case W2_CMD_SRES | W2_CMDDIR_RX: { w2_scmd_sres_rx(copy); break; }
-		case W2_CMD_MCFG | W2_CMDDIR_RX: { w2_scmd_mcfg_rx(copy); break; }
-		case W2_CMD_SENS | W2_CMDDIR_RX: { w2_scmd_sens_rx(copy); break; }
-		case W2_CMD_SENS | W2_CMDDIR_TX: { w2_scmd_sens_tx(copy); break; }
-		case W2_CMD_INFO | W2_CMDDIR_RX: { w2_scmd_info_rx(copy); break; }
-		case W2_CMD_INFO | W2_CMDDIR_TX: { w2_scmd_info_tx(copy); break; }
-		case W2_CMD_DISP | W2_CMDDIR_RX: { w2_scmd_disp_rx(copy); break; }
-		case W2_CMD_PLAY | W2_CMDDIR_RX: { w2_scmd_play_rx(copy); break; }
-		case W2_CMD_CLED | W2_CMDDIR_RX: { w2_scmd_cled_rx(copy); break; }
+	switch (data[0]) {
+		case W2_CMD_PING | W2_CMDDIR_RX: {
+			w2_scmd_ping_rx(copy);
+			break;
+		}
+		case W2_CMD_PING | W2_CMDDIR_TX: {
+			w2_scmd_ping_tx(copy);
+			break;
+		}
+		case W2_CMD_EXPT | W2_CMDDIR_TX: {
+			w2_scmd_expt_tx(copy);
+			break;
+		}
+		case W2_CMD_MODE | W2_CMDDIR_RX: {
+			w2_scmd_mode_rx(copy);
+			break;
+		}
+		case W2_CMD_MODE | W2_CMDDIR_TX: {
+			w2_scmd_mode_tx(copy);
+			break;
+		}
+		case W2_CMD_SPED | W2_CMDDIR_RX: {
+			w2_scmd_sped_rx(copy);
+			break;
+		}
+		case W2_CMD_DIRC | W2_CMDDIR_RX: {
+			w2_scmd_dirc_rx(copy);
+			break;
+		}
+		case W2_CMD_CORD | W2_CMDDIR_RX: {
+			w2_scmd_cord_rx(copy);
+			break;
+		}
+		case W2_CMD_CORD | W2_CMDDIR_TX: {
+			w2_scmd_cord_tx(copy);
+			break;
+		}
+		case W2_CMD_BOMD | W2_CMDDIR_RX: {
+			w2_scmd_bomd_rx(copy);
+			break;
+		}
+		case W2_CMD_BOMD | W2_CMDDIR_TX: {
+			w2_scmd_bomd_tx(copy);
+			break;
+		}
+		case W2_CMD_SRES | W2_CMDDIR_RX: {
+			w2_scmd_sres_rx(copy);
+			break;
+		}
+		case W2_CMD_MCFG | W2_CMDDIR_RX: {
+			w2_scmd_mcfg_rx(copy);
+			break;
+		}
+		case W2_CMD_SENS | W2_CMDDIR_RX: {
+			w2_scmd_sens_rx(copy);
+			break;
+		}
+		case W2_CMD_SENS | W2_CMDDIR_TX: {
+			w2_scmd_sens_tx(copy);
+			break;
+		}
+		case W2_CMD_INFO | W2_CMDDIR_RX: {
+			w2_scmd_info_rx(copy);
+			break;
+		}
+		case W2_CMD_INFO | W2_CMDDIR_TX: {
+			w2_scmd_info_tx(copy);
+			break;
+		}
+		case W2_CMD_DISP | W2_CMDDIR_RX: {
+			w2_scmd_disp_rx(copy);
+			break;
+		}
+		case W2_CMD_PLAY | W2_CMDDIR_RX: {
+			w2_scmd_play_rx(copy);
+			break;
+		}
+		case W2_CMD_CLED | W2_CMDDIR_RX: {
+			w2_scmd_cled_rx(copy);
+			break;
+		}
 		default: {
 #ifdef W2_SIM
 			simwarn("unknown serial message with code 0x%02x\n", data[0]);
@@ -88,4 +148,3 @@ void w2_scmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_leng
 
 	free(copy);
 }
-
