@@ -38,7 +38,6 @@ static const char* const W2_CMD_DIRECTIONS[] = {
 void time_reset() {
 	simprintfunc("time_reset", "");
 	clock_gettime(CLOCK_MONOTONIC, &reference_time);
-	return;
 }
 
 unsigned long get_ms() {
@@ -51,27 +50,22 @@ unsigned long get_ms() {
 
 void red_led(unsigned char on) {
 	simprintfunc("red_led", "%i", on);
-	return;
 }
 
 void green_led(unsigned char on) {
 	simprintfunc("green_led", "%i", on);
-	return;
 }
 
 void clear() {
 	simprintfunc("clear", "");
-	return;
 }
 
 void play(const char* melody) {
 	simprintfunc("play", "\"%s\"", melody);
-	return;
 }
 
 void serial_set_baud_rate(unsigned int rate) {
 	simprintfunc("serial_set_baud_rate", "%u", rate);
-	return;
 }
 
 void serial_send(char* message, unsigned int length) {
@@ -81,25 +75,16 @@ void serial_send(char* message, unsigned int length) {
 		return;
 	}
 	if (!DBG_ENABLE_PRINTFUNC) return;
+
 	simprintfunc("serial_send", "<see below>, %u", length);
-	unsigned int bytes = 0;
-	simprintf("");
-	for (unsigned int byte = 0; byte < length; byte++) {
-		if (bytes > DBG_BYTES_PER_LINE) {
-			bytes = 0;
-			printf("\n");
-			simprintf("");
-		}
-		printf("%02x ", message[byte] & 0xff);
-		bytes++;
-	}
-	printf("\n");
-	return;
+
+	w2_s_bin *bin = w2_bin_s_alloc(length, (uint8_t*) message);
+	w2_sim_print_serial(bin);
+	free(bin);
 }
 
 void serial_receive_ring(char* buffer, unsigned char size) {
 	simprintfunc("serial_receive_ring", "0x%016lx, %u", (unsigned long) buffer, size);
-	return;
 }
 
 unsigned char serial_get_received_bytes() {
@@ -118,16 +103,12 @@ void w2_sim_setup(int argc, char **argv) {
 	term.c_cc[VTIME] = 0;
 	term.c_cc[VMIN] = 0;
 	tcsetattr(STDIN_FILENO, 0, &term);
-
-	return;
 }
 
 void w2_sim_cycle_begin() {
 	// read bytes from stdin
 	while(read(STDIN_FILENO, (g_w2_serial_buffer + sizeof(char) * g_w2_serial_buffer_head), 1) > 0)
 		g_w2_serial_buffer_head = (g_w2_serial_buffer_head + 1) % W2_SERIAL_READ_BUFFER_SIZE;
-
-	return;
 }
 
 void w2_sim_print_serial(w2_s_bin *data) {

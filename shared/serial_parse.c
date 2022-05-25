@@ -27,10 +27,10 @@ void w2_serial_parse(uint8_t byte) {
 	if (!listening) return;
 	current_message[current_message_index++] = byte;
 
-	complete_message_length = w2_scmd_length(current_message, current_message_index);
+	complete_message_length = w2_cmd_sizeof(current_message, current_message_index);
 
 	if (current_message_index == complete_message_length) {
-		w2_scmd_handler(current_message, current_message_index);
+		w2_cmd_handler(current_message, current_message_index);
 
 		memset(&current_message, 0, W2_SERIAL_READ_BUFFER_SIZE);
 		current_message_index	= 0;

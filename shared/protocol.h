@@ -46,6 +46,8 @@ enum w2_e_scmds {
 	W2_CMD_CLED = 0x1a,
 };
 
+#pragma pack(push, 1)
+
 typedef struct {
 	uint8_t opcode;
 	uint8_t id;
@@ -158,53 +160,55 @@ typedef struct {
 typedef struct {
 } w2_s_cmd_cled_rx;
 
+#pragma pack(pop)
+
 /** global handler for complete messages */
-void w2_scmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t length);
+void w2_cmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t length);
 /** calculate message length */
-uint8_t w2_scmd_length(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t length);
+size_t w2_cmd_sizeof(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t length);
 
 /** handler for ping_rx (on complete message) */
-void w2_scmd_ping_rx(w2_s_bin *data);
+void w2_cmd_ping_rx(w2_s_bin *data);
 /** handler for ping_tx (on complete message) */
-void w2_scmd_ping_tx(w2_s_bin *data);
+void w2_cmd_ping_tx(w2_s_bin *data);
 /** handler for expt_tx (on complete message) */
-void w2_scmd_expt_tx(w2_s_bin *data);
+void w2_cmd_expt_tx(w2_s_bin *data);
 /** handler for mode_rx (on complete message) */
-void w2_scmd_mode_rx(w2_s_bin *data);
+void w2_cmd_mode_rx(w2_s_bin *data);
 /** handler for mode_tx (on complete message) */
-void w2_scmd_mode_tx(w2_s_bin *data);
+void w2_cmd_mode_tx(w2_s_bin *data);
 /** handler for sped_rx (on complete message) */
-void w2_scmd_sped_rx(w2_s_bin *data);
+void w2_cmd_sped_rx(w2_s_bin *data);
 /** handler for dirc_rx (on complete message) */
-void w2_scmd_dirc_rx(w2_s_bin *data);
+void w2_cmd_dirc_rx(w2_s_bin *data);
 /** handler for cord_rx (on complete message) */
-void w2_scmd_cord_rx(w2_s_bin *data);
+void w2_cmd_cord_rx(w2_s_bin *data);
 /** handler for cord_tx (on complete message) */
-void w2_scmd_cord_tx(w2_s_bin *data);
+void w2_cmd_cord_tx(w2_s_bin *data);
 /** handler for bomd_rx (on complete message) */
-void w2_scmd_bomd_rx(w2_s_bin *data);
+void w2_cmd_bomd_rx(w2_s_bin *data);
 /** handler for bomd_tx (on complete message) */
-void w2_scmd_bomd_tx(w2_s_bin *data);
+void w2_cmd_bomd_tx(w2_s_bin *data);
 /** handler for sres_rx (on complete message) */
-void w2_scmd_sres_rx(w2_s_bin *data);
+void w2_cmd_sres_rx(w2_s_bin *data);
 /** handler for mcfg_rx (on complete message) */
-void w2_scmd_mcfg_rx(w2_s_bin *data);
+void w2_cmd_mcfg_rx(w2_s_bin *data);
 /** handler for sens_rx (on complete message) */
-void w2_scmd_sens_rx(w2_s_bin *data);
+void w2_cmd_sens_rx(w2_s_bin *data);
 /** handler for sens_tx (on complete message) */
-void w2_scmd_sens_tx(w2_s_bin *data);
+void w2_cmd_sens_tx(w2_s_bin *data);
 /** handler for info_rx (on complete message) */
-void w2_scmd_info_rx(w2_s_bin *data);
+void w2_cmd_info_rx(w2_s_bin *data);
 /** handler for info_tx (on complete message) */
-void w2_scmd_info_tx(w2_s_bin *data);
+void w2_cmd_info_tx(w2_s_bin *data);
 /** handler for disp_rx (on complete message) */
-void w2_scmd_disp_rx(w2_s_bin *data);
+void w2_cmd_disp_rx(w2_s_bin *data);
 /** handler for play_rx (on complete message) */
-void w2_scmd_play_rx(w2_s_bin *data);
+void w2_cmd_play_rx(w2_s_bin *data);
 /** handler for cled_rx (on complete message) */
-void w2_scmd_cled_rx(w2_s_bin *data);
+void w2_cmd_cled_rx(w2_s_bin *data);
 
 /** calculate message length for expt_tx (incomplete message) */
-uint8_t w2_scmd_expt_tx_length(w2_s_bin *data);
+size_t w2_cmd_expt_tx_sizeof(w2_s_bin *data);
 /** calculate message length for mcfg_rx (incomplete message) */
-uint8_t w2_scmd_mcfg_rx_length(w2_s_bin *data);
+size_t w2_cmd_mcfg_rx_sizeof(w2_s_bin *data);

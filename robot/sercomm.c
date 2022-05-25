@@ -47,8 +47,8 @@ void w2_sercomm_append_msg(w2_s_bin *data) {
 	g_w2_sercomm_index = next_index;
 }
 
-void w2_scmd_ping_rx(w2_s_bin *data) {
-	w2_s_cmd_ping_rx *message = malloc(w2_scmd_length(data->data, data->bytes));
+void w2_cmd_ping_rx(w2_s_bin *data) {
+	w2_s_cmd_ping_rx *message = malloc(w2_cmd_sizeof(data->data, data->bytes));
 	memcpy(message, data->data, data->bytes);
 
 	size_t return_size				 = sizeof(w2_s_cmd_ping_tx);
@@ -65,34 +65,34 @@ void w2_scmd_ping_rx(w2_s_bin *data) {
 	free(return_message_bin);
 }
 
-void w2_scmd_mode_rx(w2_s_bin *data) { return; }
+void w2_cmd_mode_rx(w2_s_bin *data) { return; }
 
-void w2_scmd_sped_rx(w2_s_bin *data) { return; }
+void w2_cmd_sped_rx(w2_s_bin *data) { return; }
 
-void w2_scmd_dirc_rx(w2_s_bin *data) { return; }
+void w2_cmd_dirc_rx(w2_s_bin *data) { return; }
 
-void w2_scmd_cord_rx(w2_s_bin *data) { return; }
+void w2_cmd_cord_rx(w2_s_bin *data) { return; }
 
-void w2_scmd_bomd_rx(w2_s_bin *data) { return; }
+void w2_cmd_bomd_rx(w2_s_bin *data) { return; }
 
-void w2_scmd_sres_rx(w2_s_bin *data) { return; }
+void w2_cmd_sres_rx(w2_s_bin *data) { return; }
 
-void w2_scmd_mcfg_rx(w2_s_bin *data) { return; }
+void w2_cmd_mcfg_rx(w2_s_bin *data) { return; }
 
-void w2_scmd_sens_rx(w2_s_bin *data) { return; }
+void w2_cmd_sens_rx(w2_s_bin *data) { return; }
 
-void w2_scmd_info_rx(w2_s_bin *data) { return; }
+void w2_cmd_info_rx(w2_s_bin *data) { return; }
 
-void w2_scmd_disp_rx(w2_s_bin *data) { return; }
+void w2_cmd_disp_rx(w2_s_bin *data) { return; }
 
-void w2_scmd_play_rx(w2_s_bin *data) { return; }
+void w2_cmd_play_rx(w2_s_bin *data) { return; }
 
-void w2_scmd_cled_rx(w2_s_bin *data) { return; }
+void w2_cmd_cled_rx(w2_s_bin *data) { return; }
 
-void w2_scmd_ping_tx(w2_s_bin *data) {}
-void w2_scmd_expt_tx(w2_s_bin *data) {}
-void w2_scmd_mode_tx(w2_s_bin *data) {}
-void w2_scmd_cord_tx(w2_s_bin *data) {}
-void w2_scmd_bomd_tx(w2_s_bin *data) {}
-void w2_scmd_sens_tx(w2_s_bin *data) {}
-void w2_scmd_info_tx(w2_s_bin *data) {}
+void w2_cmd_ping_tx(w2_s_bin *data) {}
+void w2_cmd_expt_tx(w2_s_bin *data) {}
+void w2_cmd_mode_tx(w2_s_bin *data) {}
+void w2_cmd_cord_tx(w2_s_bin *data) {}
+void w2_cmd_bomd_tx(w2_s_bin *data) {}
+void w2_cmd_sens_tx(w2_s_bin *data) {}
+void w2_cmd_info_tx(w2_s_bin *data) {}
