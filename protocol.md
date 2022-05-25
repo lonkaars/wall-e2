@@ -27,12 +27,12 @@ and the starting byte don't count towards message length.
 opcodes are picked sequentially, but the direction bit (LSB) is reserved to
 indicate a transfer from robot to client (`tx`). this means that the opcode for
 a sensor data request would be `0x12`, but the response opcode would be `0x13`.
-these opcodes are stored as enum constants inside consts.h for code
+these opcodes are stored as enum constants inside shared/protocol.h for code
 readability.
 
 |code|name|implemented|directions|full name|
 |--:|---|:-:|:-:|---|
-|`0x00`|[PING](#ping)|no|`r <=> c`|<u>ping</u>
+|`0x00`|[PING](#ping)|yes|`r <=> c`|<u>ping</u>
 |`0x02`|[EXPT](#expt)|no|`r --> c`|<u>ex</u>ce<u>pt</u>ion
 |`0x04`|[MODE](#mode)|no|`r <=> c`|<u>mode</u>
 |`0x06`|[SPED](#sped)|no|`r <-- c`|<u>spe</u>e<u>d</u>

@@ -47,7 +47,23 @@ void w2_sercomm_append_msg(w2_s_bin *data) {
 	g_w2_sercomm_index = next_index;
 }
 
-void w2_scmd_ping_rx(w2_s_bin *data) { return; }
+void w2_scmd_ping_rx(w2_s_bin *data) {
+	w2_s_cmd_ping_rx *message = malloc(w2_scmd_length(data->data, data->bytes));
+	memcpy(message, data->data, data->bytes);
+
+	size_t return_size				 = sizeof(w2_s_cmd_ping_tx);
+	w2_s_cmd_ping_tx *return_message = malloc(return_size);
+	return_message->opcode			 = (message->opcode & W2_CMD_DIRECTION_MASK) | W2_CMDDIR_TX;
+	return_message->id				 = message->id;
+
+	w2_s_bin *return_message_bin = w2_bin_s_alloc(return_size, (uint8_t *)return_message);
+
+	w2_sercomm_append_msg(return_message_bin);
+
+	free(message);
+	free(return_message);
+	free(return_message_bin);
+}
 
 void w2_scmd_mode_rx(w2_s_bin *data) { return; }
 
