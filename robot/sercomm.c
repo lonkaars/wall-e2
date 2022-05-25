@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "../shared/bin.h"
+#include "../shared/serial_parse.h"
 #include "orangutan_shim.h"
 #include "sercomm.h"
 
@@ -27,11 +28,9 @@ void w2_sercomm_main() {
 		g_w2_sercomm_offset = (g_w2_sercomm_offset + 1) % W2_SERCOMM_BUFFER_SIZE;
 	}
 
+	// read and parse data
 	while (serial_get_received_bytes() != g_w2_serial_buffer_index) {
-		uint8_t byte = g_w2_serial_buffer[g_w2_serial_buffer_index];
-#ifdef W2_SIM
-		simprintf("serial byte: %02x\n", byte);
-#endif
+		w2_serial_parse(g_w2_serial_buffer[g_w2_serial_buffer_index]);
 		g_w2_serial_buffer_index = (g_w2_serial_buffer_index + 1) % W2_SERIAL_READ_BUFFER_SIZE;
 	}
 }
@@ -43,10 +42,7 @@ void w2_sercomm_append_msg(w2_s_bin *data) {
 	uint8_t next_index		 = (g_w2_sercomm_index + 1) % W2_SERCOMM_BUFFER_SIZE;
 	g_w2_sercomm_buffer_full = next_index == g_w2_sercomm_offset;
 	free(g_w2_sercomm_buffer[g_w2_sercomm_index]);
-	w2_s_bin *data_copy = malloc(sizeof(w2_s_bin) + sizeof(uint8_t) * data->bytes);
-	memcpy(&data_copy->data, data->data, data->bytes);
-	data_copy->bytes						= data->bytes;
-	g_w2_sercomm_buffer[g_w2_sercomm_index] = data_copy;
+	g_w2_sercomm_buffer[g_w2_sercomm_index] = w2_bin_s_alloc(data->bytes, data->data);
 	if (g_w2_sercomm_buffer_full) return;
 	g_w2_sercomm_index = next_index;
 }

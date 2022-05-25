@@ -52,6 +52,12 @@ void serial_set_baud_rate(unsigned int rate) {
 }
 
 void serial_send(char* message, unsigned int length) {
+	if (g_w2_sim_headless) {
+		for (unsigned int byte = 0; byte < length; byte++)
+			putc(message[byte] & 0xff, stdout);
+		return;
+	}
+	if (!DBG_ENABLE_PRINTFUNC) return;
 	simprintfunc("serial_send", "<see below>, %u", length);
 	unsigned int bytes = 0;
 	simprintf("");

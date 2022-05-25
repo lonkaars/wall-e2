@@ -110,6 +110,8 @@ global todo:
   module (for last ping time measurement)
 - [ ] calibrate (line-detecting) light sensors in setup.c, or manually by
   placing the robot and pressing a button (maybe make this a seperate mode)
+- [ ] create labeled timer functions like nodejs `console.time()` and
+  `console.timeEnd()` (use for serial read timeout constraint)
 
 ### hypervisor
 

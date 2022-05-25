@@ -27,6 +27,9 @@ typedef struct {
 	uint8_t data[];
 } w2_s_bin;
 
+/** allocate new w2_s_bin struct and fill with `*data` for `bytes` bytes */
+w2_s_bin *w2_bin_s_alloc(uint16_t bytes, uint8_t *data);
+
 typedef struct {
 	enum w2_e_struct_types type;
 	uint16_t length;

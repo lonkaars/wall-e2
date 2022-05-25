@@ -8,10 +8,11 @@
 extern bool g_w2_sim_headless;
 
 // debug fine-tuning
-#define DBG_ENABLE_PRINTFUNC (0)
+#define DBG_ENABLE_PRINTFUNC (1)
 #define DBG_ENABLE_SIMWARN (1)
 #define DBG_ENABLE_SIMINFO (1)
 #define DBG_ENABLE_CYCLEINFO (0)
+#define DBG_MAX_CYCLES (10)
 
 // debug print options
 #define DBG_BYTES_PER_LINE 16

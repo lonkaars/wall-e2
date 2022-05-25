@@ -5,6 +5,8 @@
 #include "orangutan_shim.h"
 #include "sercomm.h"
 
+uint64_t g_w2_hypervisor_cycles = 0;
+
 void w2_hypervisor_main() {
 #ifdef W2_SIM
 	w2_sim_cycle_begin();
@@ -26,6 +28,10 @@ void w2_hypervisor_main() {
 
 #ifdef W2_SIM
 	if (DBG_ENABLE_CYCLEINFO) siminfo("cycle end\n");
-	usleep(100e3);
+	if (!g_w2_sim_headless) usleep(100e3);
+
+	if (g_w2_sim_headless && DBG_MAX_CYCLES > -1 && g_w2_hypervisor_cycles > DBG_MAX_CYCLES) exit(0);
 #endif
+
+	g_w2_hypervisor_cycles++;
 }
