@@ -6,4 +6,3 @@
 
 /** parse serial data byte by byte */
 void w2_serial_parse(uint8_t byte);
-

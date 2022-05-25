@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include <memory.h>
+#include <stdlib.h>
 
 #include "bin.h"
 
@@ -65,8 +65,8 @@ uint32_t w2_bin_ntoh32(uint32_t n32) { return w2_bin_hton32(n32); }
 uint16_t w2_bin_ntoh16(uint16_t n16) { return w2_bin_hton16(n16); }
 
 w2_s_bin *w2_bin_s_alloc(uint16_t bytes, uint8_t *data) {
-	w2_s_bin* temp = malloc(sizeof(w2_s_bin) + sizeof(uint8_t) * bytes);
-	temp->bytes = bytes;
+	w2_s_bin *temp = malloc(sizeof(w2_s_bin) + sizeof(uint8_t) * bytes);
+	temp->bytes	   = bytes;
 	memcpy(&temp->data, data, bytes);
 	return temp;
 }

@@ -1,8 +1,8 @@
 #pragma once
 
+#include <memory.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <memory.h>
 
 #include "bin.h"
 
@@ -53,7 +53,7 @@ enum w2_e_serial_commands {
 // generic struct (voor parsen)
 // parse functie
 // dump functie
-// 
+//
 //
 // als het kan deze allemaal met macro's op deze manier definieren:
 //
@@ -74,25 +74,24 @@ enum w2_e_serial_commands {
 #define W2_PROTOCOL_INT16_T
 #define W2_PROTOCOL_INT32_T
 
-#define W2_PROTOCOL_UINT8_T_TYPE          uint8_t
-#define W2_PROTOCOL_UINT16_T_TYPE         uint16_t
-#define W2_PROTOCOL_UINT32_T_TYPE         uint32_t
-#define W2_PROTOCOL_INT8_T_TYPE           int8_t
-#define W2_PROTOCOL_INT16_T_TYPE          int16_t
-#define W2_PROTOCOL_INT32_T_TYPE          int32_t
+#define W2_PROTOCOL_UINT8_T_TYPE uint8_t
+#define W2_PROTOCOL_UINT16_T_TYPE uint16_t
+#define W2_PROTOCOL_UINT32_T_TYPE uint32_t
+#define W2_PROTOCOL_INT8_T_TYPE int8_t
+#define W2_PROTOCOL_INT16_T_TYPE int16_t
+#define W2_PROTOCOL_INT32_T_TYPE int32_t
 
-#define W2_PROTOCOL_UINT8_T_SIZE  1
+#define W2_PROTOCOL_UINT8_T_SIZE 1
 #define W2_PROTOCOL_UINT16_T_SIZE 2
 #define W2_PROTOCOL_UINT32_T_SIZE 4
-#define W2_PROTOCOL_INT8_T_SIZE   1
-#define W2_PROTOCOL_INT16_T_SIZE  2
-#define W2_PROTOCOL_INT32_T_SIZE  4
+#define W2_PROTOCOL_INT8_T_SIZE 1
+#define W2_PROTOCOL_INT16_T_SIZE 2
+#define W2_PROTOCOL_INT32_T_SIZE 4
 
-#define W2_PROTOCOL_CMD_PING_RX \
-W2_PROTOCOL_CMD(ping, W2_CMDDIR_RX, \
-	W2_PROTOCOL_PROP(W2_PROTOCOL_UINT8_T, opcode) \
-	W2_PROTOCOL_PROP(W2_PROTOCOL_UINT8_T, id) \
-)
+#define W2_PROTOCOL_CMD_PING_RX                                                                    \
+	W2_PROTOCOL_CMD(ping, W2_CMDDIR_RX,                                                            \
+					W2_PROTOCOL_PROP(W2_PROTOCOL_UINT8_T, opcode)                                  \
+						W2_PROTOCOL_PROP(W2_PROTOCOL_UINT8_T, id))
 
 W2_PROTOCOL_DECLARE(W2_PROTOCOL_CMD_PING_RX)
 
@@ -102,4 +101,3 @@ typedef struct {
 } w2_s_cmd_ping_rx;
 
 w2_s_cmd_ping_rx *w2_protocol_parse_cmd_ping_rx(w2_s_bin *data);
-
