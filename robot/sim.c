@@ -9,6 +9,7 @@
 #include "../shared/consts.h"
 #include "../shared/protocol.h"
 #include "sercomm.h"
+#include "errcatch.h"
 
 struct timespec reference_time; // NOLINT
 bool g_w2_sim_headless = false;
@@ -74,10 +75,10 @@ void serial_send(char* message, unsigned int length) {
 			putc(message[byte] & 0xff, stdout);
 		return;
 	}
-	if (!DBG_ENABLE_PRINTFUNC) return;
 
-	simprintfunc("serial_send", "<see below>, %u", length);
+	if (DBG_ENABLE_PRINTFUNC) simprintfunc("serial_send", "<see below>, %u", length);
 
+	if (!DBG_ENABLE_SERIAL) return;
 	w2_s_bin *bin = w2_bin_s_alloc(length, (uint8_t*) message);
 	w2_sim_print_serial(bin);
 	free(bin);
@@ -103,6 +104,9 @@ void w2_sim_setup(int argc, char **argv) {
 	term.c_cc[VTIME] = 0;
 	term.c_cc[VMIN] = 0;
 	tcsetattr(STDIN_FILENO, 0, &term);
+
+	// debug error
+	// w2_errcatch_throw(W2_E_WARN_BATTERY_LOW);
 }
 
 void w2_sim_cycle_begin() {

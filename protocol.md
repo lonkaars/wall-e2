@@ -33,7 +33,7 @@ readability.
 |code|name|implemented|directions|full name|
 |--:|---|:-:|:-:|---|
 |`0x00`|[PING](#ping)|yes|`r <=> c`|<u>ping</u>
-|`0x02`|[EXPT](#expt)|no|`r --> c`|<u>ex</u>ce<u>pt</u>ion
+|`0x02`|[EXPT](#expt)|yes|`r --> c`|<u>ex</u>ce<u>pt</u>ion
 |`0x04`|[MODE](#mode)|no|`r <=> c`|<u>mode</u>
 |`0x06`|[SPED](#sped)|no|`r <-- c`|<u>spe</u>e<u>d</u>
 |`0x08`|[DIRC](#dirc)|no|`r <-- c`|<u>dir</u>ect <u>c</u>ontrol
@@ -294,10 +294,10 @@ requests robot info
 |-:|-|
 |`uint8_t`|opcode (`0x14 + 1`)|
 |`uint8_t[32]`|build string|
-|`uint8_t`|errcatch module cycle time (ms)|
-|`uint8_t`|io module cycle time (ms)|
-|`uint8_t`|sercomm module cycle time (ms)|
-|`uint8_t`|modes module cycle time (ms)|
+|`uint8_t`|exponential moving average errcatch module cycle time (ms)|
+|`uint8_t`|exponential moving average io module cycle time (ms)|
+|`uint8_t`|exponential moving average sercomm module cycle time (ms)|
+|`uint8_t`|exponential moving average modes module cycle time (ms)|
 |`uint32_t`|total robot uptime (s)|
 
 robot info response

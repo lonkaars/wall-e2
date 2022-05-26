@@ -5,6 +5,7 @@
 #include "halt.h"
 #include "modes.h"
 #include "orangutan_shim.h"
+#include "sercomm.h"
 
 w2_s_error *g_w2_error_buffer[W2_ERROR_BUFFER_SIZE] = {};
 uint8_t g_w2_error_index							= 0;
@@ -66,7 +67,17 @@ void w2_errcatch_handle_error(w2_s_error *error) {
 		}
 	}
 
-	// TODO: forward error to sercomm
+	// forward error to sercomm
+	size_t msg_size		  = sizeof(w2_s_cmd_expt_tx) + sizeof(uint8_t) * error->message_length;
+	w2_s_cmd_expt_tx *msg = malloc(msg_size);
+	msg->opcode			  = W2_CMD_EXPT | W2_CMDDIR_TX;
+	msg->error			  = error->code;
+	msg->length			  = error->message_length;
+	memcpy(msg->message, error->message, error->message_length);
+	w2_s_bin *msg_bin = w2_bin_s_alloc(msg_size, (uint8_t *)msg);
+	w2_sercomm_append_msg(msg_bin);
+	free(msg);
+	free(msg_bin);
 
 	return;
 }
