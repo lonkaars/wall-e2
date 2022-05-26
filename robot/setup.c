@@ -16,10 +16,6 @@ void w2_setup_main() {
 	// check endianness
 	g_w2_endianness = *_ptest;
 
-	// reset underside leds
-	red_led(0);
-	green_led(0);
-
 	// clear lcd
 	clear();
 
