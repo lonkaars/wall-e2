@@ -6,7 +6,7 @@ MCU ?= atmega168
 AVRDUDE_DEVICE ?= m168
 
 PORT ?= /dev/ttyACM0
-SIM = true
+# SIM = true
 
 CFLAGS=-g -Wall $(DEVICE_SPECIFIC_CFLAGS) -Os
 LDFLAGS=-Wl,-gc-sections -Wl,-relax
