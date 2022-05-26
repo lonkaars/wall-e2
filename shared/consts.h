@@ -17,3 +17,5 @@
 #define W2_SERIAL_READ_BUFFER_SIZE (255)
 /** exponential moving average new measurement weight (double 0-1) */
 #define W2_EMA_WEIGHT (0.10)
+/** size of mode history buffer */
+#define W2_MODE_HISTORY_BUFFER_SIZE (4)

@@ -71,7 +71,7 @@ void w2_cmd_mode_rx(w2_s_bin *data) {
 	w2_s_cmd_mode_rx *message = malloc(w2_cmd_sizeof(data->data, data->bytes));
 	memcpy(message, data->data, data->bytes);
 
-	w2_modes_switch(message->mode);
+	w2_modes_swap(message->mode);
 }
 
 void w2_cmd_sped_rx(w2_s_bin *data) { return; }

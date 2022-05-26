@@ -31,6 +31,9 @@ void w2_setup_main() {
 	// reset timer
 	time_reset();
 
+	// set default mode
+	w2_modes_swap(W2_M_HALT);
+
 	// indicate startup done
 	play("L50 c>c");
 }

@@ -51,7 +51,7 @@ void w2_errcatch_handle_error(w2_s_error *error) {
 	uint8_t severity = error->code & W2_E_TYPE_MASK;
 
 	// trigger emergency mode for critical errors
-	if ((severity ^ W2_E_TYPE_CRIT) == 0) w2_modes_switch(W2_M_HALT);
+	if ((severity ^ W2_E_TYPE_CRIT) == 0) w2_modes_call(W2_M_HALT);
 
 	// TODO: handle more error types
 	switch (error->code) {

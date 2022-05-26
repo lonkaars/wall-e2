@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../shared/consts.h"
+
 #include "mode_chrg.h"
 #include "mode_dirc.h"
 #include "mode_grid.h"
@@ -8,9 +10,6 @@
 #include "mode_maze.h"
 #include "mode_scal.h"
 #include "mode_spin.h"
-
-/** function pointer to current mode */
-extern void (*g_w2_current_mode)();
 
 /**
  * mode logic
@@ -38,5 +37,7 @@ static const void(*const W2_MODES[]) = {
 	&w2_mode_chrg, &w2_mode_dirc, &w2_mode_spin, &w2_mode_scal,
 };
 
-/** switch the current mode */
-void w2_modes_switch(w2_e_mode new_mode);
+/** switch current mode (allow switching back to previous mode) */
+void w2_modes_call(w2_e_mode mode);
+/** switch current mode (replace current mode keeping history index) */
+void w2_modes_swap(w2_e_mode mode);
