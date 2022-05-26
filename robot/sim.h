@@ -10,7 +10,7 @@
 extern bool g_w2_sim_headless;
 
 // debug fine-tuning
-#define DBG_ENABLE_PRINTFUNC (0)
+#define DBG_ENABLE_PRINTFUNC (1)
 #define DBG_ENABLE_SIMWARN (1)
 #define DBG_ENABLE_SIMINFO (1)
 #define DBG_ENABLE_CYCLEINFO (0)
@@ -54,6 +54,8 @@ void serial_set_baud_rate(unsigned int rate); // NOLINT
 void serial_send(char *message, unsigned int length); // NOLINT
 void serial_receive_ring(char *buffer, unsigned char size); // NOLINT
 unsigned char serial_get_received_bytes(); // NOLINT
+void set_motors(int left, int right); // NOLINT
+
 void w2_sim_setup(int argc, char **argv);
 void w2_sim_cycle_begin();
 void w2_sim_print_serial(w2_s_bin *data);

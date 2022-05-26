@@ -4,6 +4,7 @@
 #include "../shared/bin.h"
 #include "../shared/serial_parse.h"
 #include "hypervisor.h"
+#include "mode_dirc.h"
 #include "modes.h"
 #include "orangutan_shim.h"
 #include "sercomm.h"
@@ -76,7 +77,13 @@ void w2_cmd_mode_rx(w2_s_bin *data) {
 
 void w2_cmd_sped_rx(w2_s_bin *data) { return; }
 
-void w2_cmd_dirc_rx(w2_s_bin *data) { return; }
+void w2_cmd_dirc_rx(w2_s_bin *data) {
+	w2_s_cmd_dirc_rx *message = malloc(w2_cmd_sizeof(data->data, data->bytes));
+	memcpy(message, data->data, data->bytes);
+
+	g_w2_mode_dirc_motor_l = w2_bin_ntoh16(message->left);
+	g_w2_mode_dirc_motor_r = w2_bin_ntoh16(message->right);
+}
 
 void w2_cmd_cord_rx(w2_s_bin *data) { return; }
 

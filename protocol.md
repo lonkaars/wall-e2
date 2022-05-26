@@ -36,7 +36,7 @@ readability.
 |`0x02`|[EXPT](#expt)|yes|`r --> c`|<u>ex</u>ce<u>pt</u>ion
 |`0x04`|[MODE](#mode)|yes|`r <=> c`|<u>mode</u>
 |`0x06`|[SPED](#sped)|no|`r <-- c`|<u>spe</u>e<u>d</u>
-|`0x08`|[DIRC](#dirc)|no|`r <-- c`|<u>dir</u>ect <u>c</u>ontrol
+|`0x08`|[DIRC](#dirc)|yes|`r <-- c`|<u>dir</u>ect <u>c</u>ontrol
 |`0x0a`|[CORD](#cord)|no|`r <=> c`|<u>co</u>o<u>rd</u>inate
 |`0x0c`|[BOMD](#bomd)|no|`r <=> c`|<u>b</u>ack<u>o</u>rder <u>m</u>o<u>d</u>ify
 |`0x0e`|[SRES](#sres)|no|`r <-- c`|<u>s</u>oft <u>res</u>et

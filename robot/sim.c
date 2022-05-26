@@ -123,3 +123,6 @@ void w2_sim_print_serial(w2_s_bin *data) {
 	printf("\n");
 }
 
+void set_motors(int left, int right) {
+	simprintfunc("set_motors", "%i, %i", left, right);
+}
