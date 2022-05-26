@@ -3,6 +3,7 @@
 #include "consts.h"
 #include "serial_parse.h"
 
+// TODO: give this function last time of byte, and measure if >5ms, throw warning
 void w2_serial_parse(uint8_t byte) {
 	static uint8_t current_message[W2_SERIAL_READ_BUFFER_SIZE] = {0};
 	static uint8_t current_message_index					   = 0;

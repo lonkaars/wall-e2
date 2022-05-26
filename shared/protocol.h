@@ -15,6 +15,7 @@
 #define W2_CMD_CODE_MASK (~1)
 #define W2_CMD_DIRECTION_MASK (1)
 
+#define W2_CMD_COUNT 28
 enum w2_e_scmds {
 	/** ping command */
 	W2_CMD_PING = 0x00,
@@ -161,6 +162,11 @@ typedef struct {
 } w2_s_cmd_cled_rx;
 
 #pragma pack(pop)
+
+/** stores message handlers in array with opcode as index */
+extern void (*g_w2_cmd_handlers[W2_CMD_COUNT])(w2_s_bin *);
+/** fills g_w2_cmd_handlers with functions */
+void w2_cmd_setup_handlers();
 
 /** global handler for complete messages */
 void w2_cmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t length);

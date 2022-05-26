@@ -5,6 +5,30 @@
 #include "../robot/orangutan_shim.h"
 #endif
 
+void (*g_w2_cmd_handlers[W2_CMD_COUNT])(w2_s_bin *) = {0};
+void w2_cmd_setup_handlers() {
+	g_w2_cmd_handlers[W2_CMD_PING | W2_CMDDIR_RX] = w2_cmd_ping_rx;
+	g_w2_cmd_handlers[W2_CMD_PING | W2_CMDDIR_TX] = w2_cmd_ping_tx;
+	g_w2_cmd_handlers[W2_CMD_EXPT | W2_CMDDIR_TX] = w2_cmd_expt_tx;
+	g_w2_cmd_handlers[W2_CMD_MODE | W2_CMDDIR_RX] = w2_cmd_mode_rx;
+	g_w2_cmd_handlers[W2_CMD_MODE | W2_CMDDIR_TX] = w2_cmd_mode_tx;
+	g_w2_cmd_handlers[W2_CMD_SPED | W2_CMDDIR_RX] = w2_cmd_sped_rx;
+	g_w2_cmd_handlers[W2_CMD_DIRC | W2_CMDDIR_RX] = w2_cmd_dirc_rx;
+	g_w2_cmd_handlers[W2_CMD_CORD | W2_CMDDIR_RX] = w2_cmd_cord_rx;
+	g_w2_cmd_handlers[W2_CMD_CORD | W2_CMDDIR_TX] = w2_cmd_cord_tx;
+	g_w2_cmd_handlers[W2_CMD_BOMD | W2_CMDDIR_RX] = w2_cmd_bomd_rx;
+	g_w2_cmd_handlers[W2_CMD_BOMD | W2_CMDDIR_TX] = w2_cmd_bomd_tx;
+	g_w2_cmd_handlers[W2_CMD_SRES | W2_CMDDIR_RX] = w2_cmd_sres_rx;
+	g_w2_cmd_handlers[W2_CMD_MCFG | W2_CMDDIR_RX] = w2_cmd_mcfg_rx;
+	g_w2_cmd_handlers[W2_CMD_SENS | W2_CMDDIR_RX] = w2_cmd_sens_rx;
+	g_w2_cmd_handlers[W2_CMD_SENS | W2_CMDDIR_TX] = w2_cmd_sens_tx;
+	g_w2_cmd_handlers[W2_CMD_INFO | W2_CMDDIR_RX] = w2_cmd_info_rx;
+	g_w2_cmd_handlers[W2_CMD_INFO | W2_CMDDIR_TX] = w2_cmd_info_tx;
+	g_w2_cmd_handlers[W2_CMD_DISP | W2_CMDDIR_RX] = w2_cmd_disp_rx;
+	g_w2_cmd_handlers[W2_CMD_PLAY | W2_CMDDIR_RX] = w2_cmd_play_rx;
+	g_w2_cmd_handlers[W2_CMD_CLED | W2_CMDDIR_RX] = w2_cmd_cled_rx;
+}
+
 size_t w2_cmd_sizeof(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_length) {
 	if (data[0] == (W2_CMD_PING | W2_CMDDIR_RX)) return sizeof(w2_s_cmd_ping_rx);
 	if (data[0] == (W2_CMD_PING | W2_CMDDIR_TX)) return sizeof(w2_s_cmd_ping_tx);
@@ -54,101 +78,20 @@ size_t w2_cmd_mcfg_rx_sizeof(w2_s_bin *data) {
 }
 
 void w2_cmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_length) {
-	w2_s_bin *copy = w2_bin_s_alloc(data_length, data);
-	bool unknown   = false;
+	w2_s_bin *copy				= w2_bin_s_alloc(data_length, data);
+	void (*handler)(w2_s_bin *) = g_w2_cmd_handlers[data[0]];
 
-	switch (data[0]) {
-		case W2_CMD_PING | W2_CMDDIR_RX: {
-			w2_cmd_ping_rx(copy);
-			break;
-		}
-		case W2_CMD_PING | W2_CMDDIR_TX: {
-			w2_cmd_ping_tx(copy);
-			break;
-		}
-		case W2_CMD_EXPT | W2_CMDDIR_TX: {
-			w2_cmd_expt_tx(copy);
-			break;
-		}
-		case W2_CMD_MODE | W2_CMDDIR_RX: {
-			w2_cmd_mode_rx(copy);
-			break;
-		}
-		case W2_CMD_MODE | W2_CMDDIR_TX: {
-			w2_cmd_mode_tx(copy);
-			break;
-		}
-		case W2_CMD_SPED | W2_CMDDIR_RX: {
-			w2_cmd_sped_rx(copy);
-			break;
-		}
-		case W2_CMD_DIRC | W2_CMDDIR_RX: {
-			w2_cmd_dirc_rx(copy);
-			break;
-		}
-		case W2_CMD_CORD | W2_CMDDIR_RX: {
-			w2_cmd_cord_rx(copy);
-			break;
-		}
-		case W2_CMD_CORD | W2_CMDDIR_TX: {
-			w2_cmd_cord_tx(copy);
-			break;
-		}
-		case W2_CMD_BOMD | W2_CMDDIR_RX: {
-			w2_cmd_bomd_rx(copy);
-			break;
-		}
-		case W2_CMD_BOMD | W2_CMDDIR_TX: {
-			w2_cmd_bomd_tx(copy);
-			break;
-		}
-		case W2_CMD_SRES | W2_CMDDIR_RX: {
-			w2_cmd_sres_rx(copy);
-			break;
-		}
-		case W2_CMD_MCFG | W2_CMDDIR_RX: {
-			w2_cmd_mcfg_rx(copy);
-			break;
-		}
-		case W2_CMD_SENS | W2_CMDDIR_RX: {
-			w2_cmd_sens_rx(copy);
-			break;
-		}
-		case W2_CMD_SENS | W2_CMDDIR_TX: {
-			w2_cmd_sens_tx(copy);
-			break;
-		}
-		case W2_CMD_INFO | W2_CMDDIR_RX: {
-			w2_cmd_info_rx(copy);
-			break;
-		}
-		case W2_CMD_INFO | W2_CMDDIR_TX: {
-			w2_cmd_info_tx(copy);
-			break;
-		}
-		case W2_CMD_DISP | W2_CMDDIR_RX: {
-			w2_cmd_disp_rx(copy);
-			break;
-		}
-		case W2_CMD_PLAY | W2_CMDDIR_RX: {
-			w2_cmd_play_rx(copy);
-			break;
-		}
-		case W2_CMD_CLED | W2_CMDDIR_RX: {
-			w2_cmd_cled_rx(copy);
-			break;
-		}
-		default: {
+	if (handler == NULL) {
 #ifdef W2_SIM
-			simwarn("unknown serial message with code 0x%02x\n", data[0]);
+		// TODO throw warning
+		simwarn("unknown serial message with code 0x%02x\n", data[0]);
 #endif
-			unknown = true;
-		}
+	} else {
+#ifdef W2_SIM
+		w2_sim_print_serial(copy);
+#endif
+		handler(copy);
 	}
-
-#ifdef W2_SIM
-	if (!unknown) w2_sim_print_serial(copy);
-#endif
 
 	free(copy);
 }
