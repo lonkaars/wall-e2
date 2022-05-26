@@ -2,8 +2,18 @@
 #include <time.h>
 #include <string.h>
 #include <stdint.h>
-#include <termios.h>
 #include <unistd.h>
+
+#ifdef W2_HOST_LINUX
+#include <termios.h>
+#endif
+
+#ifdef W2_HOST_WIN32
+// garbage os compatibility
+#include <windows.h>
+#include <timeapi.h>
+#define STDIN_FILENO 0
+#endif
 
 #include "sim.h"
 #include "../shared/consts.h"
@@ -11,7 +21,12 @@
 #include "sercomm.h"
 #include "errcatch.h"
 
+#ifdef W2_HOST_LINUX
 struct timespec reference_time; // NOLINT
+#endif
+#ifdef W2_HOST_WIN32
+DWORD reference_time; // NOLINT
+#endif
 bool g_w2_sim_headless = false;
 
 static const char* const W2_CMD_NAMES[] = {
@@ -38,15 +53,20 @@ static const char* const W2_CMD_DIRECTIONS[] = {
 
 void time_reset() {
 	simprintfunc("time_reset", "");
+#ifdef W2_HOST_LINUX
 	clock_gettime(CLOCK_MONOTONIC, &reference_time);
+#endif
 }
 
 unsigned long get_ms() {
 	simprintfunc("get_ms", "");
+#ifdef W2_HOST_LINUX
 	struct timespec elapsed;
 	clock_gettime(CLOCK_MONOTONIC, &elapsed);
 	return ((elapsed.tv_sec * 1000) + (elapsed.tv_nsec / 1000000)) -
 		((reference_time.tv_sec * 1000) + (reference_time.tv_nsec / 1000000));
+#endif
+	return 0;
 }
 
 void red_led(unsigned char on) {
@@ -85,7 +105,7 @@ void serial_send(char* message, unsigned int length) {
 }
 
 void serial_receive_ring(char* buffer, unsigned char size) {
-	simprintfunc("serial_receive_ring", "0x%016lx, %u", (unsigned long) buffer, size);
+	simprintfunc("serial_receive_ring", "0x%016llx, %u", (uint64_t) buffer, size);
 }
 
 unsigned char serial_get_received_bytes() {
@@ -98,12 +118,21 @@ void w2_sim_setup(int argc, char **argv) {
 		g_w2_sim_headless = true;
 
 	// disable echo and enable raw mode
+#ifdef W2_HOST_LINUX
 	struct termios term;
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHO | ICANON);
 	term.c_cc[VTIME] = 0;
 	term.c_cc[VMIN] = 0;
 	tcsetattr(STDIN_FILENO, 0, &term);
+#endif
+#ifdef W2_HOST_WIN32
+	DWORD mode;
+    HANDLE console = GetStdHandle(STD_INPUT_HANDLE);
+
+    GetConsoleMode(console, &mode);
+    SetConsoleMode(console, mode & ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT));
+#endif
 
 	// debug error
 	// w2_errcatch_throw(W2_E_WARN_BATTERY_LOW);
@@ -141,7 +170,7 @@ unsigned char get_single_debounced_button_press(unsigned char buttons) {
 }
 
 void qtr_read(unsigned int* sensor_values, unsigned char read_mode) {
-	simprintfunc("qtr_read", "0x%016lx, %s", (uint64_t) sensor_values, read_mode == QTR_EMITTERS_ON ? "QTR_EMITTERS_ON" : "???");
+	simprintfunc("qtr_read", "0x%016llx, %s", (uint64_t) sensor_values, read_mode == QTR_EMITTERS_ON ? "QTR_EMITTERS_ON" : "???");
 	sensor_values[0] = 0;
 	sensor_values[1] = 0;
 	sensor_values[2] = 0;

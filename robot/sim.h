@@ -22,6 +22,7 @@ extern bool g_w2_sim_headless;
 #define DBG_BYTES_PER_LINE 16
 
 // debug colors
+#ifdef W2_HOST_LINUX
 #define COL_BLK "\e[0;30m"
 #define COL_RED "\e[0;31m"
 #define COL_GRN "\e[0;32m"
@@ -31,6 +32,18 @@ extern bool g_w2_sim_headless;
 #define COL_CYN "\e[0;36m"
 #define COL_WHT "\e[0;37m"
 #define COL_RST "\e[0m"
+#endif
+#ifdef W2_HOST_WIN32
+#define COL_BLK ""
+#define COL_RED ""
+#define COL_GRN ""
+#define COL_YEL ""
+#define COL_BLU ""
+#define COL_MAG ""
+#define COL_CYN ""
+#define COL_WHT ""
+#define COL_RST ""
+#endif
 
 // debug stdout print macros
 #define simprintf(message, ...) if (!g_w2_sim_headless) printf(COL_RED "[SIM] " COL_RST message, ##__VA_ARGS__)
