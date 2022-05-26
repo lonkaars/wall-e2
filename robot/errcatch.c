@@ -28,7 +28,7 @@ void w2_errcatch_main() {
 	}
 }
 
-w2_s_error *w2_alloc_error(enum w2_e_errorcodes code, uint16_t length, const char *message) {
+w2_s_error *w2_alloc_error(w2_e_errorcode code, uint16_t length, const char *message) {
 	w2_s_error *error = malloc(sizeof(w2_s_error) + length);
 	memcpy(error, &(w2_s_error const){.code = code, .message_length = length}, sizeof(w2_s_error));
 	strncpy(error->message, message, length);
@@ -36,8 +36,8 @@ w2_s_error *w2_alloc_error(enum w2_e_errorcodes code, uint16_t length, const cha
 	return error;
 }
 
-void w2_errcatch_throw(enum w2_e_errorcodes code) { w2_errcatch_throw_msg(code, 0, ""); }
-void w2_errcatch_throw_msg(enum w2_e_errorcodes code, uint16_t length, const char *message) {
+void w2_errcatch_throw(w2_e_errorcode code) { w2_errcatch_throw_msg(code, 0, ""); }
+void w2_errcatch_throw_msg(w2_e_errorcode code, uint16_t length, const char *message) {
 	uint8_t next_index	   = (g_w2_error_index + 1) % W2_ERROR_BUFFER_SIZE;
 	g_w2_error_buffer_full = next_index == g_w2_error_offset;
 	free(g_w2_error_buffer[g_w2_error_index]);

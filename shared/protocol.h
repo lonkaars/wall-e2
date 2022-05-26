@@ -16,7 +16,7 @@
 #define W2_CMD_DIRECTION_MASK (1)
 
 #define W2_CMD_COUNT 28
-enum w2_e_scmds {
+typedef enum {
 	/** ping command */
 	W2_CMD_PING = 0x00,
 	/** exception command */
@@ -45,7 +45,7 @@ enum w2_e_scmds {
 	W2_CMD_PLAY = 0x18,
 	/** control leds command */
 	W2_CMD_CLED = 0x1a,
-};
+} w2_e_scmds;
 
 #pragma pack(push, 1)
 

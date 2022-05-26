@@ -15,7 +15,7 @@
  * error codes are between 0-63 because the two most significant bits are
  * reserved for error type checking
  */
-enum w2_e_errorcodes {
+typedef enum {
 	/** wireless connection lost from either robot or client-side */
 	W2_E_CRIT_CONN_LOST = 0x00 | W2_E_TYPE_CRIT,
 	/** serial COM-port unavalable. client-side only */
@@ -39,7 +39,7 @@ enum w2_e_errorcodes {
 	W2_E_WARN_LINE_LOST = 0x05 | W2_E_TYPE_WARN,
 	/** serial buffer full, gets thrown on next cycle */
 	W2_E_WARN_SERCOMM_BUFFER_FULL = 0x06 | W2_E_TYPE_WARN,
-};
+} w2_e_errorcode;
 
 /**
  * error struct
@@ -48,7 +48,7 @@ enum w2_e_errorcodes {
  * `message_length`
  */
 typedef struct {
-	enum w2_e_errorcodes code;
+	w2_e_errorcode code;
 	uint8_t message_length;
 	char message[];
 } w2_s_error;
