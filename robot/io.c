@@ -1,52 +1,30 @@
 #include "io.h"
-#include <pololu/orangutan.h>
+#include "../shared/consts.h"
+#include "modes.h"
+#include "orangutan_shim.h"
 
-
-w2_io_all global;
+w2_io_all g_w2_io;
 
 void w2_io_main() {
-    global.button[0] = get_single_debounced_button_press(BUTTON_A);
-    global.button[1] = get_single_debounced_button_press(BUTTON_B);
-    global.button[2] = get_single_debounced_button_press(BUTTON_C);
-    global.button[3] = get_single_debounced_button_press(TOP_BUTTON);
-    global.button[4] = get_single_debounced_button_press(BOTTOM_BUTTON);
-    unsigned int sensor_values[5];
-    qtr_read(sensor_values, QTR_EMITTERS_ON);
-    for(int i = 0; i <5; i++){
-         global.qtrSensor[i] = sensor_values[i];
-    }
-    // TODO average voltage over mutiple samples sensor
-    global.batteryLevel = analog_read(BATTERY_PIN);  
-    global.frontDetection = analog_read(FRONT_SENSOR_PIN); 
-    global.sideDetection = analog_read(SIDE_SENSOR_PIN);
+	g_w2_io.button[0].pressed = get_single_debounced_button_press(BUTTON_A);
+	g_w2_io.button[1].pressed = get_single_debounced_button_press(BUTTON_B);
+	g_w2_io.button[2].pressed = get_single_debounced_button_press(BUTTON_C);
+	g_w2_io.button[3].pressed = get_single_debounced_button_press(TOP_BUTTON);
+	g_w2_io.button[4].pressed = get_single_debounced_button_press(BOTTOM_BUTTON);
+	unsigned int sensor_values[5];
+	qtr_read(sensor_values, QTR_EMITTERS_ON);
+	for (int i = 0; i < 5; i++) {
+		g_w2_io.qtr[i].range = sensor_values[i];
+	}
+	// TODO average voltage over mutiple samples sensor
+	g_w2_io.battery.charge_level	 = analog_read(W2_BATTERY_PIN);
+	g_w2_io.front_distance.detection = analog_read(W2_FRONT_SENSOR_PIN);
+	g_w2_io.side_distance.detection	 = analog_read(W2_SIDE_SENSOR_PIN);
 
-    set_motors(global.motor_left, global.motor_right);
-    red_led(global.led_red);
-    green_led(global.led_green);
-    print_character(global.lcd);   
+	set_motors(g_w2_io.motor_left.speed, g_w2_io.motor_right.speed);
+	red_led(g_w2_io.led_red.on);
+	green_led(g_w2_io.led_green.on);
+	print(g_w2_io.lcd.text);
 };
 
-void w2_io_init(){
-     pololu_3pi_init(2000):
-
-     for(counter=0;counter<80;counter++)
-        {
-            if(counter < 20 || counter >= 60)
-                {
-                    global.motor_left=40;
-                    global.motor_right=-40;
-                }
-            else
-                {
-                   global.motor_left=-40;
-                   global.motor_right=40;    
-                }
-
-              calibrate_
-              line_sensors(IR_EMITTERS_ON);
-        
-            delay_ms(20);
-        }
-    global.motor_left=0;
-    global.motor_right=0;
-}
+void w2_io_init() { w2_modes_call(W2_M_SCAL); }

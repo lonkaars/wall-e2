@@ -19,3 +19,10 @@
 #define W2_EMA_WEIGHT (0.10)
 /** size of mode history buffer */
 #define W2_MODE_HISTORY_BUFFER_SIZE (4)
+
+/** front-facing distance sensor pinout */
+#define W2_FRONT_SENSOR_PIN 5
+/** battery voltage sensor pinout */
+#define W2_BATTERY_PIN 6
+/** side-facing distance sensor pinout */
+#define W2_SIDE_SENSOR_PIN 7

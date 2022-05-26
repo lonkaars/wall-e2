@@ -1,56 +1,46 @@
 #pragma once
-#include <stdlib.h>
-#include <stdint.h>
 #include <stdbool.h>
-#define FRONT_SENSOR_PIN 5
-#define SIDE_SENSOR_PIN 7
-#define BATTERY_PIN 6  
-
-//inputs
+#include <stdint.h>
+#include <stdlib.h>
 
 typedef struct {
-    bool pressed;
-} w2_s_io_push;
+	bool pressed;
+} w2_s_i_push;
 
 typedef struct {
-    uint16_t range;
-    
-} w2_s_io_contrast;
+	uint16_t range;
+} w2_s_i_contrast;
 
 typedef struct {
-    uint16_t detection;
-} w2_s_io_distance;
-
-//outputs
+	uint16_t detection;
+} w2_s_i_distance;
 
 typedef struct {
-    int speed;
-} w2_s_io_motor;
+	uint16_t charge_level;
+} w2_s_i_battery;
 
 typedef struct {
-    bool toggle;
-} w2_s_io_led;
+	int speed;
+} w2_s_o_motor;
 
 typedef struct {
-    char text[16];
-} w2_s_io_display;
-typedef struct {
-    uint8_t charged;
-} w2_s_io_battery;
-
-//all i/o
+	bool on;
+} w2_s_o_led;
 
 typedef struct {
-    w2_s_i_push button[5];
-    w2_s_i_contrast qtrSensor[5];
-    w2_s_i_distance frontDetection;
-    w2_s_i_distance sideDetection;
-    w2_s_i_battery batteryLevel;
+	char text[17]; // 16 chars + '\0'
+} w2_s_o_display;
 
+typedef struct {
+	w2_s_i_push button[5];
+	w2_s_i_contrast qtr[5];
+	w2_s_i_distance front_distance;
+	w2_s_i_distance side_distance;
+	w2_s_i_battery battery;
 
-    w2_s_o_motor motor_left;
-    w2_s_o_motor motor_right;
-    w2_s_o_led led_red;
-    w2_s_o_led led_green;
-    w2_s_o_display lcd;
+	w2_s_o_motor motor_left;
+	w2_s_o_motor motor_right;
+	w2_s_o_led led_red;
+	w2_s_o_led led_green;
+	w2_s_o_display lcd;
 } w2_io_all;
