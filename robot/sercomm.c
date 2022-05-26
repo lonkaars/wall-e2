@@ -3,6 +3,7 @@
 
 #include "../shared/bin.h"
 #include "../shared/serial_parse.h"
+#include "hypervisor.h"
 #include "orangutan_shim.h"
 #include "sercomm.h"
 
@@ -53,7 +54,7 @@ void w2_cmd_ping_rx(w2_s_bin *data) {
 
 	size_t return_size				 = sizeof(w2_s_cmd_ping_tx);
 	w2_s_cmd_ping_tx *return_message = malloc(return_size);
-	return_message->opcode			 = (message->opcode & W2_CMD_DIRECTION_MASK) | W2_CMDDIR_TX;
+	return_message->opcode			 = W2_CMD_PING | W2_CMDDIR_TX;
 	return_message->id				 = message->id;
 
 	w2_s_bin *return_message_bin = w2_bin_s_alloc(return_size, (uint8_t *)return_message);
@@ -81,7 +82,28 @@ void w2_cmd_mcfg_rx(w2_s_bin *data) { return; }
 
 void w2_cmd_sens_rx(w2_s_bin *data) { return; }
 
-void w2_cmd_info_rx(w2_s_bin *data) { return; }
+void w2_cmd_info_rx(w2_s_bin *data) {
+	w2_s_cmd_info_rx *message = malloc(w2_cmd_sizeof(data->data, data->bytes));
+	memcpy(message, data->data, data->bytes);
+
+	size_t return_size				 = sizeof(w2_s_cmd_info_tx);
+	w2_s_cmd_info_tx *return_message = malloc(return_size);
+	return_message->opcode			 = W2_CMD_INFO | W2_CMDDIR_TX;
+	strncpy((char *)return_message->build_str, W2_BUILD_STR, sizeof(return_message->build_str));
+	return_message->errcatch_ms = (uint8_t)g_w2_hypervisor_ema_errcatch_ms;
+	return_message->io_ms		= (uint8_t)g_w2_hypervisor_ema_io_ms;
+	return_message->sercomm_ms	= (uint8_t)g_w2_hypervisor_ema_sercomm_ms;
+	return_message->mode_ms		= (uint8_t)g_w2_hypervisor_ema_mode_ms;
+	return_message->uptime_s	= w2_bin_hton32((uint32_t)(g_w2_hypervisor_uptime_ms / 1e3));
+
+	w2_s_bin *return_message_bin = w2_bin_s_alloc(return_size, (uint8_t *)return_message);
+
+	w2_sercomm_append_msg(return_message_bin);
+
+	free(message);
+	free(return_message);
+	free(return_message_bin);
+}
 
 void w2_cmd_disp_rx(w2_s_bin *data) { return; }
 

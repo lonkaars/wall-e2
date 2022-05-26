@@ -15,3 +15,5 @@
 #define W2_SERCOMM_BUFFER_SIZE (16)
 /** size of input (receive) buffer (in bytes) */
 #define W2_SERIAL_READ_BUFFER_SIZE (255)
+/** exponential moving average new measurement weight (double 0-1) */
+#define W2_EMA_WEIGHT (0.10)

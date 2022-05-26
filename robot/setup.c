@@ -29,6 +29,9 @@ void w2_setup_main() {
 	serial_set_baud_rate(W2_SERIAL_BAUD);
 	serial_receive_ring(g_w2_serial_buffer, W2_SERIAL_READ_BUFFER_SIZE);
 
+	// reset timer
+	time_reset();
+
 	// indicate startup done
 	play("L50 c>c");
 }
