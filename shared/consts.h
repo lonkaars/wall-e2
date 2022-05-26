@@ -5,6 +5,11 @@
 #define W2_BUILD_STR ("????????")
 #endif
 
+#if !defined W2_HOST_WIN32 && !defined W2_HOST_LINUX
+#define W2_HOST_UNKNOWN
+#warning "host operating system unknown"
+#endif
+
 /** max logic module execution time in milliseconds */
 #define W2_MAX_MODULE_CYCLE_MS (20)
 /** serial baud rate (bit/s) */
