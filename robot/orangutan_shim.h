@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file orangutan_shim.h */
+
 #ifdef W2_SIM
 #include "sim.h"
 #else

@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file consts.h */
+
 #ifndef W2_BUILD_STR
 // is defined by CFLAGS += -DW2_BUILD_STR in makefile
 #define W2_BUILD_STR ("????????")

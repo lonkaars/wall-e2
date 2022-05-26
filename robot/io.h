@@ -1,9 +1,11 @@
 #pragma once
 
+/** @file io.h */
+
 #include "../shared/protocol.h"
 
-/** i/o module main */
+/** @brief i/o module main */
 void w2_io_main();
 
-/** global struct containing all i/o */
+/** @brief global struct containing all i/o */
 extern w2_s_io_all g_w2_io;

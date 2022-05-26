@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file protocol.h */
+
 #include <stdint.h>
 #include <stdlib.h>
 

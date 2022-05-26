@@ -1,0 +1,21 @@
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_NAME           = "wall-e2"
+# PROJECT_NUMBER         =
+PROJECT_BRIEF          = Project RobotRun software
+OUTPUT_DIRECTORY       = docs/
+CREATE_SUBDIRS         = NO
+ALLOW_UNICODE_NAMES    = NO
+OUTPUT_LANGUAGE        = English
+TAB_SIZE               = 4
+FILE_PATTERNS          = *.c \
+                         *.h \
+                         *.md
+RECURSIVE              = YES
+USE_MDFILE_AS_MAINPAGE = ./readme.md
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+STRIP_CODE_COMMENTS    = NO
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+CALL_GRAPH             = YES
+# INPUT                  = robot/

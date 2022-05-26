@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file hypervisor.h */
+
 #include <stdint.h>
 
 extern uint64_t g_w2_hypervisor_cycles;

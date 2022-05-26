@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file errors.h */
+
 #include <stdint.h>
 
 #define W2_E_TYPE_MASK (0b11 << 6)

@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file mode_dirc.h */
+
 #include <stdint.h>
 
 extern int16_t g_w2_mode_dirc_motor_l;

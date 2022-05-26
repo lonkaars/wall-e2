@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file mode_lcal.h */
+
 /**
  * calibration mode
  *

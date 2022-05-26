@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file sercomm.h */
+
 #include "../shared/bin.h"
 #include "../shared/consts.h"
 #include "../shared/protocol.h"

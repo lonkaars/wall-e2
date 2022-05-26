@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file util.h */
+
 #define W2_MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define W2_MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define W2_RANGE(min, val, max) W2_MIN(max, W2_MAX(val, min))

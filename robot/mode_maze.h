@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file mode_maze.h */
+
 /**
  * maze mode
  *

@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file serial_parse.h */
+
 #include <stdint.h>
 
 #include "protocol.h"

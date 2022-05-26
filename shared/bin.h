@@ -1,4 +1,7 @@
 #pragma once
+
+/** @file bin.h */
+
 /**
  * helper file for binary data
  *
