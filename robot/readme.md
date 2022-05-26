@@ -62,7 +62,7 @@ what they're supposed to do:
 |maze            |`mode_maze  `|Jorn & Abdullaahi| controls robot during maze portion of map; hands off control to warehouse module|
 |warehouse       |`mode_grid  `|Loek| controls robot during warehouse portion of map; hands off control to maze module|
 |emergency stop  |`mode_halt  `|Fiona| stops all execution until emergency mode is reset by software or user|
-|calibration     |`mode_calb  `|Fiona| find line by turning on own axis if lost|
+|calibration     |`mode_lcal  `|Fiona| find line by turning on own axis if lost|
 
 ## some standards
 

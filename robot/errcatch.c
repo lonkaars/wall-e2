@@ -2,7 +2,6 @@
 #include <string.h>
 
 #include "errcatch.h"
-#include "halt.h"
 #include "modes.h"
 #include "orangutan_shim.h"
 #include "sercomm.h"
@@ -52,7 +51,7 @@ void w2_errcatch_handle_error(w2_s_error *error) {
 	uint8_t severity = error->code & W2_E_TYPE_MASK;
 
 	// trigger emergency mode for critical errors
-	if ((severity ^ W2_E_TYPE_CRIT) == 0) g_w2_current_mode = &w2_mode_halt;
+	if ((severity ^ W2_E_TYPE_CRIT) == 0) w2_modes_switch(W2_M_HALT);
 
 	// TODO: handle more error types
 	switch (error->code) {

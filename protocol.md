@@ -34,7 +34,7 @@ readability.
 |--:|---|:-:|:-:|---|
 |`0x00`|[PING](#ping)|yes|`r <=> c`|<u>ping</u>
 |`0x02`|[EXPT](#expt)|yes|`r --> c`|<u>ex</u>ce<u>pt</u>ion
-|`0x04`|[MODE](#mode)|no|`r <=> c`|<u>mode</u>
+|`0x04`|[MODE](#mode)|yes|`r <=> c`|<u>mode</u>
 |`0x06`|[SPED](#sped)|no|`r <-- c`|<u>spe</u>e<u>d</u>
 |`0x08`|[DIRC](#dirc)|no|`r <-- c`|<u>dir</u>ect <u>c</u>ontrol
 |`0x0a`|[CORD](#cord)|no|`r <=> c`|<u>co</u>o<u>rd</u>inate
@@ -96,7 +96,16 @@ message, and can be 0 in case of no message.
 |`uint8_t`|mode code|
 
 when initiated from the client, the **mode** command forces the robot to change
-execution mode. the mode codes are undetermined as of now.
+execution mode. **mode** can be one of:
+
+- 0: mode_maze
+- 1: mode_grid
+- 2: mode_halt
+- 3: mode_lcal
+- 4: mode_chrg
+- 5: mode_dirc
+- 6: mode_spin
+- 7: mode_scal
 
 #### get mode (`r --> c`) (2 bytes)
 

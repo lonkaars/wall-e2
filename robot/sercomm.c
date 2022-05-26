@@ -4,6 +4,7 @@
 #include "../shared/bin.h"
 #include "../shared/serial_parse.h"
 #include "hypervisor.h"
+#include "modes.h"
 #include "orangutan_shim.h"
 #include "sercomm.h"
 
@@ -66,7 +67,12 @@ void w2_cmd_ping_rx(w2_s_bin *data) {
 	free(return_message_bin);
 }
 
-void w2_cmd_mode_rx(w2_s_bin *data) { return; }
+void w2_cmd_mode_rx(w2_s_bin *data) {
+	w2_s_cmd_mode_rx *message = malloc(w2_cmd_sizeof(data->data, data->bytes));
+	memcpy(message, data->data, data->bytes);
+
+	w2_modes_switch(message->mode);
+}
 
 void w2_cmd_sped_rx(w2_s_bin *data) { return; }
 
