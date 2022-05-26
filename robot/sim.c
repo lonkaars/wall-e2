@@ -126,3 +126,35 @@ void w2_sim_print_serial(w2_s_bin *data) {
 void set_motors(int left, int right) {
 	simprintfunc("set_motors", "%i, %i", left, right);
 }
+
+static const char* const W2_BUTTON_NAMES[] = {
+	"BUTTON_A",
+	"BUTTON_B",
+	"BUTTON_C",
+	"TOP_BUTTON",
+	"BOTTOM_BUTTON",
+};
+
+unsigned char get_single_debounced_button_press(unsigned char buttons) {
+	simprintfunc("get_single_debounced_button_press", "%s", W2_BUTTON_NAMES[buttons]);
+	return false;
+}
+
+void qtr_read(unsigned int* sensor_values, unsigned char read_mode) {
+	simprintfunc("qtr_read", "0x%016lx, %s", (uint64_t) sensor_values, read_mode == QTR_EMITTERS_ON ? "QTR_EMITTERS_ON" : "???");
+	sensor_values[0] = 0;
+	sensor_values[1] = 0;
+	sensor_values[2] = 0;
+	sensor_values[3] = 0;
+	sensor_values[4] = 0;
+}
+
+unsigned int analog_read(unsigned char channel) {
+	simprintfunc("analog_read", "ADC%i", channel);
+	return 0;
+}
+
+void print(const char* str) {
+	simprintfunc("print", "\"%s\"", str);
+}
+

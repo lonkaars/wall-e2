@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+void w2_io_main();
+
 typedef struct {
 	bool pressed;
 } w2_s_i_push;

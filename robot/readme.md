@@ -55,9 +55,9 @@ what they're supposed to do:
 |module            |internal name|due|author|purpose|
 |------------------|-------------|-|-|-|
 |hypervisor        |`hypervisor `|done|N/a| backbone of all other modules; stores global variables; controls when other modules run|
-|pc communication  |`sercomm    `|may 27|Loek| reads and parses incoming serial data; sends all data in the message buffer|
+|pc communication  |`sercomm    `|done|Loek| reads and parses incoming serial data; sends all data in the message buffer|
 |error handling    |`errcatch   `|done|Loek| receives error codes; controls how errors are handled|
-|i/o read & write  |`io         `|may 27|Jorn & Abdullaahi| reads all inputs to global state; writes all outputs|
+|i/o read & write  |`io         `|done|Jorn & Abdullaahi| reads all inputs to global state; writes all outputs|
 |mode logic        |`modes      `|done|N/a| executes the appropriate module for current mode|
 |maze              |`mode_maze  `|may 31|Jorn & Abdullaahi| controls robot during maze portion of map; hands off control to warehouse module|
 |warehouse         |`mode_grid  `|may 31|Loek| controls robot during warehouse portion of map; hands off control to maze module|

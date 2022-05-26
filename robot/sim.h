@@ -40,6 +40,13 @@ extern bool g_w2_sim_headless;
 #define simwarn(message, ...) if (DBG_ENABLE_SIMWARN) { simprintf(COL_YEL "[WARN] " COL_RST message, ##__VA_ARGS__); }
 #define siminfo(message, ...) if (DBG_ENABLE_SIMINFO) { simprintf(COL_MAG "[INFO] " COL_RST message, ##__VA_ARGS__); }
 
+#define BUTTON_A 0
+#define BUTTON_B 1
+#define BUTTON_C 2
+#define TOP_BUTTON 3
+#define BOTTOM_BUTTON 4
+#define QTR_EMITTERS_ON 0
+
 /**
  * simulates pololu library functions for local testing
  * NOLINT is so clang-tidy doesn't correct function names
@@ -55,6 +62,10 @@ void serial_send(char *message, unsigned int length); // NOLINT
 void serial_receive_ring(char *buffer, unsigned char size); // NOLINT
 unsigned char serial_get_received_bytes(); // NOLINT
 void set_motors(int left, int right); // NOLINT
+unsigned char get_single_debounced_button_press(unsigned char buttons); // NOLINT
+void qtr_read(unsigned int* sensor_values, unsigned char read_mode); // NOLINT
+unsigned int analog_read(unsigned char channel); // NOLINT
+void print(const char* str); // NOLINT
 
 void w2_sim_setup(int argc, char **argv);
 void w2_sim_cycle_begin();

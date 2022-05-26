@@ -27,4 +27,3 @@ void w2_io_main() {
 	print(g_w2_io.lcd.text);
 };
 
-void w2_io_init() { w2_modes_call(W2_M_SCAL); }
