@@ -17,7 +17,7 @@ HEADERS := $(filter-out sim.h, $(wildcard *.h))
 include ../shared/makefile
 
 # simulation
-SIM = true
+# SIM = true
 CFLAGS += $(if $(SIM), -DW2_SIM, -mcall-prologues -mmcu=$(MCU))
 LDFLAGS += $(if $(SIM), , -lpololu_$(DEVICE))
 PREFIX := $(if $(SIM), , avr-)

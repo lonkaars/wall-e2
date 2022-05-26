@@ -8,7 +8,7 @@ all: $(EXECNAME)
 
 SOURCES := $(wildcard *.c)
 HEADERS := $(wildcard *.h)
-include ../shared/makefile
+# include ../shared/makefile
 OBJECTS := $(patsubst %.c,%.o, $(SOURCES))
 
 .o:
