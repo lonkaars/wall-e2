@@ -1,9 +1,13 @@
 #pragma once
 
+#include "mode_chrg.h"
+#include "mode_dirc.h"
 #include "mode_grid.h"
 #include "mode_halt.h"
 #include "mode_lcal.h"
 #include "mode_maze.h"
+#include "mode_scal.h"
+#include "mode_spin.h"
 
 /** function pointer to current mode */
 extern void (*g_w2_current_mode)();
@@ -30,10 +34,8 @@ typedef enum {
 
 /** array that maps w2_e_mode to mode function pointers */
 static const void(*const W2_MODES[]) = {
-	&w2_mode_maze,
-	&w2_mode_grid,
-	&w2_mode_grid,
-	&w2_mode_halt,
+	&w2_mode_maze, &w2_mode_grid, &w2_mode_grid, &w2_mode_halt,
+	&w2_mode_chrg, &w2_mode_dirc, &w2_mode_spin, &w2_mode_scal,
 };
 
 /** switch the current mode */
