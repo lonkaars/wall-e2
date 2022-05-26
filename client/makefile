@@ -4,11 +4,12 @@ RM = rm -f
 CFLAGS =
 EXECNAME = main
 
+all: $(EXECNAME)
+
 SOURCES := $(wildcard *.c)
 HEADERS := $(wildcard *.h)
+include ../shared/makefile
 OBJECTS := $(patsubst %.c,%.o, $(SOURCES))
-
-all: main
 
 .o:
 	$(CC) -c $(CFLAGS) $<
@@ -16,7 +17,7 @@ all: main
 $(EXECNAME): $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(EXECNAME)
 
-clean:
+clean::
 	$(RM) $(EXECNAME) *.o
 
 format:

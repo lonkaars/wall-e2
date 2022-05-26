@@ -27,22 +27,22 @@ and the starting byte don't count towards message length.
 opcodes are picked sequentially, but the direction bit (LSB) is reserved to
 indicate a transfer from robot to client (`tx`). this means that the opcode for
 a sensor data request would be `0x12`, but the response opcode would be `0x13`.
-these opcodes are stored as enum constants inside sercomm.h for code
+these opcodes are stored as enum constants inside shared/protocol.h for code
 readability.
 
 |code|name|implemented|directions|full name|
 |--:|---|:-:|:-:|---|
-|`0x00`|[PING](#ping)|no|`r <=> c`|<u>ping</u>
-|`0x02`|[EXPT](#expt)|no|`r --> c`|<u>ex</u>ce<u>pt</u>ion
-|`0x04`|[MODE](#mode)|no|`r <=> c`|<u>mode</u>
+|`0x00`|[PING](#ping)|yes|`r <=> c`|<u>ping</u>
+|`0x02`|[EXPT](#expt)|yes|`r --> c`|<u>ex</u>ce<u>pt</u>ion
+|`0x04`|[MODE](#mode)|yes|`r <=> c`|<u>mode</u>
 |`0x06`|[SPED](#sped)|no|`r <-- c`|<u>spe</u>e<u>d</u>
-|`0x08`|[DIRC](#dirc)|no|`r <-- c`|<u>dir</u>ect <u>c</u>ontrol
+|`0x08`|[DIRC](#dirc)|yes|`r <-- c`|<u>dir</u>ect <u>c</u>ontrol
 |`0x0a`|[CORD](#cord)|no|`r <=> c`|<u>co</u>o<u>rd</u>inate
 |`0x0c`|[BOMD](#bomd)|no|`r <=> c`|<u>b</u>ack<u>o</u>rder <u>m</u>o<u>d</u>ify
 |`0x0e`|[SRES](#sres)|no|`r <-- c`|<u>s</u>oft <u>res</u>et
 |`0x10`|[MCFG](#mcfg)|no|`r <-- c`|<u>m</u>ap <u>c</u>on<u>f</u>i<u>g</u>
 |`0x12`|[SENS](#sens)|no|`r <-> c`|<u>sens</u>or data
-|`0x14`|[INFO](#info)|no|`r <-> c`|<u>info</u>
+|`0x14`|[INFO](#info)|yes|`r <-> c`|<u>info</u>
 |`0x16`|[DISP](#disp)|no|`r <-- c`|<u>disp</u>lay control
 |`0x18`|[PLAY](#play)|no|`r <-- c`|<u>play</u> midi
 |`0x1a`|[CLED](#cled)|no|`r <-- c`|<u>c</u>ontrol <u>led</u>s
@@ -53,6 +53,9 @@ be considered extra features
 a double stroke arrow means that the command can be initiated from either the
 robot or the client, while a single arrow indicates a request-response
 structure.
+
+in *both* the robot and client code `r <-- c` is referred to as `rx` and  `r
+--> c` as `tx` (from the *robots* view).
 
 ### PING
 
@@ -93,7 +96,16 @@ message, and can be 0 in case of no message.
 |`uint8_t`|mode code|
 
 when initiated from the client, the **mode** command forces the robot to change
-execution mode. the mode codes are undetermined as of now.
+execution mode. **mode** can be one of:
+
+- 0: mode_maze
+- 1: mode_grid
+- 2: mode_halt
+- 3: mode_lcal
+- 4: mode_chrg
+- 5: mode_dirc
+- 6: mode_spin
+- 7: mode_scal
 
 #### get mode (`r --> c`) (2 bytes)
 
@@ -291,10 +303,10 @@ requests robot info
 |-:|-|
 |`uint8_t`|opcode (`0x14 + 1`)|
 |`uint8_t[32]`|build string|
-|`uint8_t`|errcatch module cycle time (ms)|
-|`uint8_t`|io module cycle time (ms)|
-|`uint8_t`|sercomm module cycle time (ms)|
-|`uint8_t`|modes module cycle time (ms)|
+|`uint8_t`|exponential moving average errcatch module cycle time (ms)|
+|`uint8_t`|exponential moving average io module cycle time (ms)|
+|`uint8_t`|exponential moving average sercomm module cycle time (ms)|
+|`uint8_t`|exponential moving average modes module cycle time (ms)|
 |`uint32_t`|total robot uptime (s)|
 
 robot info response

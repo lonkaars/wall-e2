@@ -1,12 +1,25 @@
 #include "hypervisor.h"
-#include "consts.h"
+#include "../shared/util.h"
 #include "errcatch.h"
 #include "io.h"
 #include "modes.h"
 #include "orangutan_shim.h"
 #include "sercomm.h"
 
+uint64_t g_w2_hypervisor_cycles				  = 0;
+uint64_t g_w2_hypervisor_uptime_ms			  = 0;
+unsigned long g_w2_hypervisor_ema_sercomm_ms  = 0;
+unsigned long g_w2_hypervisor_ema_errcatch_ms = 0;
+unsigned long g_w2_hypervisor_ema_io_ms		  = 0;
+unsigned long g_w2_hypervisor_ema_mode_ms	  = 0;
+
 void w2_hypervisor_main() {
+#ifdef W2_SIM
+	w2_sim_cycle_begin();
+	if (DBG_ENABLE_CYCLEINFO) siminfo("cycle start\n");
+#endif
+
+	g_w2_hypervisor_uptime_ms += get_ms();
 	time_reset();
 
 	w2_sercomm_main();
@@ -18,14 +31,23 @@ void w2_hypervisor_main() {
 	w2_modes_main();
 	unsigned long mode_time = get_ms() - io_time;
 
-#ifdef W2_SIM
-	siminfo("sercomm:  %lums\n", sercomm_time);
-	siminfo("errcatch: %lums\n", errcatch_time);
-	siminfo("io:       %lums\n", io_time);
-	siminfo("mode:     %lums\n", mode_time);
+	// calculate exponential moving averages
+	g_w2_hypervisor_ema_sercomm_ms =
+		w2_util_exp_mov_avg(g_w2_hypervisor_ema_sercomm_ms, sercomm_time);
+	g_w2_hypervisor_ema_errcatch_ms =
+		w2_util_exp_mov_avg(g_w2_hypervisor_ema_errcatch_ms, errcatch_time);
+	g_w2_hypervisor_ema_io_ms	= w2_util_exp_mov_avg(g_w2_hypervisor_ema_io_ms, io_time);
+	g_w2_hypervisor_ema_mode_ms = w2_util_exp_mov_avg(g_w2_hypervisor_ema_mode_ms, mode_time);
 
-	usleep(100e3);
+	if (mode_time > W2_MAX_MODULE_CYCLE_MS) w2_errcatch_throw(W2_E_WARN_CYCLE_EXPIRED);
+
+#ifdef W2_SIM
+	if (DBG_ENABLE_CYCLEINFO) siminfo("cycle end\n");
+	if (!g_w2_sim_headless) usleep(100e3);
+
+	if (g_w2_sim_headless && DBG_MAX_CYCLES > -1 && g_w2_hypervisor_cycles > DBG_MAX_CYCLES)
+		exit(0);
 #endif
 
-	if (mode_time > W2_MAX_MODULE_CYCLE_MS) w2_errcatch_throw(W2_ERR_CYCLE_EXPIRED);
+	g_w2_hypervisor_cycles++;
 }

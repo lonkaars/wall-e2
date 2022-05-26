@@ -10,11 +10,14 @@ PORT ?= /dev/ttyACM0
 CFLAGS=-g -Wall $(DEVICE_SPECIFIC_CFLAGS) -Os
 LDFLAGS=-Wl,-gc-sections -Wl,-relax
 
+all: $(if $(SIM), a.out, out.hex)
+
 SOURCES := $(filter-out sim.c, $(wildcard *.c))
 HEADERS := $(filter-out sim.h, $(wildcard *.h))
+include ../shared/makefile
 
 # simulation
-# SIM = true
+SIM = true
 CFLAGS += $(if $(SIM), -DW2_SIM, -mcall-prologues -mmcu=$(MCU))
 LDFLAGS += $(if $(SIM), , -lpololu_$(DEVICE))
 PREFIX := $(if $(SIM), , avr-)
@@ -29,12 +32,10 @@ OBJ2HEX=$(PREFIX)objcopy
 
 # debug build info string
 BUILD_STR=$(shell git update-index -q --refresh; git describe --tags --dirty='*' --broken='x' | cut -c1-20)
-CFLAGS += -DW2_BUILD_STR="$(BUILD_STR)"
+CFLAGS += -DW2_BUILD_STR=\"$(BUILD_STR)\"
 
-all: $(if $(SIM), a.out, out.hex)
-
-clean:
-	rm -f *.o out.hex a.out compile_commands.json
+clean::
+	rm -f *.o out.hex a.out
 
 a.out: $(OBJECTS)
 	$(CC) $(OBJECTS) $(CFLAGS) $(LDFLAGS)

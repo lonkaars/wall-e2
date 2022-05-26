@@ -62,12 +62,11 @@ what they're supposed to do:
 |maze              |`mode_maze  `|may 31|Jorn & Abdullaahi| controls robot during maze portion of map; hands off control to warehouse module|
 |warehouse         |`mode_grid  `|may 31|Loek| controls robot during warehouse portion of map; hands off control to maze module|
 |emergency stop    |`mode_halt  `|may 31|Fiona| stops all execution until emergency mode is reset by software or user|
-|line finding      |`mode_calb  `|may 31|Fiona| find line by turning on own axis if lost|
+|line finding      |`mode_lcal  `|may 31|Fiona| find line by turning on own axis if lost|
 |charge station    |`mode_chrg  `|may 31|Fiona| go to the charging station transition in the grid, and continue until a black circle is found|
 |direct control    |`mode_dirc  `|may 31|Loek| respond to [DIRC](../protocol.md#DIRC) commands|
 |wet floor         |`mode_spin  `|may 31|Fiona| spin uncontrollably (simulating wet floor??)|
 |sensor calibration|`mode_scal  `|may 31|Jorn & Abdullaahi| calibrate underside uv sensors|
-
 
 ## some standards
 
@@ -109,10 +108,14 @@ global todo:
 - [ ] assume robot starts in maze
 - [ ] 'crosswalk' transition detection in seperate file (used by grid and maze
   mode)
-- [ ] calibrate (line-detecting) light sensors manually by placing the robot
-  and pressing a button
 - [ ] client software architecture
-- [ ] mode 'return' buffer
+- [x] mode 'return' buffer
+- [x] clear global timer at start of cycle instead of just for mode selection
+  module (for last ping time measurement)
+- [ ] calibrate (line-detecting) light sensors in setup.c, or manually by
+  placing the robot and pressing a button (maybe make this a seperate mode)
+- [ ] create labeled timer functions like nodejs `console.time()` and
+  `console.timeEnd()` (use for serial read timeout constraint)
 
 ### hypervisor
 
