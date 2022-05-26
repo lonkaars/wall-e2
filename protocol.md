@@ -42,7 +42,7 @@ readability.
 |`0x0e`|[SRES](#sres)|no|`r <-- c`|<u>s</u>oft <u>res</u>et
 |`0x10`|[MCFG](#mcfg)|no|`r <-- c`|<u>m</u>ap <u>c</u>on<u>f</u>i<u>g</u>
 |`0x12`|[SENS](#sens)|no|`r <-> c`|<u>sens</u>or data
-|`0x14`|[INFO](#info)|no|`r <-> c`|<u>info</u>
+|`0x14`|[INFO](#info)|yes|`r <-> c`|<u>info</u>
 |`0x16`|[DISP](#disp)|no|`r <-- c`|<u>disp</u>lay control
 |`0x18`|[PLAY](#play)|no|`r <-- c`|<u>play</u> midi
 |`0x1a`|[CLED](#cled)|no|`r <-- c`|<u>c</u>ontrol <u>led</u>s
