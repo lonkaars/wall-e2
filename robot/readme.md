@@ -99,6 +99,9 @@ this list will probably get updated from time to time:
 - general constants should be placed in `consts.h`
 - don't import `<pololu/orangutan.h>` directly, instead use
   `"orangutan_shim.h"` to keep code compatible with the simulator
+- don't use `<stdbool.h>`, instead use `"../shared/protocol.h"`. this makes
+  sure that `bool` values are equal to `uint8_t`. they're functionally
+  identical.
 
 ## todo
 

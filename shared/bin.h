@@ -32,3 +32,12 @@ uint16_t w2_bin_hton16(uint16_t h16);
 uint32_t w2_bin_ntoh32(uint32_t n32);
 /** convert 16-bit value from network (big-endian) to host endian */
 uint16_t w2_bin_ntoh16(uint16_t n16);
+
+/** replace 32-bit value from host endian to network (big-endian) */
+void w2_bin_repl_hton32(uint32_t *h32);
+/** replace 16-bit value from host endian to network (big-endian) */
+void w2_bin_repl_hton16(uint16_t *h16);
+/** replace 32-bit value from network (big-endian) to host endian */
+void w2_bin_repl_ntoh32(uint32_t *n32);
+/** replace 16-bit value from network (big-endian) to host endian */
+void w2_bin_repl_ntoh16(uint16_t *n16);

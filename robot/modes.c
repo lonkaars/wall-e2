@@ -1,8 +1,7 @@
-#include <stdbool.h>
-
+#include "modes.h"
+#include "../shared/protocol.h"
 #include "../shared/util.h"
 #include "errcatch.h"
-#include "modes.h"
 #include "sercomm.h"
 
 /** function pointer to current mode */

@@ -1,11 +1,14 @@
 #pragma once
 
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 
 #include "bin.h"
 #include "consts.h"
+
+typedef uint8_t bool;
+#define false 0 /* NOLINT */
+#define true 1	/* NOLINT */
 
 #define W2_SERIAL_START_BYTE 0xff
 
@@ -71,7 +74,7 @@ typedef struct {
 
 /** motor output struct */
 typedef struct {
-	int speed;
+	int16_t speed;
 } w2_s_o_motor;
 
 /** underside led output struct */

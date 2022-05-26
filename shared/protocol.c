@@ -1,5 +1,3 @@
-#include <stdbool.h>
-
 #include "protocol.h"
 #ifdef W2_SIM
 #include "../robot/orangutan_shim.h"

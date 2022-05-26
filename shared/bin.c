@@ -78,3 +78,8 @@ w2_s_bin *w2_bin_s_cat(w2_s_bin *a, w2_s_bin *b) {
 	free(b);
 	return c;
 }
+
+void w2_bin_repl_hton32(uint32_t *h32) { *h32 = w2_bin_hton32(*h32); }
+void w2_bin_repl_hton16(uint16_t *h16) { *h16 = w2_bin_hton16(*h16); }
+void w2_bin_repl_ntoh32(uint32_t *h32) { *h32 = w2_bin_ntoh32(*h32); }
+void w2_bin_repl_ntoh16(uint16_t *h16) { *h16 = w2_bin_ntoh16(*h16); }

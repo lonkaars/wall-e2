@@ -41,7 +41,7 @@ readability.
 |`0x0c`|[BOMD](#bomd)|no|`r <=> c`|<u>b</u>ack<u>o</u>rder <u>m</u>o<u>d</u>ify
 |`0x0e`|[SRES](#sres)|no|`r <-- c`|<u>s</u>oft <u>res</u>et
 |`0x10`|[MCFG](#mcfg)|no|`r <-- c`|<u>m</u>ap <u>c</u>on<u>f</u>i<u>g</u>
-|`0x12`|[SENS](#sens)|no|`r <-> c`|<u>sens</u>or data
+|`0x12`|[SENS](#sens)|yes|`r <-> c`|<u>sens</u>or data
 |`0x14`|[INFO](#info)|yes|`r <-> c`|<u>info</u>
 |`0x16`|[DISP](#disp)|no|`r <-- c`|<u>disp</u>lay control
 |`0x18`|[PLAY](#play)|no|`r <-- c`|<u>play</u> midi
@@ -277,15 +277,15 @@ later reference:
 
 requests sensor data
 
-#### sensor data response (`r --> c`) (??? bytes)
+#### sensor data response (`r --> c`) (44 bytes)
 
 |type|description|
 |-:|-|
 |`uint8_t`|opcode (`0x12 + 1`)|
-|`???`|???|
+|`w2_s_io_all`|sensor data (see shared/protocol.h for definition)|
 
 sensor data response. contains all sensor data (distance, ir, buttons) in one
-packet. format yet to be determined.
+packet.
 
 ### INFO
 

@@ -4,6 +4,7 @@
 #include "../shared/bin.h"
 #include "../shared/serial_parse.h"
 #include "hypervisor.h"
+#include "io.h"
 #include "mode_dirc.h"
 #include "modes.h"
 #include "orangutan_shim.h"
@@ -93,7 +94,30 @@ void w2_cmd_sres_rx(w2_s_bin *data) { return; }
 
 void w2_cmd_mcfg_rx(w2_s_bin *data) { return; }
 
-void w2_cmd_sens_rx(w2_s_bin *data) { return; }
+void w2_cmd_sens_rx(w2_s_bin *data) {
+	w2_s_cmd_sens_rx *message = malloc(w2_cmd_sizeof(data->data, data->bytes));
+	memcpy(message, data->data, data->bytes);
+
+	size_t return_size				 = sizeof(w2_s_cmd_sens_tx);
+	w2_s_cmd_sens_tx *return_message = malloc(return_size);
+	return_message->opcode			 = W2_CMD_SENS | W2_CMDDIR_TX;
+	memcpy((uint8_t *)&return_message->io, (uint8_t *)&g_w2_io, sizeof(w2_s_io_all));
+
+	for (int i = 0; i < 5; i++) w2_bin_repl_hton16(&return_message->io.qtr[i].range);
+	w2_bin_repl_hton16(&return_message->io.front_distance.detection);
+	w2_bin_repl_hton16(&return_message->io.side_distance.detection);
+	w2_bin_repl_hton16(&return_message->io.battery.charge_level);
+	w2_bin_repl_hton16((uint16_t *)&return_message->io.motor_left.speed);
+	w2_bin_repl_hton16((uint16_t *)&return_message->io.motor_right.speed);
+
+	w2_s_bin *return_message_bin = w2_bin_s_alloc(return_size, (uint8_t *)return_message);
+
+	w2_sercomm_append_msg(return_message_bin);
+
+	free(message);
+	free(return_message);
+	free(return_message_bin);
+}
 
 void w2_cmd_info_rx(w2_s_bin *data) {
 	w2_s_cmd_info_rx *message = malloc(w2_cmd_sizeof(data->data, data->bytes));

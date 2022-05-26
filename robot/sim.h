@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdbool.h>
 
 #include "../shared/bin.h"
+#include "../shared/protocol.h"
 
 extern bool g_w2_sim_headless;
 
