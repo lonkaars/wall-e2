@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <string.h>
 
 #include "consts.h"
 #include "serial_parse.h"

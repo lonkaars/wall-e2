@@ -24,6 +24,8 @@ typedef enum {
 	W2_E_CRIT_LINE_LOST = 0x02 | W2_E_TYPE_CRIT,
 	/** obstacle unavoidable, robot stuck */
 	W2_E_CRIT_OBSTACLE_STUCK = 0x03 | W2_E_TYPE_CRIT,
+	/** semver major version doesn't match */
+	W2_E_CRIT_VERSION_INCOMPATIBLE = 0x04 | W2_E_TYPE_CRIT,
 
 	/** battery low, returning to charging station */
 	W2_E_WARN_BATTERY_LOW = 0x00 | W2_E_TYPE_WARN,
@@ -39,6 +41,12 @@ typedef enum {
 	W2_E_WARN_LINE_LOST = 0x05 | W2_E_TYPE_WARN,
 	/** serial buffer full, gets thrown on next cycle */
 	W2_E_WARN_SERCOMM_BUFFER_FULL = 0x06 | W2_E_TYPE_WARN,
+	/** semver minor version doesn't match */
+	W2_E_WARN_VERSION_INCOMPATIBLE = 0x07 | W2_E_TYPE_WARN,
+	/** serial byte took to long to receive */
+	W2_E_WARN_SERIAL_TIMEOUT = 0x08 | W2_E_TYPE_WARN,
+	/** unknown message encountered (noisy channel?) */
+	W2_E_WARN_SERIAL_NOISY = 0x09 | W2_E_TYPE_WARN,
 } w2_e_errorcode;
 
 /**
