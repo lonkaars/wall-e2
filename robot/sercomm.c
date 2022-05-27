@@ -37,6 +37,7 @@ void w2_sercomm_main() {
 #ifdef W2_SIM
 		w2_sim_print_serial(data);
 #endif
+		serial_send("\xff", 1);
 		for (uint8_t i = 0; i < data->bytes; i++) {
 			uint8_t byte = data->data[i];
 			byte == 0xff ? serial_send("\xff\xff", 2) : serial_send((char *)&byte, 1);
