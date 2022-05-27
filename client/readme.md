@@ -10,11 +10,15 @@ this page is WIP
 |-|-|-|-|-|
 |view warnings / errors|
 |direct control|
+|configure map|
+|input orders|
 |enable/disable emergency mode|
-
-
-
-
+|enable/disable sensor calibration mode|
+|enable/disable wet floor mode|
+|read sensor values|
+|set display contents|optional
+|play music|optional
+|control leds|optional
 
 ## interface
 
