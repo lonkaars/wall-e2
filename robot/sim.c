@@ -105,7 +105,7 @@ void serial_send(char* message, unsigned int length) {
 }
 
 void serial_receive_ring(char* buffer, unsigned char size) {
-	simprintfunc("serial_receive_ring", "0x%016llx, %u", (uint64_t) buffer, size);
+	simprintfunc("serial_receive_ring", PTR_FMT ", %u", (uint64_t) buffer, size);
 }
 
 unsigned char serial_get_received_bytes() {
@@ -170,7 +170,7 @@ unsigned char get_single_debounced_button_press(unsigned char buttons) {
 }
 
 void qtr_read(unsigned int* sensor_values, unsigned char read_mode) {
-	simprintfunc("qtr_read", "0x%016llx, %s", (uint64_t) sensor_values, read_mode == QTR_EMITTERS_ON ? "QTR_EMITTERS_ON" : "???");
+	simprintfunc("qtr_read", PTR_FMT ", %s", (uint64_t) sensor_values, read_mode == QTR_EMITTERS_ON ? "QTR_EMITTERS_ON" : "???");
 	sensor_values[0] = 0;
 	sensor_values[1] = 0;
 	sensor_values[2] = 0;

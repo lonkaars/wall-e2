@@ -45,8 +45,6 @@ typedef enum {
 	W2_E_WARN_SERCOMM_BUFFER_FULL = 0x06 | W2_E_TYPE_WARN,
 	/** semver minor version doesn't match */
 	W2_E_WARN_VERSION_INCOMPATIBLE = 0x07 | W2_E_TYPE_WARN,
-	/** serial byte took to long to receive */
-	W2_E_WARN_SERIAL_TIMEOUT = 0x08 | W2_E_TYPE_WARN,
 	/** unknown message encountered (noisy channel?) */
 	W2_E_WARN_SERIAL_NOISY = 0x09 | W2_E_TYPE_WARN,
 	/** mode history index out of bounds */

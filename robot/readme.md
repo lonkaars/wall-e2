@@ -43,7 +43,7 @@ organizational and form more of a software 'skeleton', while the 'maze' and
                                                           Maze ─┤
                                                      Warehouse ─┤
                                                 Emergency stop ─┤
-                      *modes* ->                  Line finding ─┤
+                        *logic modes* ->          Line finding ─┤
                                                 Charge station ─┤
                                                 Direct control ─┤
                                                      Wet floor ─┤

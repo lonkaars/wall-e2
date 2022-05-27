@@ -3,6 +3,7 @@
 
 #include "../shared/bin.h"
 #include "../shared/serial_parse.h"
+#include "errcatch.h"
 #include "hypervisor.h"
 #include "io.h"
 #include "mode_dirc.h"
@@ -49,6 +50,26 @@ void w2_sercomm_append_msg(w2_s_bin *data) {
 	g_w2_sercomm_buffer[g_w2_sercomm_index] = w2_bin_s_alloc(data->bytes, data->data);
 	if (g_w2_sercomm_buffer_full) return;
 	g_w2_sercomm_index = next_index;
+}
+
+void w2_cmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_length) {
+	w2_s_bin *copy				= w2_bin_s_alloc(data_length, data);
+	void (*handler)(w2_s_bin *) = g_w2_cmd_handlers[data[0]];
+
+	if (handler == NULL) {
+#ifdef W2_SIM
+		// TODO throw warning
+		simwarn("unknown serial message with code 0x%02x\n", data[0]);
+#endif
+		w2_errcatch_throw(W2_E_WARN_SERIAL_NOISY);
+	} else {
+#ifdef W2_SIM
+		w2_sim_print_serial(copy);
+#endif
+		handler(copy);
+	}
+
+	free(copy);
 }
 
 void w2_cmd_ping_rx(w2_s_bin *data) {

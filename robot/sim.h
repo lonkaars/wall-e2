@@ -54,6 +54,12 @@ extern bool g_w2_sim_headless;
 		COL_CYN name COL_RST "(" COL_YEL fmt COL_RST ")\n", ##__VA_ARGS__); }
 #define simwarn(message, ...) if (DBG_ENABLE_SIMWARN) { simprintf(COL_YEL "[WARN] " COL_RST message, ##__VA_ARGS__); }
 #define siminfo(message, ...) if (DBG_ENABLE_SIMINFO) { simprintf(COL_MAG "[INFO] " COL_RST message, ##__VA_ARGS__); }
+#ifdef W2_HOST_LINUX
+#define PTR_FMT "0x%016lx"
+#endif
+#ifdef W2_HOST_WIN32
+#define PTR_FMT "0x%016llx"
+#endif
 
 #define BUTTON_A 0
 #define BUTTON_B 1
