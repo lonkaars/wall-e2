@@ -72,15 +72,15 @@ what they're supposed to do:
 
 this list will probably get updated from time to time:
 
-- modules shouldn't create any global state variables, they should use `static`
-  variables instead.
-- modules are run cyclically, so they shouldn't take more than
+- logic modules shouldn't create any global state variables if possible, they
+  should use `static` variables instead
+- logic modules are run cyclically, so they shouldn't take more than
   `W2_MAX_MODULE_CYCLE_MS` to execute (this is an arbitrary number, and may be
-  changed).
+  changed)
 - documentation comments should follow the [javadoc-style doxygen
   format](https://wiki.scilab.org/Doxygen%20documentation%20Examples) and be
-  placed in header (.h) files if possible. this only applies to public members
-  (e.g. no local variables or module-internal code).
+  placed in header (.h) files. this only applies to public members (e.g. no
+  local variables or module-internal code)
 - code style is mostly handled by `clang-format` and `clang-tidy`, but you
   should still follow these naming conventions (`<angle brackets>` indicate
   placeholders):
@@ -93,15 +93,15 @@ this list will probably get updated from time to time:
   |enum|`w2_e_<name>`|`w2_e_errorcodes`; `w2_e_serial_commands`|
   
   this again only applies to public members. local variables should still have
-  short descriptive names, but shouldn't be prefixed with `w2_*`.
+  short descriptive names, but shouldn't be prefixed with `w2_*`
 - arbitrary numbers should be aliased to `#define` statements or `enum`s if
-  part of a series.
+  part of a series
 - general constants should be placed in `consts.h`
 - don't import `<pololu/orangutan.h>` directly, instead use
   `"orangutan_shim.h"` to keep code compatible with the simulator
 - don't use `<stdbool.h>`, instead use `"../shared/protocol.h"`. this makes
   sure that `bool` values are equal to `uint8_t`. they're functionally
-  identical.
+  identical
 
 ## todo
 
@@ -119,6 +119,8 @@ global todo:
   placing the robot and pressing a button (maybe make this a seperate mode)
 - [ ] create labeled timer functions like nodejs `console.time()` and
   `console.timeEnd()` (use for serial read timeout constraint)
+- [ ] `serial_parse` doesn't properly handle escaped `0xff` bytes in listen
+  mode
 
 ### hypervisor
 
