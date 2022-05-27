@@ -39,10 +39,15 @@ organizational and form more of a software 'skeleton', while the 'maze' and
 ┌────────┴───────┐┌─────────┴────────┐┌────────┴─────────┐┌─────┴──────┐
 │ Error handling ││ I/O Read & Write ││ PC communication ││ Mode logic │
 └────────────────┘└──────────────────┘└──────────────────┘└─────┬──────┘
-                      ┌──────────┬──────────────┬───────────────┤
-                  ┌───┴──┐┌──────┴────┐┌────────┴───────┐┌──────┴──────┐
-      *modes* ->  │ Maze ││ Warehouse ││ Emergency stop ││ Calibration │
-                  └──────┘└───────────┘└────────────────┘└─────────────┘
+                                                                │
+                                                          Maze ─┤
+                                                     Warehouse ─┤
+                                                Emergency stop ─┤
+                      *modes* ->                  Line finding ─┤
+                                                Charge station ─┤
+                                                Direct control ─┤
+                                                     Wet floor ─┤
+                                            Sensor calibration ─┘
 ```
 
 this diagram roughly describes how different parts of the robot software are
@@ -64,7 +69,7 @@ what they're supposed to do:
 |emergency stop    |`mode_halt  `|may 31|Fiona| stops all execution until emergency mode is reset by software or user|
 |line finding      |`mode_lcal  `|may 31|Fiona| find line by turning on own axis if lost|
 |charge station    |`mode_chrg  `|may 31|Fiona| go to the charging station transition in the grid, and continue until a black circle is found|
-|direct control    |`mode_dirc  `|may 31|Loek| respond to [DIRC](../protocol.md#DIRC) commands|
+|direct control    |`mode_dirc  `|done|Loek| respond to [DIRC](../protocol.md#DIRC) commands|
 |wet floor         |`mode_spin  `|may 31|Fiona| spin uncontrollably (simulating wet floor??)|
 |sensor calibration|`mode_scal  `|may 31|Jorn & Abdullaahi| calibrate underside uv sensors|
 
