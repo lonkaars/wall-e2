@@ -3,8 +3,7 @@
 #include "consts.h"
 #include "serial_parse.h"
 
-// TODO: give this function last time of byte, and measure if >5ms, throw warning
-void w2_serial_parse(uint8_t byte) {
+bool w2_serial_parse(uint8_t byte) {
 	static uint8_t current_message[W2_SERIAL_READ_BUFFER_SIZE] = {0};
 	static uint8_t current_message_index					   = 0;
 	static uint8_t complete_message_length					   = 2;
@@ -14,18 +13,14 @@ void w2_serial_parse(uint8_t byte) {
 
 	if (byte == W2_SERIAL_START_BYTE) {
 		attentive = !attentive;
-		// if (attentive && listening) {
-		// 	current_message[current_message_index++] = byte;
-		// }
-	} else {
-		// activate listen after non-0xff byte after 0xff
-		if (attentive && !listening) {
-			attentive = false;
-			listening = true;
-		}
+		if (attentive && listening) return W2_SERIAL_READ_SUCCESS;
+	} else if (attentive) {
+		attentive = false;
+		listening = !listening;
+		if (!listening) return W2_SERIAL_READ_FAILURE;
 	}
 
-	if (!listening) return;
+	if (!listening) return W2_SERIAL_READ_SUCCESS;
 	current_message[current_message_index++] = byte;
 
 	complete_message_length = w2_cmd_sizeof(current_message, current_message_index);
@@ -38,6 +33,8 @@ void w2_serial_parse(uint8_t byte) {
 		complete_message_length = 1;
 		attentive				= false;
 		listening				= false;
-		return;
+		return W2_SERIAL_READ_SUCCESS;
 	}
+
+	return W2_SERIAL_READ_SUCCESS;
 }

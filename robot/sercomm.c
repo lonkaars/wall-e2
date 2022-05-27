@@ -26,16 +26,21 @@ void w2_sercomm_main() {
 #endif
 	// read and parse data
 	while (serial_get_received_bytes() != g_w2_serial_buffer_index) {
-		w2_serial_parse(g_w2_serial_buffer[g_w2_serial_buffer_index]);
+		if (!w2_serial_parse(g_w2_serial_buffer[g_w2_serial_buffer_index]))
+			w2_errcatch_throw(W2_E_WARN_SERIAL_NOISY);
 		g_w2_serial_buffer_index = (g_w2_serial_buffer_index + 1) % W2_SERIAL_READ_BUFFER_SIZE;
 	}
 
 	// send data
 	while (g_w2_sercomm_offset != g_w2_sercomm_index) {
-		w2_s_bin *data	= g_w2_sercomm_buffer[g_w2_sercomm_offset];
-		char *data_cast = malloc(data->bytes);
-		memcpy(data_cast, data->data, data->bytes);
-		serial_send(data_cast, data->bytes);
+		w2_s_bin *data = g_w2_sercomm_buffer[g_w2_sercomm_offset];
+#ifdef W2_SIM
+		w2_sim_print_serial(data);
+#endif
+		for (uint8_t i = 0; i < data->bytes; i++) {
+			uint8_t byte = data->data[i];
+			byte == 0xff ? serial_send("\xff\xff", 2) : serial_send((char *)&byte, 1);
+		}
 		g_w2_sercomm_offset = (g_w2_sercomm_offset + 1) % W2_SERCOMM_BUFFER_SIZE;
 	}
 }

@@ -112,19 +112,15 @@ this list will probably get updated from time to time:
 
 global todo:
 
-- [ ] start robot in calibration mode
 - [ ] assume robot starts in maze
-- [ ] 'crosswalk' transition detection in seperate file (used by grid and maze
-  mode)
+- [ ] 'crosswalk' transition detection and line following in seperate file
+  (used by grid, maze, and charge mode)
 - [ ] client software architecture
-- [x] mode 'return' buffer
-- [x] clear global timer at start of cycle instead of just for mode selection
-  module (for last ping time measurement)
-- [ ] calibrate (line-detecting) light sensors in setup.c, or manually by
-  placing the robot and pressing a button (maybe make this a seperate mode)
-- [ ] create labeled timer functions like nodejs `console.time()` and
+- [ ] enter mode_scal by placing the robot on a white surface and pressing a
+  button
+- [x] create labeled timer functions like nodejs `console.time()` and
   `console.timeEnd()` (use for serial read timeout constraint)
-- [ ] `serial_parse` doesn't properly handle escaped `0xff` bytes in listen
+- [x] `serial_parse` doesn't properly handle escaped `0xff` bytes in listen
   mode
 
 ### hypervisor
