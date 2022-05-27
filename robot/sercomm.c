@@ -117,7 +117,24 @@ void w2_cmd_cord_rx(w2_s_bin *data) { return; }
 
 void w2_cmd_bomd_rx(w2_s_bin *data) { return; }
 
-void w2_cmd_sres_rx(w2_s_bin *data) { return; }
+void w2_cmd_sres_rx(w2_s_bin *data) {
+	w2_s_cmd_sres_rx *message = malloc(w2_cmd_sizeof(data->data, data->bytes));
+	memcpy(message, data->data, data->bytes);
+
+	switch (message->type) {
+		case W2_CMD_SRES_RX_TYPE_REINITGS: {
+			// TODO: soft-reset
+			break;
+		}
+		case W2_CMD_SRES_RX_TYPE_PREVMODE: {
+			w2_modes_call(W2_M_PREV);
+			break;
+		}
+		default: {
+			w2_errcatch_throw(W2_E_WARN_SERIAL_NOISY);
+		}
+	}
+}
 
 void w2_cmd_mcfg_rx(w2_s_bin *data) { return; }
 

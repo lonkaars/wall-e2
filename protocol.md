@@ -39,7 +39,7 @@ readability.
 |`0x08`|[DIRC](#dirc)|yes|`r <-- c`|<u>dir</u>ect <u>c</u>ontrol
 |`0x0a`|[CORD](#cord)|no|`r <=> c`|<u>co</u>o<u>rd</u>inate
 |`0x0c`|[BOMD](#bomd)|no|`r <=> c`|<u>b</u>ack<u>o</u>rder <u>m</u>o<u>d</u>ify
-|`0x0e`|[SRES](#sres)|no|`r <-- c`|<u>s</u>oft <u>res</u>et
+|`0x0e`|[SRES](#sres)|yes|`r <-- c`|<u>s</u>oft <u>res</u>et
 |`0x10`|[MCFG](#mcfg)|no|`r <-- c`|<u>m</u>ap <u>c</u>on<u>f</u>i<u>g</u>
 |`0x12`|[SENS](#sens)|yes|`r <-> c`|<u>sens</u>or data
 |`0x14`|[INFO](#info)|yes|`r <-> c`|<u>info</u>
@@ -223,7 +223,7 @@ _status_ is one of:
 
 _type_ is one of:
 - 0: reinitialize all global state
-- 1: reset emergency mode
+- 1: go to previous mode
 
 ### MCFG
 

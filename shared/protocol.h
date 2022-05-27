@@ -114,6 +114,8 @@ typedef struct {
 	uint8_t status;
 } w2_s_cmd_bomd_tx;
 
+#define W2_CMD_SRES_RX_TYPE_REINITGS 0
+#define W2_CMD_SRES_RX_TYPE_PREVMODE 1
 typedef struct {
 	uint8_t opcode;
 	uint8_t type;
