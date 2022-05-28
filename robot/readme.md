@@ -22,7 +22,14 @@ SIM = true`, the robot code can be compiled for desktop debugging instead. all
 used pololu functions must be manually implemented in sim.c for this to work,
 but it allows easier debugging. *it's important that the `orangutan_shim.h`
 header is used instead of including `<pololu/orangutan.h>` directly for this to
-keep working!*
+keep working!* if you want to use the simulation robot code with the client,
+compile the sim like normal, and use `socat` to create a pseudo-tty and foward
+stdio. this pseudo-tty can be used as the com port argument for the client.
+here's an example command that creates a tty device in this folder:
+
+```
+./a.out headless | socat pty,raw,echo=0,link=tty -
+```
 
 ## module hierarchy
 

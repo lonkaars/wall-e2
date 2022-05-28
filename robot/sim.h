@@ -18,7 +18,7 @@ extern bool g_w2_sim_headless;
 #define DBG_ENABLE_CYCLEINFO (0)
 #define DBG_ENABLE_SERIAL (1)
 
-#define DBG_MAX_CYCLES (10)
+#define DBG_MAX_CYCLES (-1)
 
 // debug print options
 #define DBG_BYTES_PER_LINE 16
