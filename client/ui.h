@@ -43,9 +43,9 @@ void w2_ui_paint_statusbar();
 void w2_ui_main();
 
 /** get ansi color code for foreground color */
-char* w2_ui_set_fg(w2_e_colors color);
+char *w2_ui_set_fg(w2_e_colors color);
 /** get ansi color code for background color */
-char* w2_ui_set_bg(w2_e_colors color);
+char *w2_ui_set_bg(w2_e_colors color);
 
 /** align `text` `align` with `text` buffer length `length` */
 void w2_ui_align(char *text, w2_e_alignment align, unsigned int length);

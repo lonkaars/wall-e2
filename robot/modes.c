@@ -1,7 +1,7 @@
 #include "modes.h"
+#include "../shared/errcatch.h"
 #include "../shared/protocol.h"
 #include "../shared/util.h"
-#include "../shared/errcatch.h"
 #include "sercomm.h"
 
 /** function pointer to current mode */

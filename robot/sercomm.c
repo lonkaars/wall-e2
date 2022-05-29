@@ -2,8 +2,8 @@
 #include <string.h>
 
 #include "../shared/bin.h"
-#include "../shared/serial_parse.h"
 #include "../shared/errcatch.h"
+#include "../shared/serial_parse.h"
 #include "hypervisor.h"
 #include "io.h"
 #include "mode_dirc.h"
@@ -65,8 +65,8 @@ void w2_cmd_ping_rx(w2_s_bin *data) {
 	W2_CAST_BIN(w2_s_cmd_ping_rx, data, req);
 
 	W2_CREATE_MSG_BIN(w2_s_cmd_ping_tx, res_msg, res_bin);
-	res_msg->opcode			 = W2_CMD_PING | W2_CMDDIR_TX;
-	res_msg->id				 = req->id;
+	res_msg->opcode = W2_CMD_PING | W2_CMDDIR_TX;
+	res_msg->id		= req->id;
 
 	w2_sercomm_append_msg(res_bin);
 	free(res_bin);
@@ -112,7 +112,7 @@ void w2_cmd_mcfg_rx(w2_s_bin *data) { return; }
 
 void w2_cmd_sens_rx(w2_s_bin *data) {
 	W2_CREATE_MSG_BIN(w2_s_cmd_sens_tx, res_msg, res_bin);
-	res_msg->opcode			 = W2_CMD_SENS | W2_CMDDIR_TX;
+	res_msg->opcode = W2_CMD_SENS | W2_CMDDIR_TX;
 	memcpy((uint8_t *)&res_msg->io, (uint8_t *)&g_w2_io, sizeof(w2_s_io_all));
 
 	for (int i = 0; i < 5; i++) w2_bin_repl_hton16(&res_msg->io.qtr[i].range);
@@ -128,13 +128,13 @@ void w2_cmd_sens_rx(w2_s_bin *data) {
 
 void w2_cmd_info_rx(w2_s_bin *data) {
 	W2_CREATE_MSG_BIN(w2_s_cmd_info_tx, res_msg, res_bin);
-	res_msg->opcode			 = W2_CMD_INFO | W2_CMDDIR_TX;
+	res_msg->opcode = W2_CMD_INFO | W2_CMDDIR_TX;
 	strncpy((char *)res_msg->build_str, W2_BUILD_STR, sizeof(res_msg->build_str));
 	res_msg->errcatch_ms = (uint8_t)g_w2_hypervisor_ema_errcatch_ms;
-	res_msg->io_ms		= (uint8_t)g_w2_hypervisor_ema_io_ms;
-	res_msg->sercomm_ms	= (uint8_t)g_w2_hypervisor_ema_sercomm_ms;
-	res_msg->mode_ms		= (uint8_t)g_w2_hypervisor_ema_mode_ms;
-	res_msg->uptime_s	= w2_bin_hton32((uint32_t)(g_w2_hypervisor_uptime_ms / 1e3));
+	res_msg->io_ms		 = (uint8_t)g_w2_hypervisor_ema_io_ms;
+	res_msg->sercomm_ms	 = (uint8_t)g_w2_hypervisor_ema_sercomm_ms;
+	res_msg->mode_ms	 = (uint8_t)g_w2_hypervisor_ema_mode_ms;
+	res_msg->uptime_s	 = w2_bin_hton32((uint32_t)(g_w2_hypervisor_uptime_ms / 1e3));
 
 	w2_sercomm_append_msg(res_bin);
 	free(res_bin);

@@ -1,6 +1,6 @@
 #include "hypervisor.h"
-#include "../shared/util.h"
 #include "../shared/errcatch.h"
+#include "../shared/util.h"
 #include "io.h"
 #include "modes.h"
 #include "orangutan_shim.h"
@@ -46,8 +46,7 @@ void w2_hypervisor_main() {
 	if (DBG_ENABLE_CYCLEINFO) siminfo("cycle end\n");
 	if (DBG_CYCLE_DELAY > 0) usleep(DBG_CYCLE_DELAY);
 
-	if (DBG_MAX_CYCLES > -1 && g_w2_hypervisor_cycles > DBG_MAX_CYCLES)
-		exit(0);
+	if (DBG_MAX_CYCLES > -1 && g_w2_hypervisor_cycles > DBG_MAX_CYCLES) exit(0);
 #endif
 
 	g_w2_hypervisor_cycles++;

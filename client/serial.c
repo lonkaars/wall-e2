@@ -1,9 +1,9 @@
 #include <memory.h>
 
-#include "serial.h"
 #include "../shared/protocol.h"
 #include "../shared/serial_parse.h"
 #include "main.h"
+#include "serial.h"
 #include "time.h"
 
 void w2_serial_main() {
@@ -16,7 +16,7 @@ void w2_cmd_ping_tx(w2_s_bin *data) {
 
 	if (g_w2_state.ping_received) return;
 	if (g_w2_state.ping_id != cast->id) return;
-	g_w2_state.ping = w2_timer_end(W2_TIMER_PING);
+	g_w2_state.ping			 = w2_timer_end(W2_TIMER_PING);
 	g_w2_state.ping_received = true;
 
 	printf("ping measured, %ims\n", g_w2_state.ping);
