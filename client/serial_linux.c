@@ -63,7 +63,7 @@ speed_t w2_baud_map(int baud) {
 int w2_serial_read() {
 	int return_val;
 	int bytes = read(g_w2_serial_handle, &return_val, 1);
-	return return_val == -1 || bytes != 1 ? -1 : (uint8_t)return_val;
+	return bytes != 1 ? -1 : (uint8_t)return_val;
 }
 
 bool w2_serial_write(char *data, uint8_t length) {

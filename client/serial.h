@@ -16,3 +16,5 @@ bool w2_serial_write(char *data, uint8_t length);
 bool w2_serial_open(const char *port_name);
 /** close serial port */
 void w2_serial_close();
+
+void w2_serial_main();

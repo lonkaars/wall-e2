@@ -27,7 +27,8 @@ the robot in various ways. it primarily works in a bios-like way, with the user
 having access to multiple tabs containing options or custom interface elements.
 
 to start the interface, the user should run `./main <com-port>`. the interface
-could look something like this (with colored text for element seperation):
+could look something like this (with colored text for element seperation, [see
+on figma](https://www.figma.com/file/vZ6rQp2G1HBAmbdrkxIZJ3/terminal-app)):
 
 ```
 verbonden, 2ms ping           (0.0.2-11-g92c394b)                  batterij 100%

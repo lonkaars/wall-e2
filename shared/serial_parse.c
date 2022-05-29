@@ -2,6 +2,10 @@
 
 #include "consts.h"
 #include "serial_parse.h"
+#include "errcatch.h"
+#ifdef W2_SIM
+#include "../robot/orangutan_shim.h"
+#endif
 
 bool w2_serial_parse(uint8_t byte) {
 	static uint8_t current_message[W2_SERIAL_READ_BUFFER_SIZE] = {0};
@@ -38,3 +42,20 @@ bool w2_serial_parse(uint8_t byte) {
 
 	return W2_SERIAL_READ_SUCCESS;
 }
+
+void w2_cmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_length) {
+	w2_s_bin *copy				= w2_bin_s_alloc(data_length, data);
+	void (*handler)(w2_s_bin *) = g_w2_cmd_handlers[data[0]];
+
+	if (handler == NULL) {
+		w2_errcatch_throw(W2_E_WARN_SERIAL_NOISY);
+	} else {
+#ifdef W2_SIM
+		w2_sim_print_serial(copy);
+#endif
+		handler(copy);
+	}
+
+	free(copy);
+}
+

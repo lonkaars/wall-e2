@@ -1,8 +1,11 @@
 #pragma once
 
-/** @file errors.h */
+/** @file errcatch.h */
 
 #include <stdint.h>
+
+#include "consts.h"
+#include "bool.h"
 
 #define W2_E_TYPE_MASK (0b11 << 6)
 
@@ -62,3 +65,34 @@ typedef struct {
 	uint8_t message_length;
 	char message[];
 } w2_s_error;
+
+/** error ring buffer */
+extern w2_s_error *g_w2_error_buffer[W2_ERROR_BUFFER_SIZE];
+/** stores head of ring buffer */
+extern uint8_t g_w2_error_index;
+/** stores start of ring buffer */
+extern uint8_t g_w2_error_offset;
+/** error buffer full flag */
+extern bool g_w2_error_buffer_full;
+/** uncaught error flag */
+extern bool g_w2_error_uncaught;
+
+/** error-handler module main */
+void w2_errcatch_main();
+
+/** handle error */
+void w2_errcatch_handle_error(w2_s_error *error);
+
+/** append error to error buffer */
+void w2_errcatch_throw(w2_e_errorcode code);
+
+/** append error to error buffer (with debug message) */
+void w2_errcatch_throw_msg(w2_e_errorcode code, uint16_t length, const char *message);
+
+/**
+ * allocate and initialize error struct
+ *
+ * TODO: doesn't handle null pointers from malloc
+ */
+w2_s_error *w2_alloc_error(w2_e_errorcode code, uint16_t length, const char *message);
+

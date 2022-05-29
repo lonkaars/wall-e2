@@ -5,6 +5,7 @@
 #include "sim.h"
 #endif
 
+#include <unistd.h>
 int main(int argc, char **argv) {
 #ifdef W2_SIM
 	w2_sim_setup(argc, argv);

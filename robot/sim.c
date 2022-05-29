@@ -10,7 +10,7 @@
 #include "../shared/consts.h"
 #include "../shared/protocol.h"
 #include "sercomm.h"
-#include "errcatch.h"
+#include "../shared/errcatch.h"
 
 struct timespec reference_time; // NOLINT
 bool g_w2_sim_headless = false;

@@ -1,6 +1,6 @@
 #include "hypervisor.h"
 #include "../shared/util.h"
-#include "errcatch.h"
+#include "../shared/errcatch.h"
 #include "io.h"
 #include "modes.h"
 #include "orangutan_shim.h"
