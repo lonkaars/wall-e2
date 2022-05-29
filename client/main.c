@@ -4,6 +4,8 @@
 #include "serial.h"
 #include "ui.h"
 
+w2_s_client_state g_w2_state;
+
 int main(int argc, char **argv) {
 	w2_client_setup(argc, argv);
 

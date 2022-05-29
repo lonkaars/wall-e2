@@ -1,15 +1,18 @@
 #include "serial.h"
+#include "time.h"
+#include "main.h"
 #include "../shared/protocol.h"
 #include "../shared/serial_parse.h"
 
 void w2_serial_main() {
 	int temp;
 	while ((temp = w2_serial_read()) != -1) w2_serial_parse(temp);
-	w2_serial_write("\xff\x14", 2);
 }
 
 void w2_cmd_ping_tx(w2_s_bin *data) {
-	printf("w2_cmd_ping_tx()\n");
+	// TODO: check ping id
+	g_w2_state.ping = w2_timer_end(W2_TIMER_PING);
+	printf("ping measured, %ims\n", g_w2_state.ping);
 }
 void w2_cmd_expt_tx(w2_s_bin *data) {
 	printf("w2_cmd_expt_tx()\n");

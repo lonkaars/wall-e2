@@ -3,6 +3,7 @@
 
 #include "serial.h"
 #include "setup.h"
+#include "commands.h"
 #include "../shared/bin.h"
 #include "../shared/protocol.h"
 
@@ -23,6 +24,9 @@ void w2_client_setup(int argc, char** argv) {
 	}
 
 	w2_cmd_setup_handlers();
+
+	w2_send_info();
+	w2_send_ping();
 
 	// check endianness
 	g_w2_endianness = *_ptest;
