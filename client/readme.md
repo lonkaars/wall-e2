@@ -8,17 +8,17 @@ this page is WIP
 
 |feature|due|status|author|description|
 |-|-|-|-|-|
-|view warnings / errors|
-|direct control|
-|configure map|
-|input orders|
-|enable/disable emergency mode|
-|enable/disable sensor calibration mode|
-|enable/disable wet floor mode|
-|read sensor values|
-|set display contents|optional
-|play music|optional
-|control leds|optional
+|view warnings / errors|may 31|unimplemented||see a log of parsed warnings/errors
+|direct control|may 31|unimplemented||directly control the robot with tank-style controls
+|configure map|june 04|unimplemented||set map width/height and define entry/exitpoints
+|input orders|june 04|unimplemented||type orders with lists of coordinates to visit
+|enable/disable emergency mode|may 31|unimplemented||self-explanatory
+|enable/disable sensor calibration mode|may 31|unimplemented||self-explanatory
+|enable/disable wet floor mode|may 31|unimplemented||self-explanatory
+|read sensor values|june 04|unimplemented||dashboard that displays all i/o as bar graphs
+|set display contents|optional|unimplemented||send text to display on lcd
+|play music|optional|unimplemented||play tunes
+|control leds|optional|unimplemented||turn on/off underside leds
 
 ## interface
 
