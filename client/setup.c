@@ -6,6 +6,7 @@
 #include "commands.h"
 #include "serial.h"
 #include "setup.h"
+#include "term.h"
 
 // pointers for endianness check
 static const uint16_t _test	 = 1;
@@ -22,6 +23,8 @@ void w2_client_setup(int argc, char **argv) {
 		printf("serial port open fout\n");
 		exit(1);
 	}
+
+	w2_term_raw_mode();
 
 	w2_cmd_setup_handlers();
 
