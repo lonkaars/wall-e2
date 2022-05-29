@@ -9,3 +9,4 @@ client/main
 *.log
 scripts/InstallationLog.txt
 docs/
+robot/tty

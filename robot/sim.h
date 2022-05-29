@@ -24,15 +24,6 @@ extern bool g_w2_sim_headless;
 #define DBG_BYTES_PER_LINE 16
 
 // debug colors
-#define COL_BLK ""
-#define COL_RED ""
-#define COL_GRN ""
-#define COL_YEL ""
-#define COL_BLU ""
-#define COL_MAG ""
-#define COL_CYN ""
-#define COL_WHT ""
-#define COL_RST ""
 #ifdef DBG_ENABLE_COLOR
 #define COL_BLK "\e[0;30m"
 #define COL_RED "\e[0;31m"
@@ -43,6 +34,16 @@ extern bool g_w2_sim_headless;
 #define COL_CYN "\e[0;36m"
 #define COL_WHT "\e[0;37m"
 #define COL_RST "\e[0m"
+#else
+#define COL_BLK ""
+#define COL_RED ""
+#define COL_GRN ""
+#define COL_YEL ""
+#define COL_BLU ""
+#define COL_MAG ""
+#define COL_CYN ""
+#define COL_WHT ""
+#define COL_RST ""
 #endif
 
 // debug stdout print macros

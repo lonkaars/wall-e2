@@ -71,7 +71,7 @@ bool w2_serial_write(char *data, uint8_t length) {
 }
 
 bool w2_serial_open(const char *port_name) {
-	g_w2_serial_handle = open(port_name, O_RDWR | O_NOCTTY | O_NONBLOCK);
+	g_w2_serial_handle = open(port_name, O_RDWR | O_NONBLOCK);
 	if (g_w2_serial_handle < 0 || tcgetattr(g_w2_serial_handle, &g_w2_tty) != 0) return false;
 
 	g_w2_tty_old = g_w2_tty;
@@ -80,8 +80,6 @@ bool w2_serial_open(const char *port_name) {
 	cfsetospeed(&g_w2_tty, baud);
 	cfsetispeed(&g_w2_tty, baud);
 
-	g_w2_tty.c_cflag &= ~(PARENB | CSTOPB | CSIZE | CRTSCTS);
-	g_w2_tty.c_cflag |= CS8 | CREAD | CLOCAL;
 	g_w2_tty.c_cc[VMIN]	 = 0;
 	g_w2_tty.c_cc[VTIME] = 0;
 
