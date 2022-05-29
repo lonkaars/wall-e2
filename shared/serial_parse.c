@@ -1,8 +1,8 @@
 #include <string.h>
 
 #include "consts.h"
-#include "serial_parse.h"
 #include "errcatch.h"
+#include "serial_parse.h"
 #ifdef W2_SIM
 #include "../robot/orangutan_shim.h"
 #endif
@@ -58,4 +58,3 @@ void w2_cmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_lengt
 
 	free(copy);
 }
-

@@ -16,4 +16,3 @@ void w2_errcatch_handle_error(w2_s_error *error) {
 
 	return;
 }
-

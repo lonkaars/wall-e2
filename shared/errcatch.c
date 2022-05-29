@@ -6,7 +6,7 @@
 w2_s_error *g_w2_error_buffer[W2_ERROR_BUFFER_SIZE] = {};
 uint8_t g_w2_error_index							= 0;
 uint8_t g_w2_error_offset							= 0;
-bool g_w2_error_buffer_full						= 0;
+bool g_w2_error_buffer_full							= 0;
 bool g_w2_error_uncaught							= 0;
 
 void w2_errcatch_main() {
@@ -43,4 +43,3 @@ void w2_errcatch_throw_msg(w2_e_errorcode code, uint16_t length, const char *mes
 	if (g_w2_error_buffer_full) return;
 	g_w2_error_index = next_index;
 }
-

@@ -1,7 +1,7 @@
-#include "setup.h"
-#include "../shared/errcatch.h"
 #include "main.h"
+#include "../shared/errcatch.h"
 #include "serial.h"
+#include "setup.h"
 #include "ui.h"
 
 w2_s_client_state g_w2_state;

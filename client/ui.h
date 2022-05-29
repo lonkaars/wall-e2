@@ -48,11 +48,10 @@ void w2_ui_set_fg(w2_e_colors color);
 void w2_ui_set_bg(w2_e_colors color);
 
 /** align `text` `align` with `text` buffer length `length` */
-void w2_ui_align(char* text, w2_e_alignment align, unsigned int length);
+void w2_ui_align(char *text, w2_e_alignment align, unsigned int length);
 
 /**
  * trim spaces from `top` and overlay on top of `bottom`
  * both strings should be at least `length` long
  */
-void w2_ui_overlay(char* bottom, char* top, unsigned int length);
-
+void w2_ui_overlay(char *bottom, char *top, unsigned int length);

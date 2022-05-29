@@ -4,8 +4,8 @@
 
 #include <stdint.h>
 
-#include "consts.h"
 #include "bool.h"
+#include "consts.h"
 
 #define W2_E_TYPE_MASK (0b11 << 6)
 
@@ -95,4 +95,3 @@ void w2_errcatch_throw_msg(w2_e_errorcode code, uint16_t length, const char *mes
  * TODO: doesn't handle null pointers from malloc
  */
 w2_s_error *w2_alloc_error(w2_e_errorcode code, uint16_t length, const char *message);
-

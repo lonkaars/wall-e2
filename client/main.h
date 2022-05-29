@@ -10,4 +10,3 @@ typedef struct {
 } w2_s_client_state;
 
 extern w2_s_client_state g_w2_state;
-
