@@ -13,7 +13,6 @@
 #include "../shared/errcatch.h"
 
 struct timespec reference_time; // NOLINT
-bool g_w2_sim_headless = false;
 
 static const char* const W2_CMD_NAMES[] = {
 	"PING",
@@ -76,12 +75,10 @@ void serial_set_baud_rate(unsigned int rate) {
 }
 
 void serial_send(char* message, unsigned int length) {
-	if (g_w2_sim_headless) {
-		for (unsigned int byte = 0; byte < length; byte++)
-			putc(message[byte] & 0xff, stdout);
-		fflush(stdout);
-		return;
-	}
+	for (unsigned int byte = 0; byte < length; byte++)
+		putc(message[byte] & 0xff, stdout);
+	fflush(stdout);
+	return;
 
 	simprintfunc("serial_send", "0x%02x", (uint8_t) message[0]);
 }
@@ -95,10 +92,7 @@ unsigned char serial_get_received_bytes() {
 	return g_w2_serial_buffer_head;
 }
 
-void w2_sim_setup(int argc, char **argv) {
-	if (argc > 1 && strcmp(argv[1], "headless") == 0)
-		g_w2_sim_headless = true;
-
+void w2_sim_setup() {
 	// disable echo and enable raw mode
 	fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK);
 	struct termios term;
@@ -121,11 +115,10 @@ void w2_sim_cycle_begin() {
 }
 
 void w2_sim_print_serial(w2_s_bin *data) {
-	if (g_w2_sim_headless) return;
 	simprintf(COL_GRN "[%s_%s]" COL_RST, W2_CMD_NAMES[data->data[0] >> 1], W2_CMD_DIRECTIONS[data->data[0] & W2_CMD_DIRECTION_MASK]);
 	for (int i = 0; i < data->bytes; i++)
-		printf(" %02x", data->data[i]);
-	printf("\n");
+		fprintf(stderr, " %02x", data->data[i]);
+	fprintf(stderr, "\n");
 }
 
 void set_motors(int left, int right) {

@@ -44,9 +44,9 @@ void w2_hypervisor_main() {
 
 #ifdef W2_SIM
 	if (DBG_ENABLE_CYCLEINFO) siminfo("cycle end\n");
-	if (!g_w2_sim_headless) usleep(100e3);
+	if (DBG_CYCLE_DELAY > 0) usleep(DBG_CYCLE_DELAY);
 
-	if (g_w2_sim_headless && DBG_MAX_CYCLES > -1 && g_w2_hypervisor_cycles > DBG_MAX_CYCLES)
+	if (DBG_MAX_CYCLES > -1 && g_w2_hypervisor_cycles > DBG_MAX_CYCLES)
 		exit(0);
 #endif
 

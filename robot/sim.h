@@ -9,15 +9,14 @@
 #include "../shared/bin.h"
 #include "../shared/protocol.h"
 
-extern bool g_w2_sim_headless;
-
 // debug fine-tuning
-#define DBG_ENABLE_PRINTFUNC (1)
+#define DBG_ENABLE_PRINTFUNC (0)
 #define DBG_ENABLE_SIMWARN (1)
 #define DBG_ENABLE_SIMINFO (1)
 #define DBG_ENABLE_CYCLEINFO (0)
 #define DBG_ENABLE_SERIAL (1)
 
+#define DBG_CYCLE_DELAY (100e3)
 #define DBG_MAX_CYCLES (-1)
 
 // debug print options
@@ -47,7 +46,7 @@ extern bool g_w2_sim_headless;
 #endif
 
 // debug stdout print macros
-#define simprintf(message, ...) if (!g_w2_sim_headless) printf(COL_RED "[SIM] " COL_RST message, ##__VA_ARGS__)
+#define simprintf(message, ...) fprintf(stderr, COL_RED "[SIM] " COL_RST message, ##__VA_ARGS__)
 #define simprint(message) simprintf(message "\n")
 #define simprintfunc(name, fmt, ...) if (DBG_ENABLE_PRINTFUNC) { simprintf(COL_BLU "[FUNC] " \
 		COL_CYN name COL_RST "(" COL_YEL fmt COL_RST ")\n", ##__VA_ARGS__); }
@@ -81,7 +80,7 @@ void qtr_read(unsigned int* sensor_values, unsigned char read_mode); // NOLINT
 unsigned int analog_read(unsigned char channel); // NOLINT
 void print(const char* str); // NOLINT
 
-void w2_sim_setup(int argc, char **argv);
+void w2_sim_setup();
 void w2_sim_cycle_begin();
 void w2_sim_print_serial(w2_s_bin *data);
 

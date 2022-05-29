@@ -17,7 +17,8 @@ extern uint8_t g_w2_endianness;
 #define W2_CREATE_MSG_BIN(type, normal, bin) \
 	W2_CREATE_MSG_SIZE_BIN(type, sizeof(type), normal, bin)
 #define W2_CREATE_MSG_SIZE_BIN(type, size, normal, bin) \
-	w2_s_bin* bin = malloc(size); \
+	w2_s_bin* bin = malloc(sizeof(w2_s_bin) + size); \
+	bin->bytes = size; \
 	type* normal = (type*) &bin->data;
 
 typedef struct {

@@ -6,9 +6,9 @@
 #endif
 
 #include <unistd.h>
-int main(int argc, char **argv) {
+int main() {
 #ifdef W2_SIM
-	w2_sim_setup(argc, argv);
+	w2_sim_setup();
 #endif
 
 	w2_setup_main();
