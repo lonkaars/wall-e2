@@ -6,6 +6,19 @@
 this project is divided in two subfolders, one for robot code, and one for
 client code that runs on your PC and is able to control the robot remotely.
 
+## supported features
+
+the build toolchain is compatible with windows and linux, though some features
+are only supported on linux:
+
+|feature|windows|linux|
+|-|:-:|:-:|
+|robot code compilation (avr)|yes|yes|
+|robot exec upload|yes|yes|
+|client code compilation|yes|yes|
+|robot code simulation (x86)| |yes|
+|use client with robot sim| |yes|
+
 ## toolchain installation on windows
 
 > look in the scripts/ subdirectory if you're concerned about what these

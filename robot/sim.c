@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <termios.h>
+#include <fcntl.h>
 
 #include "sim.h"
 #include "../shared/consts.h"
@@ -78,10 +79,11 @@ void serial_send(char* message, unsigned int length) {
 	if (g_w2_sim_headless) {
 		for (unsigned int byte = 0; byte < length; byte++)
 			putc(message[byte] & 0xff, stdout);
+		fflush(stdout);
 		return;
 	}
 
-	if (DBG_ENABLE_PRINTFUNC) simprintfunc("serial_send", "<%u byte%s>", length, length == 1 ? "" : "s");
+	simprintfunc("serial_send", "0x%02x", (uint8_t) message[0]);
 }
 
 void serial_receive_ring(char* buffer, unsigned char size) {
@@ -98,11 +100,12 @@ void w2_sim_setup(int argc, char **argv) {
 		g_w2_sim_headless = true;
 
 	// disable echo and enable raw mode
+	fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK);
 	struct termios term;
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHO | ICANON);
 	term.c_cc[VTIME] = 0;
-	term.c_cc[VMIN] = 0;
+	term.c_cc[VMIN] = 1;
 	tcsetattr(STDIN_FILENO, 0, &term);
 
 	// debug error
@@ -110,6 +113,8 @@ void w2_sim_setup(int argc, char **argv) {
 }
 
 void w2_sim_cycle_begin() {
+	fflush(stdout);
+
 	// read bytes from stdin
 	while(read(STDIN_FILENO, (g_w2_serial_buffer + sizeof(char) * g_w2_serial_buffer_head), 1) > 0)
 		g_w2_serial_buffer_head = (g_w2_serial_buffer_head + 1) % W2_SERIAL_READ_BUFFER_SIZE;

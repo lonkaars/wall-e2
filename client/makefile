@@ -4,11 +4,14 @@ RM = rm -f
 CFLAGS =
 EXECNAME = main
 
+include ../shared/os.mk
+
 all: $(EXECNAME)
 
 SOURCES := $(wildcard *.c)
 HEADERS := $(wildcard *.h)
 # include ../shared/makefile
+
 OBJECTS := $(patsubst %.c,%.o, $(SOURCES))
 
 .o:

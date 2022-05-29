@@ -6,7 +6,7 @@ MCU ?= atmega168
 AVRDUDE_DEVICE ?= m168
 
 PORT ?= /dev/ttyACM0
-# SIM = true
+SIM = true
 
 CFLAGS=-g -Wall $(DEVICE_SPECIFIC_CFLAGS) -Os
 LDFLAGS=-Wl,-gc-sections -Wl,-relax
@@ -19,7 +19,7 @@ HEADERS := $(filter-out sim.h, $(wildcard *.h))
 include ../shared/makefile
 
 # simulation
-CFLAGS += $(if $(SIM), -DW2_SIM, -mcall-prologues -mmcu=$(MCU))
+CFLAGS += $(if $(SIM), -DW2_SIM -DDBG_ENABLE_COLOR, -mcall-prologues -mmcu=$(MCU))
 LDFLAGS += $(if $(SIM), , -lpololu_$(DEVICE))
 PREFIX := $(if $(SIM), , avr-)
 SOURCES += $(if $(SIM), sim.c, )
