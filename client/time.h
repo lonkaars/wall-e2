@@ -4,7 +4,7 @@
 #define W2_CLIENT_TIMER_COUNT (4)
 extern unsigned long g_w2_client_timers[W2_CLIENT_TIMER_COUNT];
 typedef enum {
-	W2_TIMER_PING = 0,
+	W2_TIMER_PING	= 0,
 	W2_TIMER_UPDATE = 1,
 } w2_e_client_timers;
 

@@ -7,12 +7,12 @@
 #include "main.h"
 #include "strings.h"
 #include "term.h"
-#include "ui.h"
 #include "time.h"
+#include "ui.h"
 
 WINDOW *g_w2_ui_win;
-unsigned int g_w2_ui_width	= 0;
-unsigned int g_w2_ui_height = 0;
+unsigned int g_w2_ui_width	  = 0;
+unsigned int g_w2_ui_height	  = 0;
 void (*g_w2_ui_current_tab)() = &w2_ui_dirc;
 
 void w2_ui_main() {
