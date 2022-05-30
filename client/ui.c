@@ -8,10 +8,12 @@
 #include "strings.h"
 #include "term.h"
 #include "ui.h"
+#include "time.h"
 
 WINDOW *g_w2_ui_win;
 unsigned int g_w2_ui_width	= 0;
 unsigned int g_w2_ui_height = 0;
+void (*g_w2_ui_current_tab)() = &w2_ui_dirc;
 
 void w2_ui_main() {
 	g_w2_ui_width  = getmaxx(g_w2_ui_win);
@@ -22,11 +24,15 @@ void w2_ui_main() {
 
 void w2_ui_paint() {
 	w2_ui_paint_statusbar();
+	if (w2_timer_end(W2_TIMER_UPDATE) >= (1000 / W2_UI_UPDATE_FPS)) {
+		(*g_w2_ui_current_tab)();
+		w2_timer_start(W2_TIMER_UPDATE);
+	}
 	refresh();
 }
 
 void w2_ui_paint_statusbar() {
-	char temp[g_w2_ui_width + 1];
+	char temp[g_w2_ui_width];
 	sprintf(temp, "%s, %ims %s",
 			g_w2_state.connected ? W2_UI_CONN_STAT_CONNECTED : W2_UI_CONN_STAT_DISCONNECTED,
 			g_w2_state.ping, W2_UI_CONN_STAT_PING);
@@ -47,8 +53,7 @@ void w2_ui_paint_statusbar() {
 	w2_ui_paint_tabbar();
 
 	for (unsigned int i = 0; i < g_w2_ui_width; i++) temp[i] = '-';
-	temp[g_w2_ui_width] = 0;
-	mvaddstr(3, 0, temp);
+	mvaddnstr(3, 0, temp, g_w2_ui_width);
 }
 
 void w2_ui_paint_tabbar() {

@@ -31,6 +31,8 @@ void w2_client_setup(int argc, char **argv) {
 		exit(1);
 	}
 	noecho();
+	curs_set(false);
+	nodelay(g_w2_ui_win, true);
 
 	w2_strings_init();
 	w2_cmd_setup_handlers();
