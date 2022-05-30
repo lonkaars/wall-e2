@@ -10,6 +10,8 @@ typedef struct {
 	bool connected;
 	uint8_t battery_level;
 
+	uint8_t mode;
+
 	w2_s_cmd_info_tx info;
 	w2_s_cmd_sens_tx io;
 } w2_s_client_state;

@@ -18,15 +18,16 @@ void w2_cmd_ping_tx(w2_s_bin *data) {
 	if (g_w2_state.ping_id != cast->id) return;
 	g_w2_state.ping			 = w2_timer_end(W2_TIMER_PING);
 	g_w2_state.ping_received = true;
-
-	printf("ping measured, %ims\n", g_w2_state.ping);
 }
 
-void w2_cmd_expt_tx(w2_s_bin *data) { printf("w2_cmd_expt_tx()\n"); }
-void w2_cmd_mode_tx(w2_s_bin *data) { printf("w2_cmd_mode_tx()\n"); }
-void w2_cmd_cord_tx(w2_s_bin *data) { printf("w2_cmd_cord_tx()\n"); }
-void w2_cmd_bomd_tx(w2_s_bin *data) { printf("w2_cmd_bomd_tx()\n"); }
-void w2_cmd_sens_tx(w2_s_bin *data) { printf("w2_cmd_sens_tx()\n"); }
+void w2_cmd_expt_tx(w2_s_bin *data) {}
+void w2_cmd_mode_tx(w2_s_bin *data) {
+	W2_CAST_BIN(w2_s_cmd_mode_tx, data, cast);
+	g_w2_state.mode = cast->mode;
+}
+void w2_cmd_cord_tx(w2_s_bin *data) {}
+void w2_cmd_bomd_tx(w2_s_bin *data) {}
+void w2_cmd_sens_tx(w2_s_bin *data) {}
 
 void w2_cmd_info_tx(w2_s_bin *data) {
 	memcpy(&g_w2_state.info, data->data, sizeof(w2_s_cmd_info_tx));

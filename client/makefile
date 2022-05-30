@@ -2,6 +2,7 @@ CC = gcc
 LD = gcc
 RM = rm -f
 CFLAGS =
+LDFLAGS = -lncursesw
 EXECNAME = main
 
 include ../shared/os.mk
@@ -18,7 +19,7 @@ OBJECTS := $(patsubst %.c,%.o, $(SOURCES))
 	$(CC) -c $(CFLAGS) $<
 
 $(EXECNAME): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(EXECNAME)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $(EXECNAME)
 
 clean::
 	$(RM) $(EXECNAME) *.o

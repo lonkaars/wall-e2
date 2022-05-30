@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ncurses.h>
 
 #include "../shared/bin.h"
 #include "../shared/protocol.h"
 #include "commands.h"
 #include "serial.h"
 #include "setup.h"
-#include "term.h"
+#include "ui.h"
 
 // pointers for endianness check
 static const uint16_t _test	 = 1;
@@ -24,7 +25,11 @@ void w2_client_setup(int argc, char **argv) {
 		exit(1);
 	}
 
-	w2_term_raw_mode();
+	if ((g_w2_ui_win = initscr()) == NULL) {
+		printf("ncurses initscr() failed\n");
+		exit(1);
+	}
+	noecho();
 
 	w2_cmd_setup_handlers();
 
