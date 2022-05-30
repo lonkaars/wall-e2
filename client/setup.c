@@ -1,12 +1,13 @@
+#include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ncurses.h>
 
 #include "../shared/bin.h"
 #include "../shared/protocol.h"
 #include "commands.h"
 #include "serial.h"
 #include "setup.h"
+#include "strings.h"
 #include "ui.h"
 
 // pointers for endianness check
@@ -31,6 +32,7 @@ void w2_client_setup(int argc, char **argv) {
 	}
 	noecho();
 
+	w2_strings_init();
 	w2_cmd_setup_handlers();
 
 	w2_send_info();

@@ -19,6 +19,9 @@ void w2_setup_main() {
 	// clear lcd
 	clear();
 
+	// modes array
+	w2_modes_init();
+
 	// start serial i/o
 	w2_cmd_setup_handlers();
 	serial_set_baud_rate(W2_SERIAL_BAUD);

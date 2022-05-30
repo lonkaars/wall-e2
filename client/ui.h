@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stdint.h>
 #include <ncurses.h>
+#include <stdint.h>
 
 extern WINDOW *g_w2_ui_win;
 extern unsigned int g_w2_ui_width;
@@ -20,4 +20,3 @@ void w2_ui_main();
 void w2_ui_paint_statusbar();
 /** draw tab bar */
 void w2_ui_paint_tabbar();
-

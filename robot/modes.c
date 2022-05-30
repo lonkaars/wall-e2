@@ -4,13 +4,31 @@
 #include "../shared/util.h"
 #include "sercomm.h"
 
-/** function pointer to current mode */
-// static void (*g_w2_current_mode)() = &w2_mode_halt;
+#include "mode_chrg.h"
+#include "mode_dirc.h"
+#include "mode_grid.h"
+#include "mode_halt.h"
+#include "mode_lcal.h"
+#include "mode_maze.h"
+#include "mode_scal.h"
+#include "mode_spin.h"
 
-static void (*g_w2_mode_history[W2_MODE_HISTORY_BUFFER_SIZE])();
-static uint8_t g_w2_mode_history_index = 0;
+w2_e_mode g_w2_mode_history[W2_MODE_HISTORY_BUFFER_SIZE];
+uint8_t g_w2_mode_history_index = 0;
+void (*g_w2_modes[W2_MODE_COUNT])();
 
-void w2_modes_main() { (*g_w2_mode_history[g_w2_mode_history_index])(); }
+void w2_modes_init() {
+	g_w2_modes[W2_M_CHRG] = &w2_mode_chrg;
+	g_w2_modes[W2_M_DIRC] = &w2_mode_dirc;
+	g_w2_modes[W2_M_GRID] = &w2_mode_grid;
+	g_w2_modes[W2_M_HALT] = &w2_mode_halt;
+	g_w2_modes[W2_M_LCAL] = &w2_mode_lcal;
+	g_w2_modes[W2_M_MAZE] = &w2_mode_maze;
+	g_w2_modes[W2_M_SCAL] = &w2_mode_scal;
+	g_w2_modes[W2_M_SPIN] = &w2_mode_spin;
+}
+
+void w2_modes_main() { (*g_w2_modes[g_w2_mode_history[g_w2_mode_history_index]])(); }
 
 void w2_modes_switch(w2_e_mode new_mode, bool replace) {
 	int16_t next_history_index =
@@ -24,7 +42,7 @@ void w2_modes_switch(w2_e_mode new_mode, bool replace) {
 		g_w2_mode_history_index = next_history_index;
 	} else {
 		g_w2_mode_history_index					   = next_history_index;
-		g_w2_mode_history[g_w2_mode_history_index] = W2_MODES[new_mode];
+		g_w2_mode_history[g_w2_mode_history_index] = new_mode;
 	}
 
 	// forward mode change to sercomm

@@ -155,6 +155,7 @@ typedef struct {
 	uint8_t sercomm_ms;
 	uint8_t mode_ms;
 	uint32_t uptime_s;
+	uint8_t mode;
 } w2_s_cmd_info_tx;
 
 typedef struct {

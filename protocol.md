@@ -297,7 +297,7 @@ packet.
 
 requests robot info
 
-#### robot info response (`r --> c`) (41 bytes)
+#### robot info response (`r --> c`) (42 bytes)
 
 |type|description|
 |-:|-|
@@ -308,6 +308,7 @@ requests robot info
 |`uint8_t`|exponential moving average sercomm module cycle time (ms)|
 |`uint8_t`|exponential moving average modes module cycle time (ms)|
 |`uint32_t`|total robot uptime (s)|
+|`uint8_t`|current mode code|
 
 robot info response
 

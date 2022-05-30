@@ -135,6 +135,7 @@ void w2_cmd_info_rx(w2_s_bin *data) {
 	res_msg->sercomm_ms	 = (uint8_t)g_w2_hypervisor_ema_sercomm_ms;
 	res_msg->mode_ms	 = (uint8_t)g_w2_hypervisor_ema_mode_ms;
 	res_msg->uptime_s	 = w2_bin_hton32((uint32_t)(g_w2_hypervisor_uptime_ms / 1e3));
+	res_msg->mode		 = g_w2_mode_history[g_w2_mode_history_index];
 
 	w2_sercomm_append_msg(res_bin);
 	free(res_bin);
