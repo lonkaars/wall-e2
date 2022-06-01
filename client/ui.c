@@ -13,7 +13,8 @@
 WINDOW *g_w2_ui_win;
 unsigned int g_w2_ui_width	  = 0;
 unsigned int g_w2_ui_height	  = 0;
-void (*g_w2_ui_current_tab)() = &w2_ui_dirc;
+void (*g_w2_ui_current_tab)(bool first) = &w2_ui_dirc;
+void (*g_w2_ui_last_tab)(bool first) = NULL;
 
 void w2_ui_main() {
 	g_w2_ui_width  = getmaxx(g_w2_ui_win);
@@ -25,7 +26,8 @@ void w2_ui_main() {
 void w2_ui_paint() {
 	w2_ui_paint_statusbar();
 	if (w2_timer_end(W2_TIMER_UPDATE) >= (1000 / W2_UI_UPDATE_FPS)) {
-		(*g_w2_ui_current_tab)();
+		(*g_w2_ui_current_tab)(g_w2_ui_last_tab != g_w2_ui_current_tab);
+		g_w2_ui_last_tab = g_w2_ui_current_tab;
 		w2_timer_start(W2_TIMER_UPDATE);
 	}
 	refresh();

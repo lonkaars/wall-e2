@@ -1,4 +1,6 @@
 #include "../shared/util.h"
+#include "../shared/protocol.h"
+#include "commands.h"
 #include "ui.h"
 
 void w2_ui_bar_graph(unsigned int percent) {
@@ -45,7 +47,12 @@ int w2_avg(int *samples, unsigned int sample_count) {
 W2_DIRC_MOTOR_DRIVER(l);
 W2_DIRC_MOTOR_DRIVER(r);
 
-void w2_ui_dirc() {
+void w2_ui_dirc_init() {
+	w2_send_mode(W2_M_DIRC);
+}
+
+void w2_ui_dirc(bool first) {
+	if (first) w2_ui_dirc_init();
 	int ch			= 0;
 	unsigned int lb = 0;
 	unsigned int lf = 0;
@@ -64,4 +71,6 @@ void w2_ui_dirc() {
 	char temp[32] = {0};
 	sprintf(temp, "l: %04i, r: %04i", drive_l, drive_r);
 	mvaddstr(4, 0, temp);
+
+	w2_send_dirc(drive_l, drive_r);
 }
