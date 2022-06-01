@@ -1,8 +1,8 @@
 #include <stdlib.h>
 
 #include "../shared/bin.h"
-#include "../shared/protocol.h"
 #include "../shared/modes.h"
+#include "../shared/protocol.h"
 #include "commands.h"
 #include "main.h"
 #include "time.h"
@@ -19,7 +19,7 @@ w2_s_bin *w2_send_mode(w2_e_mode mode) {
 	W2_CREATE_MSG_BIN(w2_s_cmd_mode_rx, msg, msg_bin);
 
 	msg->opcode = W2_CMD_MODE | W2_CMDDIR_RX;
-	msg->mode = mode;
+	msg->mode	= mode;
 
 	w2_send_bin(msg_bin);
 	free(msg_bin);
@@ -29,8 +29,8 @@ w2_s_bin *w2_send_mode(w2_e_mode mode) {
 w2_s_bin *w2_send_dirc(uint16_t left, uint16_t right) {
 	W2_CREATE_MSG_BIN(w2_s_cmd_dirc_rx, msg, msg_bin);
 	msg->opcode = W2_CMD_DIRC | W2_CMDDIR_RX;
-	msg->left = w2_bin_hton16(left);
-	msg->right = w2_bin_hton16(right);
+	msg->left	= w2_bin_hton16(left);
+	msg->right	= w2_bin_hton16(right);
 	w2_send_bin(msg_bin);
 	free(msg_bin);
 	return NULL;
@@ -46,8 +46,8 @@ w2_s_bin *w2_send_info() {
 
 w2_s_bin *w2_send_ping() {
 	W2_CREATE_MSG_BIN(w2_s_cmd_ping_rx, msg, msg_bin);
-	msg->opcode			  = W2_CMD_PING | W2_CMDDIR_RX;
-	msg->id				  = g_w2_state.ping_id;
+	msg->opcode = W2_CMD_PING | W2_CMDDIR_RX;
+	msg->id		= g_w2_state.ping_id;
 	w2_send_bin(msg_bin);
 	free(msg_bin);
 
