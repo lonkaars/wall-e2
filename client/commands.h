@@ -4,6 +4,8 @@
 #include "../shared/modes.h"
 #include "serial.h"
 
+void w2_send_bin(w2_s_bin *data);
+
 void w2_send_info();
 void w2_send_ping();
 void w2_send_mode(w2_e_mode mode);

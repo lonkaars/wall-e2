@@ -30,6 +30,11 @@
 /** exponential moving average new measurement weight (double 0-1) */
 #define W2_EMA_WEIGHT (0.10)
 
+/** minimal time between pings */
+#define W2_PING_FREQUENCY (1e3)
+/** max time between ping and answer */
+#define W2_PING_TIMEOUT (5e3)
+
 /** front-facing distance sensor pinout */
 #define W2_FRONT_SENSOR_PIN 5
 /** battery voltage sensor pinout */

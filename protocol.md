@@ -66,9 +66,11 @@ in *both* the robot and client code `r <-- c` is referred to as `rx` and  `r
 |`uint8_t`|opcode (`0x00 + 0` or `0x00 + 1`)|
 |`uint8_t`|ping id|
 
-**ping** sends back an identical message either way with the direction bit
-toggled. _ping id_ is a random 8-bit value that makes sure the same ping
-doesn't keep bouncing back and forth indefinitely.
+**ping** sends back an identical message either way with the **same** direction
+bit. _ping id_ is a random 8-bit value that identifies the ping message. this
+is the only command that makes either the robot or client send a message with
+an opcode not matching the respective sender. the direction bit indicates which
+device initiated the ping message.
 
 ### EXPT
 

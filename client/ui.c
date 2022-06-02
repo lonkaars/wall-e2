@@ -35,6 +35,12 @@ void w2_ui_paint() {
 
 void w2_ui_paint_statusbar() {
 	char temp[g_w2_ui_width];
+
+	for (unsigned int i = 0; i < g_w2_ui_width; i++) temp[i] = ' ';
+	mvaddnstr(0, 0, temp, g_w2_ui_width);
+	mvaddnstr(1, 0, temp, g_w2_ui_width);
+	mvaddnstr(2, 0, temp, g_w2_ui_width);
+
 	sprintf(temp, "%s, %ims %s",
 			g_w2_state.connected ? W2_UI_CONN_STAT_CONNECTED : W2_UI_CONN_STAT_DISCONNECTED,
 			g_w2_state.ping, W2_UI_CONN_STAT_PING);

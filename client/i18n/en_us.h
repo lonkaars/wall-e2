@@ -1,5 +1,8 @@
 #pragma once
 
+#define W2_UI_CLI_USAGE "usage: %s <serial port>\n"
+#define W2_UI_CLI_SERPORT_ERROR "serial port open fout\n"
+#define W2_UI_CLI_INITSCR_FAIL "ncurses initscr() failed\n"
 #define W2_UI_CONN_STAT_CONNECTED "connected"
 #define W2_UI_CONN_STAT_DISCONNECTED "disconnected"
 #define W2_UI_CONN_STAT_PING "ping"

@@ -5,19 +5,27 @@
 #include "main.h"
 #include "serial.h"
 #include "time.h"
+#include "commands.h"
 
 void w2_serial_main() {
 	int temp;
 	while ((temp = w2_serial_read()) != -1) w2_serial_parse(temp);
 }
 
-void w2_cmd_ping_tx(w2_s_bin *data) {
+void w2_cmd_ping_rx(w2_s_bin *data) {
 	W2_CAST_BIN(w2_s_cmd_ping_tx, data, cast);
 
 	if (g_w2_state.ping_received) return;
 	if (g_w2_state.ping_id != cast->id) return;
+
 	g_w2_state.ping			 = w2_timer_end(W2_TIMER_PING);
 	g_w2_state.ping_received = true;
+	g_w2_state.ping_timeout = false;
+	g_w2_state.connected = true;
+}
+
+void w2_cmd_ping_tx(w2_s_bin *data) {
+	w2_send_bin(data);
 }
 
 void w2_cmd_expt_tx(w2_s_bin *data) {}
@@ -33,7 +41,6 @@ void w2_cmd_info_tx(w2_s_bin *data) {
 	memcpy(&g_w2_state.info, data->data, sizeof(w2_s_cmd_info_tx));
 }
 
-void w2_cmd_ping_rx(w2_s_bin *data) { return; }
 void w2_cmd_mode_rx(w2_s_bin *data) { return; }
 void w2_cmd_sped_rx(w2_s_bin *data) { return; }
 void w2_cmd_dirc_rx(w2_s_bin *data) { return; }

@@ -16,7 +16,7 @@
 #define DBG_ENABLE_CYCLEINFO (0)
 #define DBG_ENABLE_SERIAL (1)
 
-#define DBG_CYCLE_DELAY (100e3)
+#define DBG_CYCLE_DELAY (1e3)
 #define DBG_MAX_CYCLES (-1)
 
 // debug print options

@@ -52,6 +52,8 @@ typedef enum {
 	W2_E_WARN_SERIAL_NOISY = 0x09 | W2_E_TYPE_WARN,
 	/** mode history index out of bounds */
 	W2_E_WARN_MODE_HISTORY_BUFFER_IOB = 0x0a | W2_E_TYPE_WARN,
+	/** ping timeout reached */
+	W2_E_WARN_PING_TIMEOUT = 0x0b | W2_E_TYPE_WARN,
 } w2_e_errorcode;
 
 /**

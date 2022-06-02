@@ -17,17 +17,17 @@ uint8_t g_w2_endianness;
 
 void w2_client_setup(int argc, char **argv) {
 	if (argc < 2) {
-		printf("usage: %s <serial port>\n", argv[0]);
+		printf(W2_UI_CLI_USAGE, argv[0]);
 		exit(1);
 	}
 
 	if (w2_serial_open(argv[1]) == 0) {
-		printf("serial port open fout\n");
+		printf(W2_UI_CLI_SERPORT_ERROR);
 		exit(1);
 	}
 
 	if ((g_w2_ui_win = initscr()) == NULL) {
-		printf("ncurses initscr() failed\n");
+		printf(W2_UI_CLI_INITSCR_FAIL);
 		exit(1);
 	}
 	noecho();
@@ -38,7 +38,6 @@ void w2_client_setup(int argc, char **argv) {
 	w2_cmd_setup_handlers();
 
 	w2_send_info();
-	w2_send_ping();
 
 	// check endianness
 	g_w2_endianness = *_ptest;

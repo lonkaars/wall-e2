@@ -6,6 +6,7 @@ typedef struct {
 	unsigned int ping;
 	uint8_t ping_id;
 	bool ping_received;
+	bool ping_timeout;
 
 	bool connected;
 	uint8_t battery_level;

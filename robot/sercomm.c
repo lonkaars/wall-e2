@@ -20,6 +20,12 @@ char g_w2_serial_buffer[W2_SERIAL_READ_BUFFER_SIZE] = {0};
 uint8_t g_w2_serial_buffer_index					= 0;
 uint8_t g_w2_serial_buffer_head						= 0;
 
+unsigned int g_w2_ping_ms = 0;
+uint8_t g_w2_ping_id = 0;
+bool g_w2_ping_received = true;
+bool g_w2_ping_timeout = false;
+bool g_w2_connected = false;
+
 void w2_sercomm_main() {
 #ifdef W2_SIM
 	simprintfunc("w2_sercomm_main", "");
@@ -29,6 +35,27 @@ void w2_sercomm_main() {
 		if (!w2_serial_parse(g_w2_serial_buffer[g_w2_serial_buffer_index]))
 			w2_errcatch_throw(W2_E_WARN_SERIAL_NOISY);
 		g_w2_serial_buffer_index = (g_w2_serial_buffer_index + 1) % W2_SERIAL_READ_BUFFER_SIZE;
+	}
+
+	// check time-out
+	if (!g_w2_ping_received && w2_hypervisor_time_end(W2_TIMER_PING) > W2_PING_TIMEOUT) {
+		g_w2_ping_timeout = true;
+		w2_errcatch_throw(W2_E_WARN_PING_TIMEOUT);
+	}
+	// send ping every W2_TIMER_PING ms
+	if ((g_w2_ping_received && w2_hypervisor_time_end(W2_TIMER_PING) > 1000) || g_w2_ping_timeout) {
+		g_w2_ping_timeout = false;
+		g_w2_ping_received = false;
+		g_w2_ping_id = (uint8_t) rand();
+
+		W2_CREATE_MSG_BIN(w2_s_cmd_ping_tx, msg, bin);
+		msg->opcode = W2_CMD_PING | W2_CMDDIR_TX;
+		msg->id		= g_w2_ping_id;
+
+		w2_sercomm_append_msg(bin);
+		free(bin);
+
+		w2_hypervisor_time_start(W2_TIMER_PING);
 	}
 
 	// send data
@@ -62,15 +89,14 @@ void w2_sercomm_append_msg(w2_s_bin *data) {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Warray-bounds"
 
+void w2_cmd_ping_tx(w2_s_bin *data) {
+	g_w2_ping_ms = w2_hypervisor_time_end(W2_TIMER_PING);
+	g_w2_ping_received = true;
+	g_w2_ping_timeout = false;
+}
+
 void w2_cmd_ping_rx(w2_s_bin *data) {
-	W2_CAST_BIN(w2_s_cmd_ping_rx, data, req);
-
-	W2_CREATE_MSG_BIN(w2_s_cmd_ping_tx, res_msg, res_bin);
-	res_msg->opcode = W2_CMD_PING | W2_CMDDIR_TX;
-	res_msg->id		= req->id;
-
-	w2_sercomm_append_msg(res_bin);
-	free(res_bin);
+	w2_sercomm_append_msg(data);
 }
 
 void w2_cmd_mode_rx(w2_s_bin *data) {
@@ -150,7 +176,6 @@ void w2_cmd_cled_rx(w2_s_bin *data) { return; }
 
 #pragma GCC diagnostic pop
 
-void w2_cmd_ping_tx(w2_s_bin *data) {}
 void w2_cmd_expt_tx(w2_s_bin *data) {}
 void w2_cmd_mode_tx(w2_s_bin *data) {}
 void w2_cmd_cord_tx(w2_s_bin *data) {}

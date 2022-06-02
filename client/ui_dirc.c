@@ -104,6 +104,6 @@ void w2_ui_dirc(bool first) {
 	drive_l += drive_r * W2_DIRC_STP;
 	drive_r += drive_l * W2_DIRC_STP;
 
-	w2_send_dirc(drive_l, drive_r);
+	// w2_send_dirc(drive_l, drive_r);
 	w2_ui_dirc_paint(drive_l, drive_r);
 }
