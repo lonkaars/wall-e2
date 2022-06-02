@@ -7,4 +7,4 @@
 void w2_send_info();
 void w2_send_ping();
 void w2_send_mode(w2_e_mode mode);
-void w2_send_dirc(int left, int right);
+void w2_send_dirc(uint16_t left, uint16_t right);
