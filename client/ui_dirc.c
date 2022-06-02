@@ -64,17 +64,17 @@ void w2_ui_bar_graph_pm(unsigned int y, unsigned int x, unsigned int width, doub
 			temp[i + 1] = i < hw ? ' ' : (i - hw) < (hw * value) ? '*' : ' ';
 	} else {
 		for (unsigned int i = 0; i < width; i++)
-			temp[i + 1] = i < hw ? ' ' : (i - hw) < (hw * value) ? '*' : ' ';
+			temp[i + 1] = i > hw ? ' ' : (hw - i) < -(hw * value) ? '*' : ' ';
 	}
 
-	mvaddnstr(y, x, temp, width);
+	mvaddnstr(y, x, temp, width + 2);
 }
 
 void w2_ui_dirc_paint(int left, int right) {
 	mvaddstr(4, 0, "left drive:  ");
-	w2_ui_bar_graph_pm(4, 13, g_w2_ui_width - 14, (double)left / 255);
+	w2_ui_bar_graph_pm(4, 13, g_w2_ui_width - 13, (double)left / 255);
 	mvaddstr(5, 0, "right drive: ");
-	w2_ui_bar_graph_pm(5, 13, g_w2_ui_width - 14, (double)right / 255);
+	w2_ui_bar_graph_pm(5, 13, g_w2_ui_width - 13, (double)right / 255);
 
 	mvaddstr(7, 0,
 			 "             controls:\n"
@@ -92,10 +92,10 @@ void w2_ui_dirc(bool first) {
 	unsigned int rb = 0;
 	unsigned int rf = 0;
 	while ((ch = getch()) != -1) {
-		if (ch == 'a' || ch == 's') lb++;
-		if (ch == 'q' || ch == 'w') lf++;
-		if (ch == 'd' || ch == 's') rb++;
-		if (ch == 'e' || ch == 'w') rf++;
+		if (ch == 'e' || ch == 'w') lf++;
+		if (ch == 'd' || ch == 's') lb++;
+		if (ch == 'q' || ch == 'w') rf++;
+		if (ch == 'a' || ch == 's') rb++;
 	}
 
 	int drive_l = w2_dirc_motor_l(lf, lb);
