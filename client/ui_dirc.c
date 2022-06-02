@@ -1,21 +1,18 @@
+#include "../shared/protocol.h"
 #include "../shared/util.h"
+#include "commands.h"
 #include "ui.h"
 
-void w2_ui_bar_graph(unsigned int percent) {
-	unsigned int width = g_w2_ui_width - 7;
-	char bar[width];
-	for (unsigned int i = 0; i < width - 2; i++) {
-		bar[i + 1] = i > (width - 2) * percent / 100 ? ' ' : '*';
-	}
-	bar[0]		   = '|';
-	bar[width - 1] = '|';
-	mvaddnstr(4, 7, bar, width);
-}
-
+/** decay modifier */
 #define W2_DIRC_MOD ((double)0.95)
-#define W2_DIRC_ADD ((double)13.0)
-#define W2_DIRC_PAD ((double)1.10)
-#define W2_DIRC_SPL ((unsigned int)20)
+/** add value per key press */
+#define W2_DIRC_ADD ((double)17.0)
+/** padding */
+#define W2_DIRC_PAD ((double)3.00)
+/** average samples */
+#define W2_DIRC_SPL ((unsigned int)14)
+/** steering padding */
+#define W2_DIRC_STP ((double)0.2)
 
 int w2_avg(int *samples, unsigned int sample_count) {
 	double total = 0;
@@ -45,7 +42,50 @@ int w2_avg(int *samples, unsigned int sample_count) {
 W2_DIRC_MOTOR_DRIVER(l);
 W2_DIRC_MOTOR_DRIVER(r);
 
-void w2_ui_dirc() {
+void w2_ui_dirc_init() { w2_send_mode(W2_M_DIRC); }
+
+void w2_ui_bar_graph(unsigned int y, unsigned int x, unsigned int width, double value) {
+	char temp[width];
+	temp[0]			= '|';
+	temp[width - 1] = '|';
+	for (unsigned int i = 0; i < width - 2; i++) temp[i + 1] = i < width * value ? '*' : ' ';
+
+	mvaddnstr(y, x, temp, width);
+}
+
+void w2_ui_bar_graph_pm(unsigned int y, unsigned int x, unsigned int width, double value) {
+	char temp[width];
+	temp[0]			= '|';
+	temp[width - 1] = '|';
+	width -= 2;
+	unsigned int hw = width / 2;
+	if (value >= 0) {
+		for (unsigned int i = 0; i < width; i++)
+			temp[i + 1] = i < hw ? ' ' : (i - hw) < (hw * value) ? '*' : ' ';
+	} else {
+		for (unsigned int i = 0; i < width; i++)
+			temp[i + 1] = i < hw ? ' ' : (i - hw) < (hw * value) ? '*' : ' ';
+	}
+
+	mvaddnstr(y, x, temp, width);
+}
+
+void w2_ui_dirc_paint(int left, int right) {
+	mvaddstr(4, 0, "left drive:  ");
+	w2_ui_bar_graph_pm(4, 13, g_w2_ui_width - 14, (double)left / 255);
+	mvaddstr(5, 0, "right drive: ");
+	w2_ui_bar_graph_pm(5, 13, g_w2_ui_width - 14, (double)right / 255);
+
+	mvaddstr(7, 0,
+			 "             controls:\n"
+			 "\n"
+			 " <q>      <w>       <e>   forward\n"
+			 " <a>      <s>       <d>   backward\n"
+			 "left     both      right\n");
+}
+
+void w2_ui_dirc(bool first) {
+	if (first) w2_ui_dirc_init();
 	int ch			= 0;
 	unsigned int lb = 0;
 	unsigned int lf = 0;
@@ -61,7 +101,9 @@ void w2_ui_dirc() {
 	int drive_l = w2_dirc_motor_l(lf, lb);
 	int drive_r = w2_dirc_motor_r(rf, rb);
 
-	char temp[32] = {0};
-	sprintf(temp, "l: %04i, r: %04i", drive_l, drive_r);
-	mvaddstr(4, 0, temp);
+	drive_l += drive_r * W2_DIRC_STP;
+	drive_r += drive_l * W2_DIRC_STP;
+
+	w2_send_dirc(drive_l, drive_r);
+	w2_ui_dirc_paint(drive_l, drive_r);
 }

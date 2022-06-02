@@ -7,3 +7,4 @@
 #define W2_RANGE(min, val, max) W2_MIN(max, W2_MAX(val, min))
 
 unsigned long w2_util_exp_mov_avg(unsigned long current_avg, unsigned long new_meas);
+int w2_sign(int n);

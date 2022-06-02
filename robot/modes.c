@@ -46,13 +46,11 @@ void w2_modes_switch(w2_e_mode new_mode, bool replace) {
 	}
 
 	// forward mode change to sercomm
-	size_t msg_size		  = sizeof(w2_s_cmd_mode_tx);
-	w2_s_cmd_mode_tx *msg = malloc(msg_size);
-	msg->opcode			  = W2_CMD_MODE | W2_CMDDIR_TX;
-	msg->mode			  = (uint8_t)new_mode;
-	w2_s_bin *msg_bin	  = w2_bin_s_alloc(msg_size, (uint8_t *)msg);
+	W2_CREATE_MSG_BIN(w2_s_cmd_mode_tx, msg, msg_bin);
+	msg->opcode = W2_CMD_MODE | W2_CMDDIR_TX;
+	msg->mode	= new_mode;
+
 	w2_sercomm_append_msg(msg_bin);
-	free(msg);
 	free(msg_bin);
 }
 

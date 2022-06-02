@@ -14,26 +14,41 @@ void w2_send_bin(w2_s_bin *data) {
 	}
 }
 
-w2_s_bin *w2_send_info() {
-	size_t msg_size		  = sizeof(w2_s_cmd_info_rx);
-	w2_s_cmd_info_rx *msg = malloc(msg_size);
-	msg->opcode			  = W2_CMD_INFO | W2_CMDDIR_RX;
-	w2_s_bin *msg_bin	  = w2_bin_s_alloc(msg_size, (uint8_t *)msg);
+void w2_send_info() {
+	W2_CREATE_MSG_BIN(w2_s_cmd_info_rx, msg, msg_bin);
+	msg->opcode = W2_CMD_INFO | W2_CMDDIR_RX;
+
 	w2_send_bin(msg_bin);
-	free(msg);
 	free(msg_bin);
 }
 
-w2_s_bin *w2_send_ping() {
-	g_w2_state.ping_id	  = (uint8_t)rand();
-	size_t msg_size		  = sizeof(w2_s_cmd_ping_rx);
-	w2_s_cmd_ping_rx *msg = malloc(msg_size);
-	msg->opcode			  = W2_CMD_PING | W2_CMDDIR_RX;
-	msg->id				  = g_w2_state.ping_id;
-	w2_s_bin *msg_bin	  = w2_bin_s_alloc(msg_size, (uint8_t *)msg);
+void w2_send_ping() {
+	g_w2_state.ping_id = (uint8_t)rand();
+	W2_CREATE_MSG_BIN(w2_s_cmd_ping_rx, msg, msg_bin);
+	msg->opcode = W2_CMD_PING | W2_CMDDIR_RX;
+	msg->id		= g_w2_state.ping_id;
+
 	w2_send_bin(msg_bin);
-	free(msg);
 	free(msg_bin);
 
 	w2_timer_start(W2_TIMER_PING);
+}
+
+void w2_send_mode(w2_e_mode mode) {
+	W2_CREATE_MSG_BIN(w2_s_cmd_mode_rx, msg, msg_bin);
+	msg->opcode = W2_CMD_MODE | W2_CMDDIR_RX;
+	msg->mode	= mode;
+
+	w2_send_bin(msg_bin);
+	free(msg_bin);
+}
+
+void w2_send_dirc(int left, int right) {
+	W2_CREATE_MSG_BIN(w2_s_cmd_dirc_rx, msg, msg_bin);
+	msg->opcode = W2_CMD_DIRC | W2_CMDDIR_RX;
+	msg->left	= w2_bin_hton16((uint16_t)left);
+	msg->right	= w2_bin_hton16((uint16_t)right);
+
+	w2_send_bin(msg_bin);
+	free(msg_bin);
 }

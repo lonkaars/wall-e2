@@ -74,7 +74,7 @@ void serial_set_baud_rate(unsigned int rate) {
 	simprintfunc("serial_set_baud_rate", "%u", rate);
 }
 
-void serial_send(char* message, unsigned int length) {
+void serial_send_blocking(char* message, unsigned int length) {
 	for (unsigned int byte = 0; byte < length; byte++)
 		putc(message[byte] & 0xff, stdout);
 	fflush(stdout);

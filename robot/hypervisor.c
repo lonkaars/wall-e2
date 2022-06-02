@@ -27,7 +27,7 @@ void w2_hypervisor_main() {
 	unsigned long sercomm_time = get_ms();
 	w2_errcatch_main();
 	unsigned long errcatch_time = get_ms() - sercomm_time;
-	w2_io_main();
+	// w2_io_main();
 	unsigned long io_time = get_ms() - errcatch_time;
 	w2_modes_main();
 	unsigned long mode_time = get_ms() - io_time;

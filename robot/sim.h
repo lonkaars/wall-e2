@@ -71,7 +71,7 @@ void green_led(unsigned char on); // NOLINT
 void clear(); // NOLINT
 void play(const char *melody); // NOLINT
 void serial_set_baud_rate(unsigned int rate); // NOLINT
-void serial_send(char *message, unsigned int length); // NOLINT
+void serial_send_blocking(char *message, unsigned int length); // NOLINT
 void serial_receive_ring(char *buffer, unsigned char size); // NOLINT
 unsigned char serial_get_received_bytes(); // NOLINT
 void set_motors(int left, int right); // NOLINT

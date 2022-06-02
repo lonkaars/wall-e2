@@ -8,7 +8,7 @@
 extern WINDOW *g_w2_ui_win;
 extern unsigned int g_w2_ui_width;
 extern unsigned int g_w2_ui_height;
-extern void (*g_w2_ui_current_tab)();
+extern void (*g_w2_ui_current_tab)(bool first);
 
 /** update terminal props */
 void w2_ui_update();
@@ -24,4 +24,4 @@ void w2_ui_paint_statusbar();
 /** draw tab bar */
 void w2_ui_paint_tabbar();
 
-void w2_ui_dirc();
+void w2_ui_dirc(bool first);
