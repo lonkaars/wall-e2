@@ -2,10 +2,10 @@
 
 #include "../shared/protocol.h"
 #include "../shared/serial_parse.h"
+#include "commands.h"
 #include "main.h"
 #include "serial.h"
 #include "time.h"
-#include "commands.h"
 
 void w2_serial_main() {
 	int temp;
@@ -20,13 +20,11 @@ void w2_cmd_ping_rx(w2_s_bin *data) {
 
 	g_w2_state.ping			 = w2_timer_end(W2_TIMER_PING);
 	g_w2_state.ping_received = true;
-	g_w2_state.ping_timeout = false;
-	g_w2_state.connected = true;
+	g_w2_state.ping_timeout	 = false;
+	g_w2_state.connected	 = true;
 }
 
-void w2_cmd_ping_tx(w2_s_bin *data) {
-	w2_send_bin(data);
-}
+void w2_cmd_ping_tx(w2_s_bin *data) { w2_send_bin(data); }
 
 void w2_cmd_expt_tx(w2_s_bin *data) {}
 void w2_cmd_mode_tx(w2_s_bin *data) {

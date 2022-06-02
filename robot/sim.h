@@ -14,9 +14,9 @@
 #define DBG_ENABLE_SIMWARN (1)
 #define DBG_ENABLE_SIMINFO (1)
 #define DBG_ENABLE_CYCLEINFO (0)
-#define DBG_ENABLE_SERIAL (1)
+#define DBG_ENABLE_SERIAL (0)
 
-#define DBG_CYCLE_DELAY (1e3)
+#define DBG_CYCLE_DELAY (10e3)
 #define DBG_MAX_CYCLES (-1)
 
 // debug print options

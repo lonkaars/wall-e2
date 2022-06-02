@@ -6,6 +6,7 @@
 
 extern int16_t g_w2_mode_dirc_motor_l;
 extern int16_t g_w2_mode_dirc_motor_r;
+extern double g_w2_mode_dirc_power;
 
 /**
  * direct control mode

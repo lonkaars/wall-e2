@@ -81,7 +81,9 @@ void w2_ui_dirc_paint(int left, int right) {
 			 "\n"
 			 " <q>      <w>       <e>   forward\n"
 			 " <a>      <s>       <d>   backward\n"
-			 "left     both      right\n");
+			 "left     both      right\n"
+			 "\n"
+			 "<space> send dirc mode command");
 }
 
 void w2_ui_dirc(bool first) {
@@ -96,6 +98,7 @@ void w2_ui_dirc(bool first) {
 		if (ch == 'd' || ch == 's') lb++;
 		if (ch == 'q' || ch == 'w') rf++;
 		if (ch == 'a' || ch == 's') rb++;
+		if (ch == ' ') w2_send_mode(W2_M_DIRC);
 	}
 
 	int drive_l = w2_dirc_motor_l(lf, lb);
@@ -104,6 +107,6 @@ void w2_ui_dirc(bool first) {
 	drive_l += drive_r * W2_DIRC_STP;
 	drive_r += drive_l * W2_DIRC_STP;
 
-	// w2_send_dirc(drive_l, drive_r);
+	w2_send_dirc(drive_l, drive_r);
 	w2_ui_dirc_paint(drive_l, drive_r);
 }

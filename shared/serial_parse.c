@@ -51,7 +51,7 @@ void w2_cmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_lengt
 		w2_errcatch_throw(W2_E_WARN_SERIAL_NOISY);
 	} else {
 #ifdef W2_SIM
-		w2_sim_print_serial(copy);
+		if (DBG_ENABLE_SERIAL) w2_sim_print_serial(copy);
 #endif
 		handler(copy);
 	}

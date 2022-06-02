@@ -22,7 +22,7 @@
 /** size of the serial communication buffer (in messages, not bytes) */
 #define W2_SERCOMM_BUFFER_SIZE (16)
 /** size of mode history buffer */
-#define W2_MODE_HISTORY_BUFFER_SIZE (4)
+#define W2_MODE_HISTORY_BUFFER_SIZE (8)
 
 /** max logic module execution time in milliseconds */
 #define W2_MAX_MODULE_CYCLE_MS (20)

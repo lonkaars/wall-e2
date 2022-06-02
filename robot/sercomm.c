@@ -20,12 +20,6 @@ char g_w2_serial_buffer[W2_SERIAL_READ_BUFFER_SIZE] = {0};
 uint8_t g_w2_serial_buffer_index					= 0;
 uint8_t g_w2_serial_buffer_head						= 0;
 
-unsigned int g_w2_ping_ms = 0;
-uint8_t g_w2_ping_id = 0;
-bool g_w2_ping_received = true;
-bool g_w2_ping_timeout = false;
-bool g_w2_connected = false;
-
 void w2_sercomm_main() {
 #ifdef W2_SIM
 	simprintfunc("w2_sercomm_main", "");
@@ -40,10 +34,11 @@ void w2_sercomm_main() {
 	// check time-out
 	if (!g_w2_ping_received && w2_hypervisor_time_end(W2_TIMER_PING) > W2_PING_TIMEOUT) {
 		g_w2_ping_timeout = true;
+		g_w2_connected = false;
 		w2_errcatch_throw(W2_E_WARN_PING_TIMEOUT);
 	}
 	// send ping every W2_TIMER_PING ms
-	if ((g_w2_ping_received && w2_hypervisor_time_end(W2_TIMER_PING) > 1000) || g_w2_ping_timeout) {
+	if ((g_w2_ping_received && w2_hypervisor_time_end(W2_TIMER_PING) > W2_PING_FREQUENCY) || g_w2_ping_timeout) {
 		g_w2_ping_timeout = false;
 		g_w2_ping_received = false;
 		g_w2_ping_id = (uint8_t) rand();
@@ -62,7 +57,7 @@ void w2_sercomm_main() {
 	while (g_w2_sercomm_offset != g_w2_sercomm_index) {
 		w2_s_bin *data = g_w2_sercomm_buffer[g_w2_sercomm_offset];
 #ifdef W2_SIM
-		w2_sim_print_serial(data);
+		if (DBG_ENABLE_SERIAL) w2_sim_print_serial(data);
 #endif
 		serial_send_blocking("\xff", 1);
 		for (uint8_t i = 0; i < data->bytes; i++) {
@@ -89,10 +84,19 @@ void w2_sercomm_append_msg(w2_s_bin *data) {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Warray-bounds"
 
+#include <stdlib.h>
+#include <string.h>
+
+
 void w2_cmd_ping_tx(w2_s_bin *data) {
 	g_w2_ping_ms = w2_hypervisor_time_end(W2_TIMER_PING);
 	g_w2_ping_received = true;
 	g_w2_ping_timeout = false;
+	g_w2_connected = true;
+
+	char buf[32];
+	sprintf(buf, "rec: %i, tim: %i, con: %i", g_w2_ping_received, g_w2_ping_timeout, g_w2_connected);
+	w2_errcatch_throw_msg(0x69, strlen(buf), buf);
 }
 
 void w2_cmd_ping_rx(w2_s_bin *data) {
