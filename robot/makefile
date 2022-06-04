@@ -9,7 +9,7 @@ PORT ?= /dev/ttyACM0
 # SIM = true
 
 CFLAGS=-g -Wall $(DEVICE_SPECIFIC_CFLAGS) -Os
-LDFLAGS=-Wl,-gc-sections -Wl,-relax
+LDFLAGS=-Wl,-u,vfprintf -lprintf_flt -lm -Wl,-relax -Wl,-gc-sections
 
 include ../shared/os.mk
 all: $(if $(SIM), $(TARGET), out.hex)

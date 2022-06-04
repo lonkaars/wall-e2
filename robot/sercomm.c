@@ -93,10 +93,6 @@ void w2_cmd_ping_tx(w2_s_bin *data) {
 	g_w2_ping_received = true;
 	g_w2_ping_timeout = false;
 	g_w2_connected = true;
-
-	char buf[32];
-	sprintf(buf, "rec: %i, tim: %i, con: %i", g_w2_ping_received, g_w2_ping_timeout, g_w2_connected);
-	w2_errcatch_throw_msg(0x69, strlen(buf), buf);
 }
 
 void w2_cmd_ping_rx(w2_s_bin *data) {
