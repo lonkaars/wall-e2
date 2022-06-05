@@ -20,17 +20,20 @@ void w2_errcatch_handle_error(w2_s_error *error) {
 			g_w2_error_uncaught = true;
 #ifdef W2_SIM
 			simwarn("Uncaught/unhandled error found with code 0x%02x", error->code);
-			if (error->message_length > 0) fprintf(stderr, " and message \"%.*s\"", error->message_length, error->message);
+			if (error->message_length > 0)
+				fprintf(stderr, " and message \"%.*s\"", error->message_length, error->message);
 			fprintf(stderr, "\n");
 #endif
 		}
 	}
 
 	// forward error to sercomm
-	W2_CREATE_MSG_SIZE_BIN(w2_s_cmd_expt_tx, sizeof(w2_s_cmd_expt_tx) + sizeof(uint8_t) * error->message_length, msg, msg_bin);
-	msg->opcode			  = W2_CMD_EXPT | W2_CMDDIR_TX;
-	msg->error			  = error->code;
-	msg->length			  = error->message_length;
+	W2_CREATE_MSG_SIZE_BIN(w2_s_cmd_expt_tx,
+						   sizeof(w2_s_cmd_expt_tx) + sizeof(uint8_t) * error->message_length, msg,
+						   msg_bin);
+	msg->opcode = W2_CMD_EXPT | W2_CMDDIR_TX;
+	msg->error	= error->code;
+	msg->length = error->message_length;
 	memcpy(msg->message, error->message, error->message_length);
 
 	w2_sercomm_append_msg(msg_bin);

@@ -15,10 +15,10 @@ unsigned long g_w2_hypervisor_ema_mode_ms				   = 0;
 uint64_t g_w2_hypervisor_timers[W2_HYPERVISOR_TIMER_COUNT] = {0};
 
 unsigned int g_w2_ping_ms = 0;
-uint8_t g_w2_ping_id = 0;
-bool g_w2_ping_received = true;
-bool g_w2_ping_timeout = false;
-bool g_w2_connected = false;
+uint8_t g_w2_ping_id	  = 0;
+bool g_w2_ping_received	  = true;
+bool g_w2_ping_timeout	  = false;
+bool g_w2_connected		  = false;
 
 void w2_hypervisor_main() {
 #ifdef W2_SIM

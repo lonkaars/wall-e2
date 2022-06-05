@@ -36,4 +36,3 @@ void w2_hypervisor_main();
 void w2_hypervisor_time_start(uint8_t label);
 /** stop timer with label `label` */
 uint64_t w2_hypervisor_time_end(uint8_t label);
-

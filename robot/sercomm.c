@@ -34,14 +34,15 @@ void w2_sercomm_main() {
 	// check time-out
 	if (!g_w2_ping_received && w2_hypervisor_time_end(W2_TIMER_PING) > W2_PING_TIMEOUT) {
 		g_w2_ping_timeout = true;
-		g_w2_connected = false;
+		g_w2_connected	  = false;
 		w2_errcatch_throw(W2_E_WARN_PING_TIMEOUT);
 	}
 	// send ping every W2_TIMER_PING ms
-	if ((g_w2_ping_received && w2_hypervisor_time_end(W2_TIMER_PING) > W2_PING_FREQUENCY) || g_w2_ping_timeout) {
-		g_w2_ping_timeout = false;
+	if ((g_w2_ping_received && w2_hypervisor_time_end(W2_TIMER_PING) > W2_PING_FREQUENCY) ||
+		g_w2_ping_timeout) {
+		g_w2_ping_timeout  = false;
 		g_w2_ping_received = false;
-		g_w2_ping_id = (uint8_t) rand();
+		g_w2_ping_id	   = (uint8_t)rand();
 
 		W2_CREATE_MSG_BIN(w2_s_cmd_ping_tx, msg, bin);
 		msg->opcode = W2_CMD_PING | W2_CMDDIR_TX;
@@ -87,17 +88,14 @@ void w2_sercomm_append_msg(w2_s_bin *data) {
 #include <stdlib.h>
 #include <string.h>
 
-
 void w2_cmd_ping_tx(w2_s_bin *data) {
-	g_w2_ping_ms = w2_hypervisor_time_end(W2_TIMER_PING);
+	g_w2_ping_ms	   = w2_hypervisor_time_end(W2_TIMER_PING);
 	g_w2_ping_received = true;
-	g_w2_ping_timeout = false;
-	g_w2_connected = true;
+	g_w2_ping_timeout  = false;
+	g_w2_connected	   = true;
 }
 
-void w2_cmd_ping_rx(w2_s_bin *data) {
-	w2_sercomm_append_msg(data);
-}
+void w2_cmd_ping_rx(w2_s_bin *data) { w2_sercomm_append_msg(data); }
 
 void w2_cmd_mode_rx(w2_s_bin *data) {
 	W2_CAST_BIN(w2_s_cmd_mode_rx, data, req);
