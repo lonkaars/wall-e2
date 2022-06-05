@@ -6,19 +6,19 @@ this page is WIP
 
 ## features
 
-|feature|due|status|author|description|
-|-|-|-|-|-|
-|view warnings / errors|may 31|unimplemented||see a log of parsed warnings/errors
-|direct control|may 31|unimplemented||directly control the robot with tank-style controls
-|configure map|june 04|unimplemented||set map width/height and define entry/exitpoints
-|input orders|june 04|unimplemented||type orders with lists of coordinates to visit
-|enable/disable emergency mode|may 31|unimplemented||self-explanatory
-|enable/disable sensor calibration mode|may 31|unimplemented||self-explanatory
-|enable/disable wet floor mode|may 31|unimplemented||self-explanatory
-|read sensor values|june 04|unimplemented||dashboard that displays all i/o as bar graphs
-|set display contents|optional|unimplemented||send text to display on lcd
-|play music|optional|unimplemented||play tunes
-|control leds|optional|unimplemented||turn on/off underside leds
+|feature|status|author|description|
+|-|-|-|-|
+|view warnings / errors|unimplemented||see a log of parsed warnings/errors
+|direct control|done|Loek|directly control the robot with tank-style controls
+|configure map|unimplemented||set map width/height and define entry/exitpoints
+|input orders|unimplemented||type orders with lists of coordinates to visit
+|enable/disable emergency mode|unimplemented||self-explanatory
+|enable/disable sensor calibration mode|unimplemented||self-explanatory
+|enable/disable wet floor mode|unimplemented||self-explanatory
+|read sensor values|unimplemented||dashboard that displays all i/o as bar graphs
+|set display contents|unimplemented||send text to display on lcd
+|play music|unimplemented||play tunes
+|control leds|unimplemented||turn on/off underside leds
 
 ## interface
 
@@ -58,9 +58,9 @@ sneltoetsen:
 ```
 
 the top status bar is always supposed to be visible, and is sort of inspired by
-[ncmpcpp](https://github.com/ncmpcpp/ncmpcpp). because the client software
-should use no libraries if possible, a custom renderer needs to be implemented,
-though it doesn't matter if it's very primitive.
+[ncmpcpp](https://github.com/ncmpcpp/ncmpcpp). we're using
+[ncurses](https://invisible-mirror.net/ncurses/ncurses.html) to assist in
+creating a cross-platform terminal ui.
 
 going from top-left in reading order the status bar contains: connection
 status, ping time, robot version number, robot battery info, current logic
@@ -81,11 +81,4 @@ modules are executed after each other:
 - stdin read (user input)
 - status bar paint
 - current tab paint
-
-## notes on ascii escape codes
-
-- color codes
-- terminal echo codes
-- how to read terminal (re)size
-- cursor movement(?)
 
