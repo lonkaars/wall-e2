@@ -71,9 +71,9 @@ what they're supposed to do:
 |error handling    |`errcatch   `|done|Loek| receives error codes; controls how errors are handled|
 |i/o read & write  |`io         `|done|Jorn & Abdullaahi| reads all inputs to global state; writes all outputs|
 |mode logic        |`modes      `|done|N/a| executes the appropriate module for current mode|
-|maze              |`mode_maze  `|may 31|Jorn & Abdullaahi| controls robot during maze portion of map; hands off control to warehouse module|
+|maze              |`mode_maze  `|done|Jorn & Abdullaahi| controls robot during maze portion of map; hands off control to warehouse module|
 |warehouse         |`mode_grid  `|may 31|Loek| controls robot during warehouse portion of map; hands off control to maze module|
-|emergency stop    |`mode_halt  `|may 31|Fiona| stops all execution until emergency mode is reset by software or user|
+|emergency stop    |`mode_halt  `|done|Fiona| stops all execution until emergency mode is reset by software or user|
 |line finding      |`mode_lcal  `|may 31|Fiona| find line by turning on own axis if lost|
 |charge station    |`mode_chrg  `|may 31|Fiona| go to the charging station transition in the grid, and continue until a black circle is found|
 |direct control    |`mode_dirc  `|done|Loek| respond to [DIRC](../protocol.md#DIRC) commands|
