@@ -6,9 +6,5 @@
 			"args": [ "-defterm", "-no-start", "-mingw64", "-shell", "sh", "-here" ],
 			"icon": "terminal-bash"
 		}
-	},
-	"files.associations": {
-		"limits": "c",
-		"orangutan_shim.h": "c"
 	}
 }
