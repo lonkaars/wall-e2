@@ -13,13 +13,15 @@ SOURCES := $(wildcard *.c)
 HEADERS := $(wildcard *.h)
 include ../shared/makefile
 
+CFLAGS += $(if $(WIN32),-I/mingw64/include/ncursesw,)
+
 OBJECTS := $(patsubst %.c,%.o, $(SOURCES))
 
 .o:
 	$(CC) -c $(CFLAGS) $<
 
 $(EXECNAME): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $(EXECNAME)
+	$(CC) $(OBJECTS) -o $(EXECNAME) $(LDFLAGS)
 
 clean::
 	$(RM) $(EXECNAME) *.o
