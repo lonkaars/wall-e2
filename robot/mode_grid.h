@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file mode_grid.h */
+
 /**
  * warehouse mode
  *

@@ -6,3 +6,6 @@ $(SUBDIRS): FORCE
 	$(MAKE) -C $@ $(MAKECMDGOALS)
 
 FORCE:
+
+docs:
+	doxygen

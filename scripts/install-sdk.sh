@@ -36,3 +36,5 @@ fi
 
 cd ..
 rm -rf temp
+
+pip3 install compiledb

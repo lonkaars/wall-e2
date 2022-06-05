@@ -8,3 +8,4 @@ client/main
 .cache
 *.log
 scripts/InstallationLog.txt
+docs/

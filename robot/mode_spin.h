@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file mode_spin.h */
+
 /**
  * wet floor simulation
  *

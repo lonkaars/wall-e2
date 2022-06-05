@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file mode_scal.h */
+
 /**
  * sensor calibration mode
  *

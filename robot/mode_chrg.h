@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file mode_chrg.h */
+
 /**
  * charge station mode
  *

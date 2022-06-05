@@ -3,6 +3,7 @@
 
 #include "../shared/bin.h"
 #include "../shared/serial_parse.h"
+#include "errcatch.h"
 #include "hypervisor.h"
 #include "io.h"
 #include "mode_dirc.h"
@@ -25,16 +26,22 @@ void w2_sercomm_main() {
 #endif
 	// read and parse data
 	while (serial_get_received_bytes() != g_w2_serial_buffer_index) {
-		w2_serial_parse(g_w2_serial_buffer[g_w2_serial_buffer_index]);
+		if (!w2_serial_parse(g_w2_serial_buffer[g_w2_serial_buffer_index]))
+			w2_errcatch_throw(W2_E_WARN_SERIAL_NOISY);
 		g_w2_serial_buffer_index = (g_w2_serial_buffer_index + 1) % W2_SERIAL_READ_BUFFER_SIZE;
 	}
 
 	// send data
 	while (g_w2_sercomm_offset != g_w2_sercomm_index) {
-		w2_s_bin *data	= g_w2_sercomm_buffer[g_w2_sercomm_offset];
-		char *data_cast = malloc(data->bytes);
-		memcpy(data_cast, data->data, data->bytes);
-		serial_send(data_cast, data->bytes);
+		w2_s_bin *data = g_w2_sercomm_buffer[g_w2_sercomm_offset];
+#ifdef W2_SIM
+		w2_sim_print_serial(data);
+#endif
+		serial_send("\xff", 1);
+		for (uint8_t i = 0; i < data->bytes; i++) {
+			uint8_t byte = data->data[i];
+			byte == 0xff ? serial_send("\xff\xff", 2) : serial_send((char *)&byte, 1);
+		}
 		g_w2_sercomm_offset = (g_w2_sercomm_offset + 1) % W2_SERCOMM_BUFFER_SIZE;
 	}
 }
@@ -49,6 +56,26 @@ void w2_sercomm_append_msg(w2_s_bin *data) {
 	g_w2_sercomm_buffer[g_w2_sercomm_index] = w2_bin_s_alloc(data->bytes, data->data);
 	if (g_w2_sercomm_buffer_full) return;
 	g_w2_sercomm_index = next_index;
+}
+
+void w2_cmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_length) {
+	w2_s_bin *copy				= w2_bin_s_alloc(data_length, data);
+	void (*handler)(w2_s_bin *) = g_w2_cmd_handlers[data[0]];
+
+	if (handler == NULL) {
+#ifdef W2_SIM
+		// TODO throw warning
+		simwarn("unknown serial message with code 0x%02x\n", data[0]);
+#endif
+		w2_errcatch_throw(W2_E_WARN_SERIAL_NOISY);
+	} else {
+#ifdef W2_SIM
+		w2_sim_print_serial(copy);
+#endif
+		handler(copy);
+	}
+
+	free(copy);
 }
 
 void w2_cmd_ping_rx(w2_s_bin *data) {
@@ -90,7 +117,24 @@ void w2_cmd_cord_rx(w2_s_bin *data) { return; }
 
 void w2_cmd_bomd_rx(w2_s_bin *data) { return; }
 
-void w2_cmd_sres_rx(w2_s_bin *data) { return; }
+void w2_cmd_sres_rx(w2_s_bin *data) {
+	w2_s_cmd_sres_rx *message = malloc(w2_cmd_sizeof(data->data, data->bytes));
+	memcpy(message, data->data, data->bytes);
+
+	switch (message->type) {
+		case W2_CMD_SRES_RX_TYPE_REINITGS: {
+			// TODO: soft-reset
+			break;
+		}
+		case W2_CMD_SRES_RX_TYPE_PREVMODE: {
+			w2_modes_call(W2_M_PREV);
+			break;
+		}
+		default: {
+			w2_errcatch_throw(W2_E_WARN_SERIAL_NOISY);
+		}
+	}
+}
 
 void w2_cmd_mcfg_rx(w2_s_bin *data) { return; }
 

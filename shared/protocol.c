@@ -74,22 +74,3 @@ size_t w2_cmd_expt_tx_sizeof(w2_s_bin *data) {
 size_t w2_cmd_mcfg_rx_sizeof(w2_s_bin *data) {
 	return W2_DYN_MEMBER_SIZEOF(w2_s_cmd_mcfg_rx, 3, w2_s_cmd_mcfg_feature);
 }
-
-void w2_cmd_handler(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_length) {
-	w2_s_bin *copy				= w2_bin_s_alloc(data_length, data);
-	void (*handler)(w2_s_bin *) = g_w2_cmd_handlers[data[0]];
-
-	if (handler == NULL) {
-#ifdef W2_SIM
-		// TODO throw warning
-		simwarn("unknown serial message with code 0x%02x\n", data[0]);
-#endif
-	} else {
-#ifdef W2_SIM
-		w2_sim_print_serial(copy);
-#endif
-		handler(copy);
-	}
-
-	free(copy);
-}

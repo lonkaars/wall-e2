@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file mode_halt.h */
+
 /**
  * halt (emergency) mode
  *

@@ -1,8 +1,12 @@
 {
 	"version": "2.0.0",
-	"command": "C:/msys64/usr/bin/sh.exe",
-	"options": { "cwd": "${workspaceFolder}" },
-	"args": [ "-c" ],
+	"options": {
+		"cwd": "${workspaceFolder}",
+		"shell": {
+			"executable": "C:/msys64/msys2_shell.cmd",
+			"args": [ "-defterm", "-no-start", "-mingw64", "-shell", "sh", "-here", "-c" ],
+		}
+	},
 	"tasks": [
 		{
 			"label": "build client",
@@ -10,8 +14,9 @@
 				"isDefault": false,
 				"kind": "build"
 			},
-			"args": [ "make", "-C", "client" ],
-			"command": "",
+			"command": "make",
+			"args": [ "" ],
+			"options": { "cwd": "${workspaceFolder}/client" },
 			"type": "shell"
 		},
 		{
@@ -20,8 +25,9 @@
 				"isDefault": false,
 				"kind": "build"
 			},
-			"args": [ "make", "-C", "robot" ],
-			"command": "",
+			"options": { "cwd": "${workspaceFolder}/robot" },
+			"command": "make",
+			"args": [ "" ],
 			"type": "shell"
 		},
 		{
@@ -30,8 +36,9 @@
 				"isDefault": false,
 				"kind": "test"
 			},
-			"args": [ "make", "flash", "-C", "robot" ],
-			"command": "",
+			"options": { "cwd": "${workspaceFolder}/robot" },
+			"command": "make flash",
+			"args": [ "" ],
 			"type": "shell"
 		},
 		{
@@ -40,8 +47,8 @@
 				"isDefault": false,
 				"kind": "none"
 			},
-			"args": [ "make", "clean" ],
-			"command": "",
+			"command": "make clean",
+			"args": [ "" ],
 			"type": "shell"
 		},
 		{
@@ -50,8 +57,18 @@
 				"isDefault": false,
 				"kind": "none"
 			},
-			"args": [ "make", "format" ],
-			"command": "",
+			"command": "make format",
+			"args": [ "" ],
+			"type": "shell"
+		},
+		{
+			"label": "generate compilation db (needed for autocomplete)",
+			"group": {
+				"isDefault": false,
+				"kind": "build"
+			},
+			"command": "make compile_commands",
+			"args": [ "" ],
 			"type": "shell"
 		},
 	]

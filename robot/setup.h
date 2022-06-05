@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file setup.h */
+
 /**
  * runs once at startup, plays beep when setup finishes
  *

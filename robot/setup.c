@@ -28,7 +28,8 @@ void w2_setup_main() {
 	time_reset();
 
 	// set default mode
-	w2_modes_swap(W2_M_HALT);
+	w2_modes_swap(W2_M_MAZE);
+	w2_modes_call(W2_M_HALT);
 
 	// indicate startup done
 	play("L50 c>c");

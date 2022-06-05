@@ -2,8 +2,8 @@
 #include <time.h>
 #include <string.h>
 #include <stdint.h>
-#include <termios.h>
 #include <unistd.h>
+#include <termios.h>
 
 #include "sim.h"
 #include "../shared/consts.h"
@@ -38,15 +38,20 @@ static const char* const W2_CMD_DIRECTIONS[] = {
 
 void time_reset() {
 	simprintfunc("time_reset", "");
+#ifdef W2_HOST_LINUX
 	clock_gettime(CLOCK_MONOTONIC, &reference_time);
+#endif
 }
 
 unsigned long get_ms() {
 	simprintfunc("get_ms", "");
+#ifdef W2_HOST_LINUX
 	struct timespec elapsed;
 	clock_gettime(CLOCK_MONOTONIC, &elapsed);
 	return ((elapsed.tv_sec * 1000) + (elapsed.tv_nsec / 1000000)) -
 		((reference_time.tv_sec * 1000) + (reference_time.tv_nsec / 1000000));
+#endif
+	return 0;
 }
 
 void red_led(unsigned char on) {
@@ -76,16 +81,11 @@ void serial_send(char* message, unsigned int length) {
 		return;
 	}
 
-	if (DBG_ENABLE_PRINTFUNC) simprintfunc("serial_send", "<see below>, %u", length);
-
-	if (!DBG_ENABLE_SERIAL) return;
-	w2_s_bin *bin = w2_bin_s_alloc(length, (uint8_t*) message);
-	w2_sim_print_serial(bin);
-	free(bin);
+	if (DBG_ENABLE_PRINTFUNC) simprintfunc("serial_send", "<%u byte%s>", length, length == 1 ? "" : "s");
 }
 
 void serial_receive_ring(char* buffer, unsigned char size) {
-	simprintfunc("serial_receive_ring", "0x%016lx, %u", (unsigned long) buffer, size);
+	simprintfunc("serial_receive_ring", "0x%016lx, %u", (uint64_t) buffer, size);
 }
 
 unsigned char serial_get_received_bytes() {

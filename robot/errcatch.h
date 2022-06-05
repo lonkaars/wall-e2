@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file errcatch.h */
+
 #include <stdint.h>
 
 #include "../shared/consts.h"

@@ -39,10 +39,15 @@ organizational and form more of a software 'skeleton', while the 'maze' and
 ┌────────┴───────┐┌─────────┴────────┐┌────────┴─────────┐┌─────┴──────┐
 │ Error handling ││ I/O Read & Write ││ PC communication ││ Mode logic │
 └────────────────┘└──────────────────┘└──────────────────┘└─────┬──────┘
-                      ┌──────────┬──────────────┬───────────────┤
-                  ┌───┴──┐┌──────┴────┐┌────────┴───────┐┌──────┴──────┐
-      *modes* ->  │ Maze ││ Warehouse ││ Emergency stop ││ Calibration │
-                  └──────┘└───────────┘└────────────────┘└─────────────┘
+                                                                │
+                                                          Maze ─┤
+                                                     Warehouse ─┤
+                                                Emergency stop ─┤
+                        *logic modes* ->          Line finding ─┤
+                                                Charge station ─┤
+                                                Direct control ─┤
+                                                     Wet floor ─┤
+                                            Sensor calibration ─┘
 ```
 
 this diagram roughly describes how different parts of the robot software are
@@ -64,7 +69,7 @@ what they're supposed to do:
 |emergency stop    |`mode_halt  `|may 31|Fiona| stops all execution until emergency mode is reset by software or user|
 |line finding      |`mode_lcal  `|may 31|Fiona| find line by turning on own axis if lost|
 |charge station    |`mode_chrg  `|may 31|Fiona| go to the charging station transition in the grid, and continue until a black circle is found|
-|direct control    |`mode_dirc  `|may 31|Loek| respond to [DIRC](../protocol.md#DIRC) commands|
+|direct control    |`mode_dirc  `|done|Loek| respond to [DIRC](../protocol.md#DIRC) commands|
 |wet floor         |`mode_spin  `|may 31|Fiona| spin uncontrollably (simulating wet floor??)|
 |sensor calibration|`mode_scal  `|may 31|Jorn & Abdullaahi| calibrate underside uv sensors|
 
@@ -72,15 +77,15 @@ what they're supposed to do:
 
 this list will probably get updated from time to time:
 
-- modules shouldn't create any global state variables, they should use `static`
-  variables instead.
-- modules are run cyclically, so they shouldn't take more than
+- logic modules shouldn't create any global state variables if possible, they
+  should use `static` variables instead
+- logic modules are run cyclically, so they shouldn't take more than
   `W2_MAX_MODULE_CYCLE_MS` to execute (this is an arbitrary number, and may be
-  changed).
+  changed)
 - documentation comments should follow the [javadoc-style doxygen
   format](https://wiki.scilab.org/Doxygen%20documentation%20Examples) and be
-  placed in header (.h) files if possible. this only applies to public members
-  (e.g. no local variables or module-internal code).
+  placed in header (.h) files. this only applies to public members (e.g. no
+  local variables or module-internal code)
 - code style is mostly handled by `clang-format` and `clang-tidy`, but you
   should still follow these naming conventions (`<angle brackets>` indicate
   placeholders):
@@ -93,32 +98,30 @@ this list will probably get updated from time to time:
   |enum|`w2_e_<name>`|`w2_e_errorcodes`; `w2_e_serial_commands`|
   
   this again only applies to public members. local variables should still have
-  short descriptive names, but shouldn't be prefixed with `w2_*`.
+  short descriptive names, but shouldn't be prefixed with `w2_*`
 - arbitrary numbers should be aliased to `#define` statements or `enum`s if
-  part of a series.
+  part of a series
 - general constants should be placed in `consts.h`
 - don't import `<pololu/orangutan.h>` directly, instead use
   `"orangutan_shim.h"` to keep code compatible with the simulator
 - don't use `<stdbool.h>`, instead use `"../shared/protocol.h"`. this makes
   sure that `bool` values are equal to `uint8_t`. they're functionally
-  identical.
+  identical
 
 ## todo
 
 global todo:
 
-- [ ] start robot in calibration mode
 - [ ] assume robot starts in maze
-- [ ] 'crosswalk' transition detection in seperate file (used by grid and maze
-  mode)
+- [ ] 'crosswalk' transition detection and line following in seperate file
+  (used by grid, maze, and charge mode)
 - [ ] client software architecture
-- [x] mode 'return' buffer
-- [x] clear global timer at start of cycle instead of just for mode selection
-  module (for last ping time measurement)
-- [ ] calibrate (line-detecting) light sensors in setup.c, or manually by
-  placing the robot and pressing a button (maybe make this a seperate mode)
-- [ ] create labeled timer functions like nodejs `console.time()` and
+- [ ] enter mode_scal by placing the robot on a white surface and pressing a
+  button
+- [x] create labeled timer functions like nodejs `console.time()` and
   `console.timeEnd()` (use for serial read timeout constraint)
+- [x] `serial_parse` doesn't properly handle escaped `0xff` bytes in listen
+  mode
 
 ### hypervisor
 

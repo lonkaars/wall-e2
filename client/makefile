@@ -25,5 +25,5 @@ format:
 	clang-tidy --fix-errors $(SOURCES) $(HEADERS)
 
 compile_commands: clean
-	bear -- make
+	compiledb make
 

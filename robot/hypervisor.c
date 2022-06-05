@@ -6,12 +6,13 @@
 #include "orangutan_shim.h"
 #include "sercomm.h"
 
-uint64_t g_w2_hypervisor_cycles				  = 0;
-uint64_t g_w2_hypervisor_uptime_ms			  = 0;
-unsigned long g_w2_hypervisor_ema_sercomm_ms  = 0;
-unsigned long g_w2_hypervisor_ema_errcatch_ms = 0;
-unsigned long g_w2_hypervisor_ema_io_ms		  = 0;
-unsigned long g_w2_hypervisor_ema_mode_ms	  = 0;
+uint64_t g_w2_hypervisor_cycles							   = 0;
+uint64_t g_w2_hypervisor_uptime_ms						   = 0;
+unsigned long g_w2_hypervisor_ema_sercomm_ms			   = 0;
+unsigned long g_w2_hypervisor_ema_errcatch_ms			   = 0;
+unsigned long g_w2_hypervisor_ema_io_ms					   = 0;
+unsigned long g_w2_hypervisor_ema_mode_ms				   = 0;
+uint64_t g_w2_hypervisor_timers[W2_HYPERVISOR_TIMER_COUNT] = {0};
 
 void w2_hypervisor_main() {
 #ifdef W2_SIM
@@ -50,4 +51,12 @@ void w2_hypervisor_main() {
 #endif
 
 	g_w2_hypervisor_cycles++;
+}
+
+void w2_hypervisor_time_start(uint8_t label) {
+	g_w2_hypervisor_timers[label] = g_w2_hypervisor_uptime_ms;
+}
+
+uint64_t w2_hypervisor_time_end(uint8_t label) {
+	return g_w2_hypervisor_uptime_ms - g_w2_hypervisor_timers[label];
 }

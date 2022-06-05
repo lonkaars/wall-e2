@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file modes.h */
+
 #include "../shared/consts.h"
 
 #include "mode_chrg.h"

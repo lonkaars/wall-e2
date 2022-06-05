@@ -6,18 +6,19 @@ MCU ?= atmega168
 AVRDUDE_DEVICE ?= m168
 
 PORT ?= /dev/ttyACM0
+# SIM = true
 
 CFLAGS=-g -Wall $(DEVICE_SPECIFIC_CFLAGS) -Os
 LDFLAGS=-Wl,-gc-sections -Wl,-relax
 
-all: $(if $(SIM), a.out, out.hex)
+include ../shared/os.mk
+all: $(if $(SIM), $(TARGET), out.hex)
 
 SOURCES := $(filter-out sim.c, $(wildcard *.c))
 HEADERS := $(filter-out sim.h, $(wildcard *.h))
 include ../shared/makefile
 
 # simulation
-# SIM = true
 CFLAGS += $(if $(SIM), -DW2_SIM, -mcall-prologues -mmcu=$(MCU))
 LDFLAGS += $(if $(SIM), , -lpololu_$(DEVICE))
 PREFIX := $(if $(SIM), , avr-)
@@ -30,20 +31,16 @@ AVRDUDE=avrdude
 CC=$(PREFIX)gcc
 OBJ2HEX=$(PREFIX)objcopy
 
-# debug build info string
-BUILD_STR=$(shell git update-index -q --refresh; git describe --tags --dirty='*' --broken='x' | cut -c1-20)
-CFLAGS += -DW2_BUILD_STR=\"$(BUILD_STR)\"
-
 clean::
-	rm -f *.o out.hex a.out
+	rm -f *.o out.hex $(TARGET)
 
-a.out: $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	$(CC) $(OBJECTS) $(CFLAGS) $(LDFLAGS)
 
 .o:
 	$(CC) -c $(CFLAGS) $<
 
-out.hex: a.out
+out.hex: $(TARGET)
 	$(OBJ2HEX) -R .eeprom -O ihex $< $@
 	$(info build $(BUILD_STR) complete)
 
@@ -57,4 +54,4 @@ format:
 	clang-tidy --fix-errors $(SOURCES) $(HEADERS)
 
 compile_commands: clean
-	bear -- make
+	compiledb make

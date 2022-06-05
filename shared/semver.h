@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file semver.h */
+
 #include <stdint.h>
 
 typedef struct {
