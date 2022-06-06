@@ -22,7 +22,6 @@ void w2_modes_init() {
 	g_w2_modes[W2_M_DIRC] = &w2_mode_dirc;
 	g_w2_modes[W2_M_GRID] = &w2_mode_grid;
 	g_w2_modes[W2_M_HALT] = &w2_mode_halt;
-	g_w2_modes[W2_M_LCAL] = &w2_mode_lcal;
 	g_w2_modes[W2_M_MAZE] = &w2_mode_maze;
 	g_w2_modes[W2_M_SCAL] = &w2_mode_scal;
 	g_w2_modes[W2_M_SPIN] = &w2_mode_spin;

@@ -99,7 +99,11 @@ void w2_cmd_ping_rx(w2_s_bin *data) { w2_sercomm_append_msg(data); }
 
 void w2_cmd_mode_rx(w2_s_bin *data) {
 	W2_CAST_BIN(w2_s_cmd_mode_rx, data, req);
-	w2_modes_swap(req->mode);
+	if (req->mode == W2_M_SCAL) {
+		w2_modes_call(req->mode);
+	} else {
+		w2_modes_swap(req->mode);
+	}
 }
 
 void w2_cmd_sped_rx(w2_s_bin *data) { return; }

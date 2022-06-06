@@ -50,8 +50,7 @@ organizational and form more of a software 'skeleton', while the 'maze' and
                                                           Maze ─┤
                                                      Warehouse ─┤
                                                 Emergency stop ─┤
-                        *logic modes* ->          Line finding ─┤
-                                                Charge station ─┤
+                          *logic modes* ->      Charge station ─┤
                                                 Direct control ─┤
                                                      Wet floor ─┤
                                             Sensor calibration ─┘
@@ -74,11 +73,10 @@ what they're supposed to do:
 |maze              |`mode_maze  `|done|Jorn & Abdullaahi| controls robot during maze portion of map; hands off control to warehouse module|
 |warehouse         |`mode_grid  `|may 31|Loek| controls robot during warehouse portion of map; hands off control to maze module|
 |emergency stop    |`mode_halt  `|done|Fiona| stops all execution until emergency mode is reset by software or user|
-|line finding      |`mode_lcal  `|may 31|Fiona| find line by turning on own axis if lost|
 |charge station    |`mode_chrg  `|may 31|Fiona| go to the charging station transition in the grid, and continue until a black circle is found|
 |direct control    |`mode_dirc  `|done|Loek| respond to [DIRC](../protocol.md#DIRC) commands|
-|wet floor         |`mode_spin  `|may 31|Fiona| spin uncontrollably (simulating wet floor??)|
-|sensor calibration|`mode_scal  `|may 31|Jorn & Abdullaahi| calibrate underside uv sensors|
+|wet floor         |`mode_spin  `|done|Fiona| spin uncontrollably (simulating wet floor??)|
+|sensor calibration|`mode_scal  `|done|Jorn & Abdullaahi| calibrate underside uv sensors|
 
 ## some standards
 

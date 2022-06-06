@@ -41,9 +41,9 @@ void w2_ui_paint_statusbar() {
 	mvaddnstr(1, 0, temp, g_w2_ui_width);
 	mvaddnstr(2, 0, temp, g_w2_ui_width);
 
-	g_w2_state.connected
-		? sprintf(temp,  W2_UI_CONN_STAT_CONNECTED ", %ims %s", g_w2_state.ping, W2_UI_CONN_STAT_PING)
-		: sprintf(temp, W2_UI_CONN_STAT_DISCONNECTED);
+	g_w2_state.connected ? sprintf(temp, W2_UI_CONN_STAT_CONNECTED ", %ims %s", g_w2_state.ping,
+								   W2_UI_CONN_STAT_PING)
+						 : sprintf(temp, W2_UI_CONN_STAT_DISCONNECTED);
 	mvaddstr(0, 0, temp);
 
 	sprintf(temp, "(%s)", g_w2_state.info.build_str);
