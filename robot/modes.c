@@ -8,7 +8,6 @@
 #include "mode_dirc.h"
 #include "mode_grid.h"
 #include "mode_halt.h"
-#include "mode_lcal.h"
 #include "mode_maze.h"
 #include "mode_scal.h"
 #include "mode_spin.h"
