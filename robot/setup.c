@@ -34,6 +34,9 @@ void w2_setup_main() {
 	w2_modes_swap(W2_M_MAZE);
 	w2_modes_call(W2_M_HALT);
 
+	// send info
+	w2_cmd_info_rx(NULL);
+
 	// indicate startup done
 	play("L50 c>c");
 }
