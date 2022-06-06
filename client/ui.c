@@ -15,8 +15,8 @@ WINDOW *g_w2_ui_pad_tabbar;
 WINDOW *g_w2_ui_pad_body;
 unsigned int g_w2_ui_width				= 0;
 unsigned int g_w2_ui_height				= 0;
-void (*g_w2_ui_current_tab)(bool first) = &w2_ui_dirc;
-void (*g_w2_ui_last_tab)(bool first)	= NULL;
+w2_e_ui_tab g_w2_ui_current_tab = W2_UI_TAB_START;
+w2_e_ui_tab g_w2_ui_last_tab;
 
 void w2_wmvaddstr(WINDOW *win, unsigned int y, unsigned int x, char *str) {
 	wmove(win, y, x);
@@ -38,7 +38,7 @@ void w2_ui_main() {
 void w2_ui_paint() {
 	w2_ui_paint_statusbar();
 	if (w2_timer_end(W2_TIMER_UPDATE) >= (1000 / W2_UI_UPDATE_FPS)) {
-		(*g_w2_ui_current_tab)(g_w2_ui_last_tab != g_w2_ui_current_tab);
+		(*g_w2_tab_ptrs[g_w2_ui_current_tab])(g_w2_ui_last_tab != g_w2_ui_current_tab);
 		g_w2_ui_last_tab = g_w2_ui_current_tab;
 		w2_timer_start(W2_TIMER_UPDATE);
 	}
@@ -78,8 +78,3 @@ void w2_ui_paint_statusbar() {
 	mvaddnstr(3, 0, temp, g_w2_ui_width);
 }
 
-void w2_ui_paint_tabbar() {
-	char temp[g_w2_ui_width];
-	sprintf(temp, "-- tab bar here --");
-	w2_wmvaddstr(g_w2_ui_pad_tabbar, 0, g_w2_ui_width / 2 - strlen(temp) / 2, temp);
-}

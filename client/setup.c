@@ -36,6 +36,7 @@ void w2_client_setup(int argc, char **argv) {
 
 	w2_strings_init();
 	w2_cmd_setup_handlers();
+	w2_ui_tabbar_init();
 
 	w2_send_info();
 
