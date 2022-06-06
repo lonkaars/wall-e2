@@ -103,11 +103,10 @@ execution mode. **mode** can be one of:
 - 0: mode_maze
 - 1: mode_grid
 - 2: mode_halt
-- 3: mode_lcal
-- 4: mode_chrg
-- 5: mode_dirc
-- 6: mode_spin
-- 7: mode_scal
+- 3: mode_chrg
+- 4: mode_dirc
+- 5: mode_spin
+- 6: mode_scal
 
 #### get mode (`r --> c`) (2 bytes)
 
