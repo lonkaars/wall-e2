@@ -73,6 +73,7 @@ const char levels[] PROGMEM = {
 };
 
 void w2_mode_grid();
+void initialize();
 void full_rotation();
 void grid_rotation_left();
 void grid_rotation_right();
@@ -80,13 +81,13 @@ void grid_crossway_detection();
 void gridFollowLine();
 void orderOne();
 void orderTwo();
-void orderThree()
-void orderFour()
-void beginLocation()
-void turn_North()
-void turn_West()
-void turn_South()
-void turn_East()
-void locationMessage()
-void arrivedMessage()
+void orderThree();
+void orderFour();
+void beginLocation();
+void turn_North();
+void turn_West();
+void turn_South();
+void turn_East();
+void locationMessage();
+void arrivedMessage();
 
