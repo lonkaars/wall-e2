@@ -11,10 +11,22 @@
 #include "ui.h"
 
 WINDOW *g_w2_ui_win;
+WINDOW *g_w2_ui_pad_tabbar;
+WINDOW *g_w2_ui_pad_body;
 unsigned int g_w2_ui_width				= 0;
 unsigned int g_w2_ui_height				= 0;
 void (*g_w2_ui_current_tab)(bool first) = &w2_ui_dirc;
 void (*g_w2_ui_last_tab)(bool first)	= NULL;
+
+void w2_wmvaddstr(WINDOW *win, unsigned int y, unsigned int x, char *str) {
+	wmove(win, y, x);
+	waddstr(win, str);
+}
+
+void w2_wmvaddnstr(WINDOW *win, unsigned int y, unsigned int x, char *str, unsigned int len) {
+	wmove(win, y, x);
+	waddnstr(win, str, len);
+}
 
 void w2_ui_main() {
 	g_w2_ui_width  = getmaxx(g_w2_ui_win);
@@ -30,7 +42,9 @@ void w2_ui_paint() {
 		g_w2_ui_last_tab = g_w2_ui_current_tab;
 		w2_timer_start(W2_TIMER_UPDATE);
 	}
-	refresh();
+	prefresh(g_w2_ui_pad_tabbar, 0, 0, 2, 0, 2, g_w2_ui_width - 1);
+	prefresh(g_w2_ui_pad_body, 0, 0, 4, 0, g_w2_ui_height - 2, g_w2_ui_width - 1);
+	// wrefresh(g_w2_ui_win);
 }
 
 void w2_ui_paint_statusbar() {
@@ -67,5 +81,5 @@ void w2_ui_paint_statusbar() {
 void w2_ui_paint_tabbar() {
 	char temp[g_w2_ui_width];
 	sprintf(temp, "-- tab bar here --");
-	mvaddstr(2, g_w2_ui_width / 2 - strlen(temp) / 2, temp);
+	w2_wmvaddstr(g_w2_ui_pad_tabbar, 0, g_w2_ui_width / 2 - strlen(temp) / 2, temp);
 }

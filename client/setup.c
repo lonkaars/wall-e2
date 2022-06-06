@@ -39,6 +39,13 @@ void w2_client_setup(int argc, char **argv) {
 
 	w2_send_info();
 
+	g_w2_ui_width  = getmaxx(g_w2_ui_win);
+	g_w2_ui_height = getmaxy(g_w2_ui_win);
+
+	g_w2_ui_pad_tabbar = newpad(1, g_w2_ui_width);
+	g_w2_ui_pad_body   = newpad(g_w2_ui_height - 5, g_w2_ui_width);
+	scrollok(g_w2_ui_pad_body, true);
+
 	// check endianness
 	g_w2_endianness = *_ptest;
 }

@@ -50,7 +50,7 @@ void w2_ui_bar_graph(unsigned int y, unsigned int x, unsigned int width, double 
 	temp[width - 1] = '|';
 	for (unsigned int i = 0; i < width - 2; i++) temp[i + 1] = i < width * value ? '*' : ' ';
 
-	mvaddnstr(y, x, temp, width);
+	w2_wmvaddnstr(g_w2_ui_pad_body, y, x, temp, width);
 }
 
 void w2_ui_bar_graph_pm(unsigned int y, unsigned int x, unsigned int width, double value) {
@@ -67,23 +67,23 @@ void w2_ui_bar_graph_pm(unsigned int y, unsigned int x, unsigned int width, doub
 			temp[i + 1] = i > hw ? ' ' : (hw - i) < -(hw * value) ? '*' : ' ';
 	}
 
-	mvaddnstr(y, x, temp, width + 2);
+	w2_wmvaddnstr(g_w2_ui_pad_body, y, x, temp, width + 2);
 }
 
 void w2_ui_dirc_paint(int left, int right) {
-	mvaddstr(4, 0, "left drive:  ");
-	w2_ui_bar_graph_pm(4, 13, g_w2_ui_width - 13, (double)left / 255);
-	mvaddstr(5, 0, "right drive: ");
-	w2_ui_bar_graph_pm(5, 13, g_w2_ui_width - 13, (double)right / 255);
+	w2_wmvaddstr(g_w2_ui_pad_body, 0, 0, "left drive:  ");
+	w2_ui_bar_graph_pm(0, 13, g_w2_ui_width - 13, (double)left / 255);
+	w2_wmvaddstr(g_w2_ui_pad_body, 1, 0, "right drive: ");
+	w2_ui_bar_graph_pm(1, 13, g_w2_ui_width - 13, (double)right / 255);
 
-	mvaddstr(7, 0,
-			 "             controls:\n"
-			 "\n"
-			 " <q>      <w>       <e>   forward\n"
-			 " <a>      <s>       <d>   backward\n"
-			 "left     both      right\n"
-			 "\n"
-			 "<space> send dirc mode command");
+	w2_wmvaddstr(g_w2_ui_pad_body, 3, 0,
+				 "             controls:\n"
+				 "\n"
+				 " <q>      <w>       <e>   forward\n"
+				 " <a>      <s>       <d>   backward\n"
+				 "left     both      right\n"
+				 "\n"
+				 "<space> send dirc mode command");
 }
 
 void w2_ui_dirc(bool first) {
