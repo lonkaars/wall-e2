@@ -9,8 +9,9 @@ unsigned int g_w2_ui_tabbar_lengths[W2_UI_TAB_COUNT];
 void (*g_w2_tab_ptrs[W2_UI_TAB_COUNT])(bool first);
 
 void w2_ui_tabbar_init() {
-	g_w2_tab_ptrs[W2_UI_TAB_START] = &w2_ui_tab_start;
-	g_w2_tab_ptrs[W2_UI_TAB_DIRC]  = &w2_ui_tab_dirc;
+	g_w2_tab_ptrs[W2_UI_TAB_START]	  = &w2_ui_tab_start;
+	g_w2_tab_ptrs[W2_UI_TAB_ERRCATCH] = &w2_ui_tab_errcatch;
+	g_w2_tab_ptrs[W2_UI_TAB_DIRC]	  = &w2_ui_tab_dirc;
 }
 
 void w2_ui_switch_tab(w2_e_ui_tabs next_tab) {

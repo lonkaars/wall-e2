@@ -3,6 +3,7 @@
 #include "../shared/protocol.h"
 #include "../shared/serial_parse.h"
 #include "commands.h"
+#include "errcatch.h"
 #include "main.h"
 #include "serial.h"
 #include "time.h"
@@ -26,7 +27,11 @@ void w2_cmd_ping_rx(w2_s_bin *data) {
 
 void w2_cmd_ping_tx(w2_s_bin *data) { w2_send_bin(data); }
 
-void w2_cmd_expt_tx(w2_s_bin *data) {}
+void w2_cmd_expt_tx(w2_s_bin *data) {
+	W2_CAST_BIN(w2_s_cmd_expt_tx, data, cast);
+	w2_errcatch_throw_msg(cast->error, cast->length, (char *)cast->message);
+}
+
 void w2_cmd_mode_tx(w2_s_bin *data) {
 	W2_CAST_BIN(w2_s_cmd_mode_tx, data, cast);
 	g_w2_state.mode = cast->mode;

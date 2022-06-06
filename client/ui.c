@@ -13,6 +13,7 @@
 WINDOW *g_w2_ui_win;
 WINDOW *g_w2_ui_pad_tabbar;
 WINDOW *g_w2_ui_pad_body;
+int g_w2_ui_pad_body_scroll		 = 0;
 unsigned int g_w2_ui_width		 = 0;
 unsigned int g_w2_ui_height		 = 0;
 w2_e_ui_tabs g_w2_ui_current_tab = W2_UI_TAB_START;
@@ -43,7 +44,8 @@ void w2_ui_paint() {
 		w2_timer_start(W2_TIMER_UPDATE);
 	}
 	prefresh(g_w2_ui_pad_tabbar, 0, 0, 2, 0, 2, g_w2_ui_width - 1);
-	prefresh(g_w2_ui_pad_body, 0, 0, 4, 0, g_w2_ui_height - 2, g_w2_ui_width - 1);
+	prefresh(g_w2_ui_pad_body, W2_MAX(0, g_w2_ui_pad_body_scroll), 0,
+			 4 - W2_MIN(0, g_w2_ui_pad_body_scroll), 0, g_w2_ui_height - 2, g_w2_ui_width - 1);
 	// wrefresh(g_w2_ui_win);
 }
 

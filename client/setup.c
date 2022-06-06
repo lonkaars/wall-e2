@@ -10,6 +10,8 @@
 #include "strings.h"
 #include "ui.h"
 
+#include "errcatch.h"
+
 // pointers for endianness check
 static const uint16_t _test	 = 1;
 static const uint8_t *_ptest = (uint8_t *)&_test;
@@ -46,6 +48,8 @@ void w2_client_setup(int argc, char **argv) {
 	g_w2_ui_pad_tabbar = newpad(1, g_w2_ui_width);
 	g_w2_ui_pad_body   = newpad(g_w2_ui_height - 5, g_w2_ui_width);
 	scrollok(g_w2_ui_pad_body, true);
+
+	w2_errcatch_throw(W2_E_CRIT_COM_UNAVAILABLE);
 
 	// check endianness
 	g_w2_endianness = *_ptest;

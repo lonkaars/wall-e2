@@ -30,7 +30,7 @@
 	"this application is functionally similar to a BIOS.\n" \
 	"here's a brief summary of keyboard commands:\n" \
 	"\n" \
-	"<left>/<right>, <h>/<l>       switch tabs\n" \
+	"<tab>                         switch to next tab\n" \
 	"<up>/<down>, <j>/<k>          select option\n" \
 	"<enter>, <i>                  edit option\n" \
 	"<home>, <g>                   scroll to top\n" \

@@ -87,6 +87,7 @@ void w2_ui_dirc_paint(int left, int right) {
 }
 
 void w2_ui_tab_dirc(bool first) {
+	g_w2_ui_pad_body_scroll = 0;
 	if (first) w2_ui_dirc_init();
 	int ch			= 0;
 	unsigned int lb = 0;
