@@ -13,10 +13,10 @@
 WINDOW *g_w2_ui_win;
 WINDOW *g_w2_ui_pad_tabbar;
 WINDOW *g_w2_ui_pad_body;
-unsigned int g_w2_ui_width				= 0;
-unsigned int g_w2_ui_height				= 0;
-w2_e_ui_tab g_w2_ui_current_tab = W2_UI_TAB_START;
-w2_e_ui_tab g_w2_ui_last_tab;
+unsigned int g_w2_ui_width		 = 0;
+unsigned int g_w2_ui_height		 = 0;
+w2_e_ui_tabs g_w2_ui_current_tab = W2_UI_TAB_START;
+w2_e_ui_tabs g_w2_ui_last_tab;
 
 void w2_wmvaddstr(WINDOW *win, unsigned int y, unsigned int x, char *str) {
 	wmove(win, y, x);
@@ -77,4 +77,3 @@ void w2_ui_paint_statusbar() {
 	for (unsigned int i = 0; i < g_w2_ui_width; i++) temp[i] = '-';
 	mvaddnstr(3, 0, temp, g_w2_ui_width);
 }
-

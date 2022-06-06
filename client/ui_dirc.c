@@ -94,11 +94,16 @@ void w2_ui_tab_dirc(bool first) {
 	unsigned int rb = 0;
 	unsigned int rf = 0;
 	while ((ch = getch()) != -1) {
-		if (ch == 'e' || ch == 'w') lf++;
-		if (ch == 'd' || ch == 's') lb++;
-		if (ch == 'q' || ch == 'w') rf++;
-		if (ch == 'a' || ch == 's') rb++;
-		if (ch == ' ') w2_send_mode(W2_M_DIRC);
+		if (ch == 'e' || ch == 'w')
+			lf++;
+		else if (ch == 'd' || ch == 's')
+			lb++;
+		else if (ch == 'q' || ch == 'w')
+			rf++;
+		else if (ch == 'a' || ch == 's')
+			rb++;
+		else if (ch == ' ')
+			w2_send_mode(W2_M_DIRC);
 	}
 
 	int drive_l = w2_dirc_motor_l(lf, lb);

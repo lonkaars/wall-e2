@@ -1,5 +1,5 @@
-#include "ui.h"
 #include "i18n.h"
+#include "ui.h"
 
 void w2_ui_tab_start(bool first) {
 	refresh();
