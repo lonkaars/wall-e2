@@ -1,8 +1,8 @@
 #include "../shared/protocol.h"
 #include "../shared/util.h"
 #include "commands.h"
-#include "ui.h"
 #include "errcatch.h"
+#include "ui.h"
 
 unsigned int g_w2_lb = 0;
 unsigned int g_w2_lf = 0;

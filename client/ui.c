@@ -39,8 +39,10 @@ void w2_ui_key_handler() {
 	void (*current_mode_key_handler)() = g_w2_keyhndl_ptrs[g_w2_ui_current_tab];
 	return;
 	while ((ch = getch()) != -1) {
-		if (ch == '\t') w2_ui_switch_tab(g_w2_ui_current_tab + 1);
-		else if (current_mode_key_handler != NULL) (*current_mode_key_handler)(ch);
+		if (ch == '\t')
+			w2_ui_switch_tab(g_w2_ui_current_tab + 1);
+		else if (current_mode_key_handler != NULL)
+			(*current_mode_key_handler)(ch);
 	}
 }
 

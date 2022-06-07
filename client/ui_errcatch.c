@@ -35,9 +35,7 @@ char *w2_err_format(w2_s_error *error) {
 	return ret_str;
 }
 
-void w2_ui_onkey_errcatch(int ch) {
-	
-}
+void w2_ui_onkey_errcatch(int ch) {}
 
 void w2_ui_tab_errcatch(bool first) {
 	g_w2_errcatch_log_line	= 0;
