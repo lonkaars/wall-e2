@@ -50,7 +50,7 @@ void w2_send_mode(w2_e_mode mode) {
 		W2_CREATE_MSG_BIN(w2_s_cmd_sres_rx, msg, msg_bin);
 
 		msg->opcode = W2_CMD_SRES | W2_CMDDIR_RX;
-		msg->type = W2_CMD_SRES_RX_TYPE_PREVMODE;
+		msg->type	= W2_CMD_SRES_RX_TYPE_PREVMODE;
 
 		w2_send_bin(msg_bin);
 		free(msg_bin);

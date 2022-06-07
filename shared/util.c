@@ -13,4 +13,3 @@ unsigned int w2_newline_count(char *str, unsigned int len) {
 		if (str[i] == '\n') newlines++;
 	return newlines;
 }
-

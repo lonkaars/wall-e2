@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../shared/util.h"
 #include "errcatch.h"
 #include "i18n.h"
 #include "strings.h"
 #include "ui.h"
-#include "../shared/util.h"
 
 unsigned int g_w2_errcatch_log_line = 0;
 

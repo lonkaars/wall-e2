@@ -1,6 +1,6 @@
 #include "commands.h"
-#include "ui.h"
 #include "i18n.h"
+#include "ui.h"
 
 void w2_ui_onkey_modes(int ch) {
 	if (ch == '1') w2_send_mode(W2_M_MAZE);
@@ -13,7 +13,4 @@ void w2_ui_onkey_modes(int ch) {
 	if (ch == '0') w2_send_mode(W2_M_PREV);
 }
 
-void w2_ui_tab_modes(bool first) {
-	w2_wmvaddstr(g_w2_ui_pad_body, 0, 0, W2_UI_MODES_INFO);
-}
-
+void w2_ui_tab_modes(bool first) { w2_wmvaddstr(g_w2_ui_pad_body, 0, 0, W2_UI_MODES_INFO); }
