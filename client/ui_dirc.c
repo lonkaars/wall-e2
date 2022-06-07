@@ -2,6 +2,12 @@
 #include "../shared/util.h"
 #include "commands.h"
 #include "ui.h"
+#include "errcatch.h"
+
+unsigned int g_w2_lb = 0;
+unsigned int g_w2_lf = 0;
+unsigned int g_w2_rb = 0;
+unsigned int g_w2_rf = 0;
 
 /** decay modifier */
 #define W2_DIRC_MOD ((double)0.95)
@@ -86,33 +92,33 @@ void w2_ui_dirc_paint(int left, int right) {
 				 "<space> send dirc mode command");
 }
 
+void w2_ui_onkey_dirc(int ch) {
+	if (ch == 'e' || ch == 'w') g_w2_lf++;
+	if (ch == 'd' || ch == 's') g_w2_lb++;
+	if (ch == 'q' || ch == 'w') g_w2_rf++;
+	if (ch == 'a' || ch == 's') g_w2_rb++;
+	if (ch == ' ') w2_send_mode(W2_M_DIRC);
+
+	char buf[32];
+	sprintf(buf, "er is iets fout, %02x", ch);
+	w2_errcatch_throw_msg(0x69, 32, buf);
+}
+
 void w2_ui_tab_dirc(bool first) {
 	g_w2_ui_pad_body_scroll = 0;
 	if (first) w2_ui_dirc_init();
-	int ch			= 0;
-	unsigned int lb = 0;
-	unsigned int lf = 0;
-	unsigned int rb = 0;
-	unsigned int rf = 0;
-	while ((ch = getch()) != -1) {
-		if (ch == 'e' || ch == 'w')
-			lf++;
-		else if (ch == 'd' || ch == 's')
-			lb++;
-		else if (ch == 'q' || ch == 'w')
-			rf++;
-		else if (ch == 'a' || ch == 's')
-			rb++;
-		else if (ch == ' ')
-			w2_send_mode(W2_M_DIRC);
-	}
 
-	int drive_l = w2_dirc_motor_l(lf, lb);
-	int drive_r = w2_dirc_motor_r(rf, rb);
+	int drive_l = w2_dirc_motor_l(g_w2_lf, g_w2_lb);
+	int drive_r = w2_dirc_motor_r(g_w2_rf, g_w2_rb);
 
 	drive_l += drive_r * W2_DIRC_STP;
 	drive_r += drive_l * W2_DIRC_STP;
 
 	w2_send_dirc(drive_l, drive_r);
 	w2_ui_dirc_paint(drive_l, drive_r);
+
+	g_w2_lb = 0;
+	g_w2_lf = 0;
+	g_w2_rb = 0;
+	g_w2_rf = 0;
 }
