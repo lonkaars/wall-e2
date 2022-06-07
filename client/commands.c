@@ -46,10 +46,21 @@ void w2_send_ping() {
 }
 
 void w2_send_mode(w2_e_mode mode) {
-	W2_CREATE_MSG_BIN(w2_s_cmd_mode_rx, msg, msg_bin);
-	msg->opcode = W2_CMD_MODE | W2_CMDDIR_RX;
-	msg->mode	= mode;
+	if (mode == W2_M_PREV) {
+		W2_CREATE_MSG_BIN(w2_s_cmd_sres_rx, msg, msg_bin);
 
-	w2_send_bin(msg_bin);
-	free(msg_bin);
+		msg->opcode = W2_CMD_SRES | W2_CMDDIR_RX;
+		msg->type = W2_CMD_SRES_RX_TYPE_PREVMODE;
+
+		w2_send_bin(msg_bin);
+		free(msg_bin);
+	} else {
+		W2_CREATE_MSG_BIN(w2_s_cmd_mode_rx, msg, msg_bin);
+
+		msg->opcode = W2_CMD_MODE | W2_CMDDIR_RX;
+		msg->mode	= mode;
+
+		w2_send_bin(msg_bin);
+		free(msg_bin);
+	}
 }

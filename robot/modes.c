@@ -46,7 +46,7 @@ void w2_modes_switch(w2_e_mode new_mode, bool replace) {
 	// forward mode change to sercomm
 	W2_CREATE_MSG_BIN(w2_s_cmd_mode_tx, msg, msg_bin);
 	msg->opcode = W2_CMD_MODE | W2_CMDDIR_TX;
-	msg->mode	= new_mode;
+	msg->mode	= g_w2_mode_history[g_w2_mode_history_index];
 
 	w2_sercomm_append_msg(msg_bin);
 	free(msg_bin);

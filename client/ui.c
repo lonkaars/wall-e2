@@ -75,6 +75,10 @@ void w2_ui_paint() {
 void w2_ui_paint_statusbar() {
 	char temp[g_w2_ui_width];
 
+	for (int i = 0; i < g_w2_ui_width; i++) temp[i] = ' ';
+	w2_wmvaddnstr(g_w2_ui_pad_statusbar, 0, 0, temp, g_w2_ui_width);
+	w2_wmvaddnstr(g_w2_ui_pad_statusbar, 1, 0, temp, g_w2_ui_width);
+
 	g_w2_state.connected ? sprintf(temp, W2_UI_CONN_STAT_CONNECTED ", %ims %s", g_w2_state.ping,
 								   W2_UI_CONN_STAT_PING)
 						 : sprintf(temp, W2_UI_CONN_STAT_DISCONNECTED);

@@ -101,3 +101,15 @@
 #define W2_UI_ORDER_MSG_ORDER_DONE_ERR "no order active\n\n"
 #define W2_UI_ORDER_MSG_ORDER_SENT "order sent to robot\n\n"
 
+#define W2_UI_MODES_INFO \
+	"press keys (0-9) for:\n" \
+	"\n" \
+	"1 - set to maze mode\n" \
+	"2 - set to grid mode\n" \
+	"3 - halt (emergency stop)\n" \
+	"4 - set to charging station mode\n" \
+	"5 - set to spinning mode (wet floor simulation)\n" \
+	"6 - calibrate sensors\n" \
+	"\n" \
+	"0 - previous\n" \
+
