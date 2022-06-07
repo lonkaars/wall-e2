@@ -14,6 +14,8 @@ typedef enum {
 
 extern WINDOW *g_w2_ui_win;
 extern WINDOW *g_w2_ui_pad_tabbar;
+extern WINDOW *g_w2_ui_pad_statusbar;
+extern WINDOW *g_w2_ui_pad_seperator;
 extern WINDOW *g_w2_ui_pad_body;
 extern int g_w2_ui_pad_body_scroll;
 extern unsigned int g_w2_ui_width;
@@ -37,6 +39,8 @@ void w2_ui_main();
 void w2_ui_paint_statusbar();
 /** draw tab bar */
 void w2_ui_paint_tabbar();
+/** draw seperator under tab bar */
+void w2_ui_paint_seperator();
 
 void w2_ui_tabbar_init();
 
