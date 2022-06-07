@@ -98,10 +98,6 @@ void w2_ui_onkey_dirc(int ch) {
 	if (ch == 'q' || ch == 'w') g_w2_rf++;
 	if (ch == 'a' || ch == 's') g_w2_rb++;
 	if (ch == ' ') w2_send_mode(W2_M_DIRC);
-
-	char buf[32];
-	sprintf(buf, "er is iets fout, %02x", ch);
-	w2_errcatch_throw_msg(0x69, 32, buf);
 }
 
 void w2_ui_tab_dirc(bool first) {

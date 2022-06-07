@@ -18,8 +18,6 @@ void w2_cmd_setup_handlers() {
 	g_w2_cmd_handlers[W2_CMD_BOMD | W2_CMDDIR_TX] = w2_cmd_bomd_tx;
 	g_w2_cmd_handlers[W2_CMD_SRES | W2_CMDDIR_RX] = w2_cmd_sres_rx;
 	g_w2_cmd_handlers[W2_CMD_MCFG | W2_CMDDIR_RX] = w2_cmd_mcfg_rx;
-	g_w2_cmd_handlers[W2_CMD_SENS | W2_CMDDIR_RX] = w2_cmd_sens_rx;
-	g_w2_cmd_handlers[W2_CMD_SENS | W2_CMDDIR_TX] = w2_cmd_sens_tx;
 	g_w2_cmd_handlers[W2_CMD_INFO | W2_CMDDIR_RX] = w2_cmd_info_rx;
 	g_w2_cmd_handlers[W2_CMD_INFO | W2_CMDDIR_TX] = w2_cmd_info_tx;
 	g_w2_cmd_handlers[W2_CMD_DISP | W2_CMDDIR_RX] = w2_cmd_disp_rx;
@@ -45,9 +43,6 @@ size_t w2_cmd_sizeof(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_leng
 	if (data[0] == (W2_CMD_BOMD | W2_CMDDIR_TX)) return sizeof(w2_s_cmd_bomd_tx);
 
 	if (data[0] == (W2_CMD_SRES | W2_CMDDIR_RX)) return sizeof(w2_s_cmd_sres_rx);
-
-	if (data[0] == (W2_CMD_SENS | W2_CMDDIR_RX)) return sizeof(w2_s_cmd_sens_rx);
-	if (data[0] == (W2_CMD_SENS | W2_CMDDIR_TX)) return sizeof(w2_s_cmd_sens_tx);
 
 	if (data[0] == (W2_CMD_INFO | W2_CMDDIR_RX)) return sizeof(w2_s_cmd_info_rx);
 	if (data[0] == (W2_CMD_INFO | W2_CMDDIR_TX)) return sizeof(w2_s_cmd_info_tx);

@@ -14,6 +14,9 @@ unsigned long g_w2_hypervisor_ema_io_ms					   = 0;
 unsigned long g_w2_hypervisor_ema_mode_ms				   = 0;
 uint64_t g_w2_hypervisor_timers[W2_HYPERVISOR_TIMER_COUNT] = {0};
 
+uint64_t g_w2_hypervisor_ms_timer_offset = 0;
+uint64_t g_w2_hypervisor_ms_timer_cpu_ticks = 0;
+
 unsigned int g_w2_ping_ms = 0;
 uint8_t g_w2_ping_id	  = 0;
 bool g_w2_ping_received	  = true;
@@ -26,17 +29,17 @@ void w2_hypervisor_main() {
 	if (DBG_ENABLE_CYCLEINFO) siminfo("cycle start\n");
 #endif
 
-	g_w2_hypervisor_uptime_ms += get_ms();
-	time_reset();
+	g_w2_hypervisor_uptime_ms += w2_get_ms();
+	w2_time_reset();
 
 	w2_sercomm_main();
-	unsigned long sercomm_time = get_ms();
+	unsigned long sercomm_time = w2_get_ms();
 	w2_errcatch_main();
-	unsigned long errcatch_time = get_ms() - sercomm_time;
-	// w2_io_main();
-	unsigned long io_time = get_ms() - errcatch_time;
+	unsigned long errcatch_time = w2_get_ms() - sercomm_time;
+	w2_io_main();
+	unsigned long io_time = w2_get_ms() - errcatch_time;
 	w2_modes_main();
-	unsigned long mode_time = get_ms() - io_time;
+	unsigned long mode_time = w2_get_ms() - io_time;
 
 	// calculate exponential moving averages
 	g_w2_hypervisor_ema_sercomm_ms =
@@ -56,6 +59,14 @@ void w2_hypervisor_main() {
 #endif
 
 	g_w2_hypervisor_cycles++;
+}
+
+uint64_t w2_get_ms() {
+	return ticks_to_microseconds(get_ticks() - g_w2_hypervisor_ms_timer_offset) / 1e3;
+}
+
+void w2_time_reset() {
+	g_w2_hypervisor_ms_timer_offset = get_ticks();
 }
 
 void w2_hypervisor_time_start(uint8_t label) {

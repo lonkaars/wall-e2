@@ -1,35 +1,36 @@
-#include <string.h>
-
-#include "../shared/consts.h"
 #include "io.h"
+#include "../shared/consts.h"
+#include "../shared/errcatch.h"
 #include "modes.h"
 #include "orangutan_shim.h"
+#include "hypervisor.h"
 
-w2_s_io_all g_w2_io;
+#include <stdio.h>
+
+bool g_w2_io_object_detected = false;
 
 void w2_io_main() {
-	g_w2_io.button[0].pressed = get_single_debounced_button_press(BUTTON_A);
-	g_w2_io.button[1].pressed = get_single_debounced_button_press(BUTTON_B);
-	g_w2_io.button[2].pressed = get_single_debounced_button_press(BUTTON_C);
-	g_w2_io.button[3].pressed = get_single_debounced_button_press(TOP_BUTTON);
-	g_w2_io.button[4].pressed = get_single_debounced_button_press(BOTTOM_BUTTON);
+	unsigned int front_distance = analog_read(W2_FRONT_SENSOR_PIN);
 
-	unsigned int sensor_values[5];
-	qtr_read(sensor_values, QTR_EMITTERS_ON);
-	for (int i = 0; i < 5; i++) g_w2_io.qtr[i].range = sensor_values[i];
+	if (g_w2_mode_history[g_w2_mode_history_index] == W2_M_HALT) return;
 
-	// TODO average voltage over mutiple samples sensor
-	g_w2_io.battery.charge_level	 = analog_read(W2_BATTERY_PIN);
-	g_w2_io.front_distance.detection = analog_read(W2_FRONT_SENSOR_PIN);
-	g_w2_io.side_distance.detection	 = analog_read(W2_SIDE_SENSOR_PIN);
+	if (!g_w2_io_object_detected && front_distance >= W2_IO_DISTANCE_CLOSE_THRESHOLD) {
+		g_w2_io_object_detected = true;
+		w2_hypervisor_time_start(W2_TIMER_OBJECT_DETECTION);
+		w2_errcatch_throw(W2_E_WARN_OBSTACLE_DETECTED);
+	}
 
-	set_motors(g_w2_io.motor_left.speed, g_w2_io.motor_right.speed);
-	red_led(g_w2_io.led_red.on);
-	green_led(g_w2_io.led_green.on);
+	if (g_w2_io_object_detected) {
+		if (front_distance <= W2_IO_DISTANCE_FAR_THRESHOLD) {
+			w2_errcatch_throw(0x55);
+			g_w2_io_object_detected = false;
+		}
+		if (w2_hypervisor_time_end(W2_TIMER_OBJECT_DETECTION) >= W2_IO_DISTANCE_TOO_CLOSE_TIMEOUT) {
+			w2_errcatch_throw(0x56);
+			w2_errcatch_throw(W2_E_CRIT_OBSTACLE_STUCK);
+		}
+		set_motors(0, 0);
+	}
 
-	// TODO don't do this every cycle
-	char text_copy[17];
-	memcpy((char *)text_copy, g_w2_io.lcd.text, 16);
-	text_copy[16] = 0x00;
-	print(text_copy);
-};
+	return;
+}

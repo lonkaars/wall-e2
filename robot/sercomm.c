@@ -139,22 +139,6 @@ void w2_cmd_sres_rx(w2_s_bin *data) {
 
 void w2_cmd_mcfg_rx(w2_s_bin *data) { return; }
 
-void w2_cmd_sens_rx(w2_s_bin *data) {
-	W2_CREATE_MSG_BIN(w2_s_cmd_sens_tx, res_msg, res_bin);
-	res_msg->opcode = W2_CMD_SENS | W2_CMDDIR_TX;
-	memcpy((uint8_t *)&res_msg->io, (uint8_t *)&g_w2_io, sizeof(w2_s_io_all));
-
-	for (int i = 0; i < 5; i++) w2_bin_repl_hton16(&res_msg->io.qtr[i].range);
-	w2_bin_repl_hton16(&res_msg->io.front_distance.detection);
-	w2_bin_repl_hton16(&res_msg->io.side_distance.detection);
-	w2_bin_repl_hton16(&res_msg->io.battery.charge_level);
-	w2_bin_repl_hton16((uint16_t *)&res_msg->io.motor_left.speed);
-	w2_bin_repl_hton16((uint16_t *)&res_msg->io.motor_right.speed);
-
-	w2_sercomm_append_msg(res_bin);
-	free(res_bin);
-}
-
 void w2_cmd_info_rx(w2_s_bin *data) {
 	W2_CREATE_MSG_BIN(w2_s_cmd_info_tx, res_msg, res_bin);
 	res_msg->opcode = W2_CMD_INFO | W2_CMDDIR_TX;

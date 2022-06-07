@@ -16,6 +16,9 @@ void w2_errcatch_handle_error(w2_s_error *error) {
 		case W2_E_WARN_UNCAUGHT_ERROR: {
 			break;
 		}
+		case W2_E_WARN_OBSTACLE_DETECTED: break;
+		case W2_E_CRIT_OBSTACLE_STUCK: break;
+		case W2_E_WARN_MODE_HISTORY_BUFFER_IOB: break;
 		default: {
 			g_w2_error_uncaught = true;
 #ifdef W2_SIM

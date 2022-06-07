@@ -8,7 +8,6 @@
 #include "bin.h"
 #include "bool.h"
 #include "consts.h"
-#include "io.h"
 
 #define W2_SERIAL_START_BYTE 0xff
 
@@ -136,15 +135,6 @@ typedef struct {
 
 typedef struct {
 	uint8_t opcode;
-} w2_s_cmd_sens_rx;
-
-typedef struct {
-	uint8_t opcode;
-	w2_s_io_all io;
-} w2_s_cmd_sens_tx;
-
-typedef struct {
-	uint8_t opcode;
 } w2_s_cmd_info_rx;
 
 typedef struct {
@@ -205,10 +195,6 @@ void w2_cmd_bomd_tx(w2_s_bin *data);
 void w2_cmd_sres_rx(w2_s_bin *data);
 /** handler for mcfg_rx (on complete message) */
 void w2_cmd_mcfg_rx(w2_s_bin *data);
-/** handler for sens_rx (on complete message) */
-void w2_cmd_sens_rx(w2_s_bin *data);
-/** handler for sens_tx (on complete message) */
-void w2_cmd_sens_tx(w2_s_bin *data);
 /** handler for info_rx (on complete message) */
 void w2_cmd_info_rx(w2_s_bin *data);
 /** handler for info_tx (on complete message) */
