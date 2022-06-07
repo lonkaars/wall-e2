@@ -34,6 +34,7 @@ void w2_wmvaddnstr(WINDOW *win, unsigned int y, unsigned int x, char *str, unsig
 void w2_ui_switch_tab(w2_e_ui_tabs next_tab) {
 	g_w2_ui_current_tab = next_tab % W2_UI_TAB_COUNT;
 	wclear(g_w2_ui_pad_body);
+	curs_set(false);
 }
 
 void w2_ui_key_handler() {
@@ -94,7 +95,6 @@ void w2_ui_paint_statusbar() {
 
 void w2_ui_paint_seperator() {
 	char temp[g_w2_ui_width];
-
 	for (unsigned int i = 0; i < g_w2_ui_width; i++) temp[i] = '-';
-	w2_wmvaddnstr(g_w2_ui_pad_seperator, 0, 0, temp, g_w2_ui_width);
+	w2_wmvaddnstr(g_w2_ui_pad_seperator, 0, 0, temp, g_w2_ui_width - 1);
 }

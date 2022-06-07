@@ -35,6 +35,10 @@
 /** max time between ping and answer */
 #define W2_PING_TIMEOUT (5e3)
 
+/** default map width/height */
+#define W2_MAP_DEFAULT_HEIGHT 5
+#define W2_MAP_DEFAULT_WIDTH 5
+
 /** front-facing distance sensor pinout */
 #define W2_FRONT_SENSOR_PIN 5
 /** battery voltage sensor pinout */

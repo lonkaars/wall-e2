@@ -24,7 +24,7 @@
 #define W2_UI_TAB_LABEL_ERRCATCH "logs"
 #define W2_UI_TAB_LABEL_MCFG "map"
 #define W2_UI_TAB_LABEL_ORDERS "orders"
-#define W2_UI_TAB_LABEL_MODE "set mode"
+#define W2_UI_TAB_LABEL_MODES "set mode"
 
 #define W2_UI_TAB_START_MESSAGE "" \
 	"welcome to the wall-e2 console application!\n" \
@@ -33,18 +33,9 @@
 	"this application is functionally similar to a BIOS.\n" \
 	"here's a brief summary of keyboard commands:\n" \
 	"\n" \
-	"<tab>                         switch to next tab\n" \
-	"<up>/<down>, <j>/<k>          select option\n" \
-	"<enter>, <i>                  edit option\n" \
-	"<home>, <g>                   scroll to top\n" \
-	"<end>, <G>                    scroll to bottom\n" \
-	"<escape>                      back\n" \
-	"<q>                           exit\n" \
+	"<tab>        switch to next tab\n" \
+	"<ctrl-c>     exit\n" \
 	"\n" \
-	"tab shortcuts:\n" \
-	"<N>  info                   <o>  orders\n" \
-	"<S>  logs                   <M>  set mode\n" \
-	"<d>  direct control         <m>  map\n"
 
 #define W2_UI_ERROR_SEVERITY_CRIT "CRIT"
 #define W2_UI_ERROR_SEVERITY_WARN "WARN"
@@ -86,3 +77,27 @@
 #define W2_UI_ERROR_USR_W2_E_WARN_SERIAL_NOISY "invalid serial data received (noisy channel / check connection?)"
 #define W2_UI_ERROR_USR_W2_E_WARN_MODE_HISTORY_BUFFER_IOB "mode history buffer index out of bounds"
 #define W2_UI_ERROR_USR_W2_E_WARN_PING_TIMEOUT "ping timed out"
+
+#define W2_UI_ORDER_CMD_HELP "help"
+#define W2_UI_ORDER_CMD_START "start"
+#define W2_UI_ORDER_CMD_COORDINATE "coordinate"
+#define W2_UI_ORDER_CMD_DONE "done"
+#define W2_UI_ORDER_CMD_SEND "send"
+
+#define W2_UI_ORDER_MSG_ERROR "unknown command, type 'help' to see a list of valid commands\n\n"
+#define W2_UI_ORDER_MSG_HELP \
+	"commands:\n" \
+	"\n" \
+	W2_UI_ORDER_CMD_HELP ": print this list\n" \
+	W2_UI_ORDER_CMD_START ": start an order\n" \
+	W2_UI_ORDER_CMD_COORDINATE " <x> <y>: add a coordinate to the current order\n" \
+	W2_UI_ORDER_CMD_DONE ": finish the current order\n" \
+	W2_UI_ORDER_CMD_SEND ": send the latest completed order to robot\n\n"
+#define W2_UI_ORDER_MSG_ORDER_START_OK "order started\n\n"
+#define W2_UI_ORDER_MSG_ORDER_START_ERR "order already started\n\n"
+#define W2_UI_ORDER_MSG_ORDER_APPEND_OK "appended coordinate to order\n\n"
+#define W2_UI_ORDER_MSG_ORDER_APPEND_ERR "no order active\n\n"
+#define W2_UI_ORDER_MSG_ORDER_DONE_OK "order saved\n\n"
+#define W2_UI_ORDER_MSG_ORDER_DONE_ERR "no order active\n\n"
+#define W2_UI_ORDER_MSG_ORDER_SENT "order sent to robot\n\n"
+

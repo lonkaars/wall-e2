@@ -21,6 +21,8 @@ void w2_strings_tabs_init() {
 	g_w2_tab_strings[W2_UI_TAB_START]	 = W2_UI_TAB_LABEL_START;
 	g_w2_tab_strings[W2_UI_TAB_ERRCATCH] = W2_UI_TAB_LABEL_ERRCATCH;
 	g_w2_tab_strings[W2_UI_TAB_DIRC]	 = W2_UI_TAB_LABEL_DIRC;
+	g_w2_tab_strings[W2_UI_TAB_ORDERS]	 = W2_UI_TAB_LABEL_ORDERS;
+	g_w2_tab_strings[W2_UI_TAB_MODES] = W2_UI_TAB_LABEL_MODES;
 }
 
 void w2_strings_errors_types() {

@@ -7,7 +7,11 @@
 #include "time.h"
 #include "ui.h"
 
-w2_s_client_state g_w2_state = {.ping_received = true};
+w2_s_client_state g_w2_state = {
+	.ping_received = true,
+	.map_height = W2_MAP_DEFAULT_HEIGHT,
+	.map_width = W2_MAP_DEFAULT_WIDTH,
+};
 
 int main(int argc, char **argv) {
 	w2_client_setup(argc, argv);

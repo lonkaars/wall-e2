@@ -15,6 +15,10 @@ void w2_ui_tabbar_init() {
 	g_w2_keyhndl_ptrs[W2_UI_TAB_START] = &w2_ui_onkey_errcatch;
 	g_w2_tab_ptrs[W2_UI_TAB_DIRC]	   = &w2_ui_tab_dirc;
 	g_w2_keyhndl_ptrs[W2_UI_TAB_DIRC]  = &w2_ui_onkey_dirc;
+	g_w2_tab_ptrs[W2_UI_TAB_ORDERS]	   = &w2_ui_tab_orders;
+	g_w2_keyhndl_ptrs[W2_UI_TAB_ORDERS]  = &w2_ui_onkey_orders;
+	g_w2_tab_ptrs[W2_UI_TAB_MODES]	   = &w2_ui_tab_modes;
+	g_w2_keyhndl_ptrs[W2_UI_TAB_MODES]  = &w2_ui_onkey_modes;
 }
 
 void w2_ui_paint_tabbar() {

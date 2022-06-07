@@ -5,15 +5,9 @@
 #include "i18n.h"
 #include "strings.h"
 #include "ui.h"
+#include "../shared/util.h"
 
 unsigned int g_w2_errcatch_log_line = 0;
-
-unsigned int w2_newline_count(char *str, unsigned int len) {
-	unsigned int newlines = 0;
-	for (unsigned int i = 0; i < len; i++)
-		if (str[i] == '\n') newlines++;
-	return newlines;
-}
 
 char *w2_err_format(w2_s_error *error) {
 	const char *type	 = g_w2_error_type_strings[error->code >> 6];

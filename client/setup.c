@@ -33,6 +33,7 @@ void w2_client_setup(int argc, char **argv) {
 	noecho();
 	curs_set(false);
 	nodelay(g_w2_ui_win, true);
+	keypad(g_w2_ui_win, true);
 
 	w2_strings_init();
 	w2_cmd_setup_handlers();
@@ -46,7 +47,7 @@ void w2_client_setup(int argc, char **argv) {
 	g_w2_ui_pad_tabbar	  = newpad(1, g_w2_ui_width);
 	g_w2_ui_pad_body	  = newpad(g_w2_ui_height - 5, g_w2_ui_width);
 	g_w2_ui_pad_statusbar = newpad(2, g_w2_ui_width);
-	g_w2_ui_pad_seperator = newpad(1, g_w2_ui_width);
+	g_w2_ui_pad_seperator = newpad(1, g_w2_ui_width + 1);
 	scrollok(g_w2_ui_pad_body, true);
 
 	// check endianness

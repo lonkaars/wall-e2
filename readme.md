@@ -15,9 +15,13 @@ are only supported on linux:
 |-|:-:|:-:|
 |robot code compilation (avr)|yes|yes|
 |robot exec upload|yes|yes|
-|client code compilation|yes|yes|
+|client code compilation| |yes|
 |robot code simulation (x86)| |yes|
 |use client with robot sim| |yes|
+
+the client only compiles and runs on linux due to time constraints. because
+package names vary from distribution to distribution, no scripts are included
+to install the necessary build tools for linux.
 
 ## toolchain installation on windows
 
