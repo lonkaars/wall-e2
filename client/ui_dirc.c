@@ -93,10 +93,10 @@ void w2_ui_dirc_paint(int left, int right) {
 }
 
 void w2_ui_onkey_dirc(int ch) {
-	if (ch == 'e' || ch == 'w') g_w2_lf++;
-	if (ch == 'd' || ch == 's') g_w2_lb++;
-	if (ch == 'q' || ch == 'w') g_w2_rf++;
-	if (ch == 'a' || ch == 's') g_w2_rb++;
+	if (ch == 'e' || ch == 'w' || ch == KEY_UP || ch == KEY_RIGHT) g_w2_lf++;
+	if (ch == 'd' || ch == 's' || ch == KEY_DOWN) g_w2_lb++;
+	if (ch == 'q' || ch == 'w' || ch == KEY_UP || ch == KEY_LEFT) g_w2_rf++;
+	if (ch == 'a' || ch == 's' || ch == KEY_DOWN) g_w2_rb++;
 	if (ch == ' ') w2_send_mode(W2_M_DIRC);
 }
 

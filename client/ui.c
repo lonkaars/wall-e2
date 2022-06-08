@@ -87,7 +87,7 @@ void w2_ui_paint_statusbar() {
 	sprintf(temp, "(%s)", g_w2_state.info.build_str);
 	w2_wmvaddstr(g_w2_ui_pad_statusbar, 0, g_w2_ui_width / 2 - strlen(temp) / 2, temp);
 
-	sprintf(temp, "%s %i%%", W2_UI_BATT_STAT_BATTERY, g_w2_state.battery_level);
+	sprintf(temp, "%s %imv", W2_UI_BATT_STAT_BATTERY, g_w2_state.info.battery_mv);
 	w2_wmvaddstr(g_w2_ui_pad_statusbar, 0, g_w2_ui_width - strlen(temp), temp);
 
 	sprintf(temp, "[%s]", g_w2_mode_strings[g_w2_state.mode]);

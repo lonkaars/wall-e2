@@ -7,23 +7,11 @@ int g_w2_order_number;
 
 int g_w2_maze_status = 0;
 
-w2_s_grid_coordinate g_w2_order[4] = {
-	{0, 0},
-	{1, 1},
-	{2, 2},
-	{3, 3},
-};
+w2_s_grid_coordinate g_w2_order[16];
+unsigned int g_w2_order_index = 0;
 w2_s_grid_coordinate g_w2_location;
 w2_s_grid_coordinate g_w2_destination;
 w2_e_orientation g_w2_direction;
-
-void w2_location_message() {
-	clear();
-	print_long(g_w2_location.x);
-	print(",");
-	print_long(g_w2_location.y);
-	delay(200);
-}
 
 int g_w2_detection = 0;
 int g_w2_transition;
@@ -39,8 +27,6 @@ void w2_crosswalk_stroll() {
 		g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 		if (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100) {
 			set_motors(0, 0);
-			clear();
-			print("WALK");
 			g_w2_transition++;
 			if (g_w2_transition == 3) {
 				set_motors(40, 40);
@@ -206,8 +192,6 @@ void w2_turn_east() {
 
 void w2_arrived_message() {
 	if (g_w2_location.x == g_w2_destination.x && g_w2_location.y == g_w2_destination.y) {
-		clear();
-		print("ORDER ");
 		print_long(g_w2_order_number);
 		play_frequency(400, 500, 7);
 		delay(500);
@@ -256,27 +240,23 @@ void w2_go_to_y() {
 
 void w2_mode_grid() {
 	set_motors(0, 0);
-	clear();
-	print("GRID");
 	delay(500);
 
 	w2_begin_location();
 
 	// TODO: orders read here
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < g_w2_order_index; i++) {
 		g_w2_order_number = i + 1;
 
 		g_w2_destination.x = g_w2_order[i].x;
 		g_w2_destination.y = g_w2_order[i].y;
 
-		w2_location_message();
 		delay(1000);
 		w2_go_to_x();
 		w2_go_to_y();
 	}
 	w2_end_destination();
 
-	w2_location_message();
 	delay(1000);
 	w2_go_to_y();
 	w2_go_to_x();

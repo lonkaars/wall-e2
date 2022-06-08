@@ -4,6 +4,7 @@
 #include "../shared/bin.h"
 #include "../shared/errcatch.h"
 #include "../shared/serial_parse.h"
+#include "mode_grid.h"
 #include "hypervisor.h"
 #include "io.h"
 #include "mode_dirc.h"
@@ -117,7 +118,18 @@ void w2_cmd_dirc_rx(w2_s_bin *data) {
 
 void w2_cmd_cord_rx(w2_s_bin *data) { return; }
 
-void w2_cmd_bomd_rx(w2_s_bin *data) { return; }
+// #include <stdio.h>
+void w2_cmd_bomd_rx(w2_s_bin *data) {
+	/* W2_CAST_BIN(w2_s_cmd_bomd_rx, data, req);
+
+	char buf[32];
+	clear();
+	sprintf(buf, "%lu, %lu", req->position % W2_MAP_DEFAULT_WIDTH, req->position / W2_MAP_DEFAULT_WIDTH);
+	print(buf);
+	g_w2_order[g_w2_order_index].x = req->position % W2_MAP_DEFAULT_WIDTH;
+	g_w2_order[g_w2_order_index].y = req->position / W2_MAP_DEFAULT_WIDTH;
+	g_w2_order_index++; */
+}
 
 void w2_cmd_sres_rx(w2_s_bin *data) {
 	W2_CAST_BIN(w2_s_cmd_sres_rx, data, req);
@@ -149,6 +161,7 @@ void w2_cmd_info_rx(w2_s_bin *data) {
 	res_msg->mode_ms	 = (uint8_t)g_w2_hypervisor_ema_mode_ms;
 	res_msg->uptime_s	 = w2_bin_hton32((uint32_t)(g_w2_hypervisor_uptime_ms / 1e3));
 	res_msg->mode		 = g_w2_mode_history[g_w2_mode_history_index];
+	res_msg->battery_mv  = w2_bin_hton16(read_battery_millivolts());
 
 	w2_sercomm_append_msg(res_bin);
 	free(res_bin);

@@ -15,16 +15,12 @@ void w2_short_drive() {
 void w2_home() {
 	set_motors(0, 0);
 	delay_ms(150);
-	clear();
-	print("CHARGING");
 	set_motors(30, 30);
 	delay_ms(600);
 	set_motors(0, 0);
-	play_frequency(300, 500, 7);
 	delay_ms(600);
 	g_w2_position		= read_line(g_w2_sensors, IR_EMITTERS_ON);
 	g_w2_charged_status = 1;
-	clear();
 	delay_ms(2000);
 }
 
@@ -40,8 +36,6 @@ void w2_charge_cross_walk() {
 		g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 		if (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100) {
 			set_motors(0, 0);
-			// clear();
-			print("WALK");
 			g_w2_transition++;
 			if (g_w2_transition == 3) { // TODO: document g_w2_transition
 				set_motors(40, 40);
@@ -62,9 +56,6 @@ void w2_charge_cross_walk() {
 void w2_mode_chrg() {
 	unsigned int last_proportional = 0;
 	long integral				   = 0;
-	// initialize();
-	clear();
-	print("CHARGE");
 
 	while (1) {
 		// Get the position of the line.  Note that we *must* provide
@@ -113,13 +104,11 @@ void w2_mode_chrg() {
 			w2_maze_rotation_full();
 			w2_short_drive();
 		} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 && g_w2_sensors[4] < 100) {
-			clear();
 			w2_maze_rotation_half_left();
 		}
 
 		else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 250 && g_w2_sensors[2] >= 500 &&
 				 g_w2_sensors[3] >= 250 && g_w2_sensors[4] >= 500) {
-			clear();
 			w2_maze_rotation_half_left();
 		} else {
 			if (power_difference < 0 &&
