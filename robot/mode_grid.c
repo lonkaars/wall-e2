@@ -7,6 +7,8 @@ int g_w2_order_number;
 
 int g_w2_maze_status = 0;
 
+
+//product coordinates
 w2_s_grid_coordinate g_w2_order[4] = {
 	{0, 0},
 	{1, 1},
@@ -17,6 +19,8 @@ w2_s_grid_coordinate g_w2_location;
 w2_s_grid_coordinate g_w2_destination;
 w2_e_orientation g_w2_direction;
 
+
+//give coordinates for grid
 void w2_location_message() {
 	clear();
 	print_long(g_w2_location.x);
@@ -25,13 +29,15 @@ void w2_location_message() {
 	delay(200);
 }
 
+
 int g_w2_detection = 0;
-int g_w2_transition;
-char g_w2_x_location = 0;
+int g_w2_transition;	//used for the crosswalk, used to count black lines
+char g_w2_x_location = 0; //current location in grid
 char g_w2_y_location = 0;
 
+
+//used for the crosswalk from maze to grid
 void w2_crosswalk_stroll() {
-	print("hoi");
 	while (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 &&
 		   g_w2_sensors[3] < 100 && g_w2_sensors[4] < 100) {
 		set_motors(15, 15);
@@ -65,6 +71,7 @@ void w2_grid_crossway_detection() {
 	g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 }
 
+//main function for grid mode
 void w2_grid_follow_line() {
 	unsigned int last_proportional = 0;
 	long integral				   = 0;
@@ -82,9 +89,9 @@ void w2_grid_follow_line() {
 		if (power_difference < -max) power_difference = -max;
 
 		if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 250 && g_w2_sensors[2] >= 500 &&
-			g_w2_sensors[3] >= 250 && g_w2_sensors[4] >= 500) {
+			g_w2_sensors[3] >= 250 && g_w2_sensors[4] >= 500) { //crossways/intersections
 			break;
-		} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 && g_w2_sensors[4] < 100) {
+		} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 && g_w2_sensors[4] < 100) { //left corners
 			break;
 		} else if (g_w2_sensors[4] >= 500 && g_w2_sensors[3] >= 200 &&
 				   g_w2_sensors[0] < 100) { // for the south and west borders of the grid
@@ -106,17 +113,22 @@ void w2_grid_follow_line() {
 	}
 }
 
+//begin location when entering the grid
 void w2_begin_location() {
 	g_w2_location.x = 4;
 	g_w2_location.y = 0;
 	g_w2_direction	= W2_ORT_WEST;
 }
 
+
+//location of grid exit
 void w2_end_destination() {
 	g_w2_destination.x = 4;
 	g_w2_destination.y = 4;
 }
 
+
+//turns are used to get the correct orientation when picking up orders
 void w2_turn_north() {
 	switch (g_w2_direction) {
 		case W2_ORT_NORTH:
@@ -175,7 +187,6 @@ void w2_turn_south() {
 
 		case W2_ORT_EAST:
 			w2_grid_rotation_half_right();
-			;
 			break;
 	}
 
@@ -204,16 +215,20 @@ void w2_turn_east() {
 	g_w2_direction = W2_ORT_EAST;
 }
 
+
+//signals when the product is picked
 void w2_arrived_message() {
 	if (g_w2_location.x == g_w2_destination.x && g_w2_location.y == g_w2_destination.y) {
 		clear();
-		print("ORDER ");
+		print("PRODUCT");
 		print_long(g_w2_order_number);
 		play_frequency(400, 500, 7);
 		delay(500);
 	}
 }
 
+
+//go to correct x coordinate
 void w2_go_to_x() {
 	if (g_w2_location.x != g_w2_destination.x) {
 		while (g_w2_location.x != g_w2_destination.x) {
@@ -234,6 +249,7 @@ void w2_go_to_x() {
 	}
 }
 
+//go to correct y coordinate
 void w2_go_to_y() {
 	if (g_w2_location.y != g_w2_destination.y) {
 		while (g_w2_location.y != g_w2_destination.y) {
@@ -254,6 +270,7 @@ void w2_go_to_y() {
 	}
 }
 
+//main function for grid mode
 void w2_mode_grid() {
 	set_motors(0, 0);
 	clear();
@@ -273,6 +290,7 @@ void w2_mode_grid() {
 		delay(1000);
 		w2_go_to_x();
 		w2_go_to_y();
+		w2_arrived_message();
 	}
 	w2_end_destination();
 
@@ -280,61 +298,6 @@ void w2_mode_grid() {
 	delay(1000);
 	w2_go_to_y();
 	w2_go_to_x();
-	w2_turn_east(); // this was uncommented (6.3)
+	w2_turn_east();
 	w2_modes_swap(W2_M_CHRG);
 }
-
-/*
-void w2_mode_maze() {
-	unsigned int last_proportional = 0;
-	long integral				   = 0;
-
-	clear();
-	print("MAZE");
-
-	g_w2_transition = 0;
-
-	// This is the "main loop" - it will run forever.
-	while (1) {
-		// Get the position of the line.  Note that we *must* provide
-		// the "sensors" argument to read_line() here, even though we
-		// are not interested in the individual sensor readings.
-		g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
-
-		// The "proportional" term should be 0 when we are on the line.
-		int proportional = ((int)g_w2_position) - 2000;
-
-		// Compute the derivative (change) and integral (sum) of the
-		// position.
-		int derivative = proportional - last_proportional;
-		integral += proportional;
-
-		// Remember the last position.
-		last_proportional = proportional;
-
-		// Compute the difference between the two motor power settings,
-		// m1 - m2.  If this is a positive number the robot will turn
-		// to the right.  If it is a negative number, the robot will
-		// turn to the left, and the magnitude of the number determines
-		// the sharpness of the turn.
-		int power_difference = proportional / 20 + integral / 10000 + derivative * 3 / 2;
-
-		// Compute the actual motor settings.  We never set either motor
-		// to a negative value.
-
-		const int max = 60;
-		if (power_difference > max) power_difference = max;
-		if (power_difference < -max) power_difference = -max;
-
-		if (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 &&
-g_w2_sensors[3] < 100 && g_w2_sensors[4] < 100) { } else if (g_w2_sensors[0] >= 500 &&
-g_w2_sensors[1] >= 250 && g_w2_sensors[2] >= 500 && g_w2_sensors[3] >= 250 && g_w2_sensors[4] >=
-500) { w2_crossway_detection(); } else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 &&
-g_w2_sensors[4] < 100) { w2_half_rotation_left(); } else { if (power_difference < 0 &&
-(g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100)) set_motors(max +
-power_difference, max); else if (power_difference > 0 && (g_w2_sensors[2] > 100 || g_w2_sensors[3] >
-100 || g_w2_sensors[1] > 100)) set_motors(max, max - power_difference);
-		}
-	}
-}
-*/

@@ -16,6 +16,7 @@ w2_e_mode g_w2_mode_history[W2_MODE_HISTORY_BUFFER_SIZE];
 uint8_t g_w2_mode_history_index = 0;
 void (*g_w2_modes[W2_MODE_COUNT])();
 
+//all of the different modi
 void w2_modes_init() {
 	g_w2_modes[W2_M_CHRG] = &w2_mode_chrg;
 	g_w2_modes[W2_M_DIRC] = &w2_mode_dirc;
