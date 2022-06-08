@@ -35,7 +35,7 @@ void w2_crosswalk_stroll() {
 	while (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 && g_w2_sensors[3] < 100 &&
 		   g_w2_sensors[4] < 100) {
 		set_motors(15, 15);
-		delay(300);
+		delay(290);
 		g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 		if (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100) {
 			set_motors(0, 0);

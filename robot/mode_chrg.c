@@ -30,14 +30,18 @@ void w2_home() {
 
 
 void w2_charge_cross_walk() {
+	if (g_w2_transition == 0) {
+		set_motors(-30, 30);
+		delay(50);
+	}
 	while (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 && g_w2_sensors[3] < 100 &&
 		   g_w2_sensors[4] < 100) {
 		set_motors(15, 15);
-		delay(500);
+		delay(550);
 		g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 		if (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100) {
 			set_motors(0, 0);
-			clear();
+			// clear();
 			print("WALK");
 			g_w2_transition++;
 			if (g_w2_transition == 3) { //TODO: document g_w2_transition
