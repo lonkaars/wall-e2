@@ -1,747 +1,315 @@
-/*
- * 3pi-linefollower-pid - demo code for the Pololu 3pi Robot
- * 
- * This code will follow a black line on a white background, using a
- * PID-based algorithm.
- *
- * http://www.pololu.com/docs/0J21
- * http://www.pololu.com
- * http://forum.pololu.com
- *
- */
+#include "mode_grid.h"
+#include "orangutan_shim.h"
+#include "modes.h"
+#include "movement.h"
+#include "transition.h"
 
-// The 3pi include file must be at the beginning of any program that
-// uses the Pololu AVR library and 3pi.
-#include <pololu/3pi.h>
+int g_w2_order_number;
 
-// This include file allows data to be stored in program space.  The
-// ATmega168 has 16k of program space compared to 1k of RAM, so large
-// pieces of static data should be stored in program space.
-#include <avr/pgmspace.h>
+int g_w2_maze_status = 0;
 
-unsigned int sensors[5]; // an array to hold sensor values
-unsigned int position;
-int orderNumber;
-int transition;
-int chargedStatus;
+w2_s_grid_coordinate g_w2_order[4];
+w2_s_grid_coordinate g_w2_location;
+w2_s_grid_coordinate g_w2_destination;
+w2_e_orientation g_w2_direction;
 
-int mazeStatus;
+int g_w2_detection = 0;
+char g_w2_x_location = 0;
+char g_w2_y_location = 0;
 
-
-enum section{
-	mazeMode,
-	gridMode,
-	chargeMode	
-} parcourMode;
-
-enum orientation{
-	North,
-	East,
-	South,
-	West
-} direction;
-
-
-typedef struct {
-	int x;
-	int y;
-} coordinates;
-
-coordinates order[4];
-coordinates location;
-coordinates destination;
-
-int Detection;
-char xLocation;
-char yLocation;
-
-
-// Introductory messages.  The "PROGMEM" identifier causes the data to
-// go into program space.
-const char welcome_line1[] PROGMEM = " Pololu";
-const char welcome_line2[] PROGMEM = "3\xf7 Robot";
-const char demo_name_line1[] PROGMEM = "PID Line";
-const char demo_name_line2[] PROGMEM = "follower";
-
-// A couple of simple tunes, stored in program space.
-const char welcome[] PROGMEM = ">g32>>c32";
-const char go[] PROGMEM = "L16 cdegreg4";
-
-// Data for generating the characters used in load_custom_characters
-// and display_readings.  By reading levels[] starting at various
-// offsets, we can generate all of the 7 extra characters needed for a
-// bargraph.  This is also stored in program space.
-const char levels[] PROGMEM = {
-	0b00000,
-	0b00000,
-	0b00000,
-	0b00000,
-	0b00000,
-	0b00000,
-	0b00000,
-	0b11111,
-	0b11111,
-	0b11111,
-	0b11111,
-	0b11111,
-	0b11111,
-	0b11111
-};
-
-void grid();
-
-// This function loads custom characters into the LCD.  Up to 8
-// characters can be loaded; we use them for 7 levels of a bar graph.
-void load_custom_characters()
-{
-	lcd_load_custom_character(levels+0,0); // no offset, e.g. one bar
-	lcd_load_custom_character(levels+1,1); // two bars
-	lcd_load_custom_character(levels+2,2); // etc...
-	lcd_load_custom_character(levels+3,3);
-	lcd_load_custom_character(levels+4,4);
-	lcd_load_custom_character(levels+5,5);
-	lcd_load_custom_character(levels+6,6);
-	clear(); // the LCD must be cleared for the characters to take effect
-}
-
-// This function displays the sensor readings using a bar graph.
-void display_readings(const unsigned int *calibrated_values)
-{
-	unsigned char i;
-
-	for(i=0;i<5;i++) {
-		// Initialize the array of characters that we will use for the
-		// graph.  Using the space, an extra copy of the one-bar
-		// character, and character 255 (a full black box), we get 10
-		// characters in the array.
-		const char display_characters[10] = {' ',0,0,1,2,3,4,5,6,255};
-
-		// The variable c will have values from 0 to 9, since
-		// calibrated values are in the range of 0 to 1000, and
-		// 1000/101 is 9 with integer math.
-		char c = display_characters[calibrated_values[i]/101];
-
-		// Display the bar graph character.
-		print_character(c);
-	}
-}
-
-// Initializes the 3pi, displays a welcome message, calibrates, and
-// plays the initial music.
-void initialize()
-{
-	unsigned int counter; // used as a simple timer
-	
-
-	// This must be called at the beginning of 3pi code, to set up the
-	// sensors.  We use a value of 2000 for the timeout, which
-	// corresponds to 2000*0.4 us = 0.8 ms on our 20 MHz processor.
-	pololu_3pi_init(2000);
-	load_custom_characters(); // load the custom characters
-	
-	// Play welcome music and display a message
-	print_from_program_space(welcome_line1);
-	lcd_goto_xy(0,1);
-	print_from_program_space(welcome_line2);
-	play_from_program_space(welcome);
-	delay_ms(1000);
-
-	clear();
-	print_from_program_space(demo_name_line1);
-	lcd_goto_xy(0,1);
-	print_from_program_space(demo_name_line2);
-	delay_ms(1000);
-
-	// Display battery voltage and wait for button press
-	while(!button_is_pressed(BUTTON_B))
-	{
-		int bat = read_battery_millivolts();
-
-		clear();
-		print_long(bat);
-		print("mV");
-		lcd_goto_xy(0,1);
-		print("Press B");
-
-		delay_ms(100);
-	}
-
-	// Always wait for the button to be released so that 3pi doesn't
-	// start moving until your hand is away from it.
-	wait_for_button_release(BUTTON_B);
-	delay_ms(1000);
-
-	// Auto-calibration: turn right and left while calibrating the
-	// sensors.
-	for(counter=0;counter<80;counter++)
-	{
-		if(counter < 20 || counter >= 60)
-			set_motors(40,-40);
-		else
-			set_motors(-40,40);
-
-		// This function records a set of sensor readings and keeps
-		// track of the minimum and maximum values encountered.  The
-		// IR_EMITTERS_ON argument means that the IR LEDs will be
-		// turned on during the reading, which is usually what you
-		// want.
-		calibrate_line_sensors(IR_EMITTERS_ON);
-
-		// Since our counter runs to 80, the total delay will be
-		// 80*20 = 1600 ms.
-		delay_ms(20);
-	}
-	set_motors(0,0);
-
-	// Display calibrated values as a bar graph.
-	while(!button_is_pressed(BUTTON_B))
-	{
-		// Read the sensor values and get the position measurement.
-		unsigned int position = read_line(sensors,IR_EMITTERS_ON);
-
-		// Display the position measurement, which will go from 0
-		// (when the leftmost sensor is over the line) to 4000 (when
-		// the rightmost sensor is over the line) on the 3pi, along
-		// with a bar graph of the sensor readings.  This allows you
-		// to make sure the robot is ready to go.
-		clear();
-		print_long(position);
-		lcd_goto_xy(0,1);
-		display_readings(sensors);
-
-		delay_ms(100);
-	}
-	wait_for_button_release(BUTTON_B);
-
-	clear();
-
-	print("Go!");		
-
-	// Play music and wait for it to finish before we start driving.
-	play_from_program_space(go);
-	while(is_playing());
-}
-
-void full_rotation(){
-	set_motors(0,0);
-	delay_ms(500);
-	set_motors(60,-60);
-	delay_ms(540);
-	set_motors(0,0);
-	delay_ms(100);
-	set_motors(10,10);
-	delay(500);
-	set_motors(0,0);
-	position = read_line(sensors,IR_EMITTERS_ON);
-	delay_ms(500);
-}
-
-void half_rotation_left(){
-	set_motors(0,0);
-	set_motors(50,50);
-	delay_ms(150);
-	set_motors(-30,30);
-	delay_ms(600);
-	set_motors(0,0);
-	position = read_line(sensors,IR_EMITTERS_ON);
-	delay_ms(500);
-		
-}
-
-void crossway_detection(){
-	half_rotation_left();
-}
-
-void cross_walk(){
-	while(sensors[0] < 100 && sensors[1] <100 && sensors[2] < 100 &&  sensors[3] < 100 && sensors[4] < 100){
-		set_motors(15,15);
+void w2_crosswalk_detection() {
+	while (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 && g_w2_sensors[3] < 100 &&
+		   g_w2_sensors[4] < 100) {
+		set_motors(15, 15);
 		delay(300);
-		position = read_line(sensors,IR_EMITTERS_ON);
-		if(sensors[2] > 100 || sensors[3] > 100 || sensors[1] > 100){
-			set_motors(0,0);
+		g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
+		if (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100) {
+			set_motors(0, 0);
 			clear();
 			print("WALK");
-			transition++;
-			if(transition == 3){
-				set_motors(40,40); 
-				delay(600);	
-				transition = 0;
-				parcourMode = gridMode ;
+			g_w2_transition++;
+			if (g_w2_transition == 3) {
+				set_motors(40, 40);
+				delay(600);
+				g_w2_transition	= 0;
+				w2_modes_swap(W2_M_GRID);
 			}
 		}
-		
-		else{
-			transition = 0;
-			full_rotation();
+
+		else {
+			g_w2_transition = 0;
+			w2_full_rotation();
 		}
 	}
 }
 
-void charge_cross_walk(){
-		while(sensors[0] < 100 && sensors[1] <100 && sensors[2] < 100 &&  sensors[3] < 100 && sensors[4] < 100){
-			set_motors(15,15);
-			delay(500);
-			position = read_line(sensors,IR_EMITTERS_ON);
-			if(sensors[2] > 100 || sensors[3] > 100 || sensors[1] > 100){
-				set_motors(0,0);
-				clear();
-				print("WALK");
-				transition++;
-				if(transition == 3){
-					set_motors(40,40);
-					delay(600);	
-					set_motors(0,0);
-					
-					transition =0; 
-					mazeStatus = 1;
-					parcourMode = mazeMode;
-					break;
-				}
-			}
-			else{
-				transition = 0;
-				full_rotation();
-			}
-		}
-}
-
-void grid_rotation_full(){
-	set_motors(60,-60);
+void w2_grid_rotation_full() {
+	set_motors(60, -60);
 	delay_ms(540);
-	set_motors(10,10);
-	position = read_line(sensors,IR_EMITTERS_ON);
+	set_motors(10, 10);
+	g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 }
 
-void grid_rotation_left(){
-	set_motors(-30,30);
+void w2_grid_rotation_left() {
+	set_motors(-30, 30);
 	delay_ms(600);
-	set_motors(10,10);
-	position = read_line(sensors,IR_EMITTERS_ON);
+	set_motors(10, 10);
+	g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 }
 
-void grid_rotation_right(){
-	set_motors(30,-30);
+void w2_grid_rotation_right() {
+	set_motors(30, -30);
 	delay_ms(600);
-	set_motors(10,10);
-	position = read_line(sensors,IR_EMITTERS_ON);
+	set_motors(10, 10);
+	g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 }
 
-void grid_crossway_detection(){
-	set_motors(50,50);
+void w2_grid_crossway_detection() {
+	set_motors(50, 50);
 	delay_ms(150);
-	set_motors(10,10);
-	position = read_line(sensors,IR_EMITTERS_ON);
+	set_motors(10, 10);
+	g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 }
 
-void gridFollowLine(){
-	unsigned int last_proportional=0;
-	long integral=0;
+void w2_grid_follow_line() {
+	static unsigned int last_proportional = 0;
+	static long integral				   = 0;
 
-	// This is the "main loop" - it will run forever.
-	while(1)
-	{
-		// Get the position of the line.  Note that we *must* provide
-		// the "sensors" argument to read_line() here, even though we
-		// are not interested in the individual sensor readings.
-		position = read_line(sensors,IR_EMITTERS_ON);
+	g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
+	int proportional = ((int)g_w2_position) - 2000;
+	int derivative = proportional - last_proportional;
+	integral += proportional;
+	last_proportional = proportional;
+	int power_difference = proportional / 20 + integral / 10000 + derivative * 3 / 2;
 
-		// The "proportional" term should be 0 when we are on the line.
-		int proportional = ((int)position) - 2000;
+	const int max = 60;
+	if (power_difference > max) power_difference = max;
+	if (power_difference < -max) power_difference = -max;
 
-		// Compute the derivative (change) and integral (sum) of the
-		// position.
-		int derivative = proportional - last_proportional;
-		integral += proportional;
+	if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 250 && g_w2_sensors[2] >= 500 && g_w2_sensors[3] >= 250 &&
+		g_w2_sensors[4] >= 500) {
+		return;
+	} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 && g_w2_sensors[4] < 100) {
+		return;
+	} else if (g_w2_sensors[4] >= 500 && g_w2_sensors[3] >= 200 &&
+			   g_w2_sensors[0] < 100) { // for the south and west borders of the grid
+		return;
+	} else if (g_w2_sensors[4] >= 500 && g_w2_sensors[3] >= 200 && g_w2_sensors[2] < 100 &&
+			   g_w2_sensors[0] < 100) { // sharp right corners
+		return;
+	}
 
-		// Remember the last position.
-		last_proportional = proportional;
+	else {
+		if (power_difference < 0 &&
+			(g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100)) {
+			set_motors(max + power_difference, max);
+		} else if (power_difference > 0 &&
+				   (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100)) {
+			set_motors(max, max - power_difference);
+		}
+	}
+}
 
-		// Compute the difference between the two motor power settings,
-		// m1 - m2.  If this is a positive number the robot will turn
-		// to the right.  If it is a negative number, the robot will
-		// turn to the left, and the magnitude of the number determines
-		// the sharpness of the turn.
-		int power_difference = proportional/20 + integral/10000 + derivative*3/2;
+void w2_begin_location() {
+	g_w2_location.x = 4;
+	g_w2_location.y = 0;
+	g_w2_direction  = W2_ORT_WEST;
+}
 
-		// Compute the actual motor settings.  We never set either motor
-		// to a negative value.
-		const int max = 60;
-		if(power_difference > max)
-		power_difference = max;
-		if(power_difference < -max)
-		power_difference = -max;
-		
-		if(sensors[0] >= 500 && sensors[1] >= 250  && sensors[2] >= 500  &&  sensors[3] >= 250  &&sensors[4] >= 500){
+void w2_end_destination() {
+	g_w2_destination.x = 4;
+	g_w2_destination.y = 4;
+}
+
+void w2_turn_north() {
+	switch (g_w2_direction) {
+		case W2_ORT_NORTH:
 			break;
-		}
-		else if (sensors[0] >= 500 && sensors[1] >= 200 && sensors[4] < 100){
+
+		case W2_ORT_EAST:
+			w2_grid_rotation_left();
 			break;
-		}
-		else if(sensors[4] >= 500 && sensors[3] >= 200 && sensors[0] < 100){ //for the south and west borders of the grid
+
+		case W2_ORT_SOUTH:
+			w2_grid_rotation_full();
 			break;
-		}
-		else if(sensors[4] >= 500 && sensors[3] >= 200 && sensors[2] <100 && sensors[0] < 100){ //sharp right corners
+
+		case W2_ORT_WEST:
+			w2_grid_rotation_right();
 			break;
-		}
-
-		else{
-			if(power_difference < 0 && (sensors[2] > 100 || sensors[3] > 100 || sensors[1] > 100) ){
-			set_motors(max+power_difference, max);}
-			else if( power_difference > 0 && ( sensors[2] > 100 || sensors[3] > 100 || sensors[1] > 100)){
-			set_motors(max, max-power_difference);}
-		}
 	}
+
+	g_w2_direction = W2_ORT_NORTH;
 }
 
-void shortDrive(){
-	set_motors(50,50);
-	delay(150);
-	set_motors(0,0);
-}
+void w2_turn_west() {
+	switch (g_w2_direction) {
+		case W2_ORT_WEST:
+			break;
 
-void orderOne(){
-	order[0].x = 1;
-	order[0].y = 4;
-}
+		case W2_ORT_NORTH:
+			w2_grid_rotation_left();
+			break;
 
-void orderTwo(){
-	order[1].x = 3;
-	order[1].y = 2;
-}
+		case W2_ORT_EAST:
+			w2_grid_rotation_full();
+			break;
 
-void orderThree(){
-	order[2].x = 1;
-	order[2].y = 4;
-}
-
-void orderFour(){
-	order[3].x = 0;
-	order[3].y = 0;
-}
-
-
-void beginLocation(){
-	location.x = 4;
-	location.y = 0;
-	direction = West;
-}
-
-void endDestination(){
-	destination.x = 4;
-	destination.y = 4 ;
-}
-
-void turn_North()
-{
-	switch (direction)
-	{
-		case North:
-		break;
-		
-		case East:
-		grid_rotation_left();
-		break;
-		
-		case South:
-		grid_rotation_full();
-		break;
-		
-		case West:
-		grid_rotation_right();
-		break;
+		case W2_ORT_SOUTH:
+			w2_grid_rotation_right();
+			;
+			break;
 	}
-	
-	direction = North;
+
+	g_w2_direction = W2_ORT_WEST;
 }
 
-void turn_West()
-{
-	switch (direction)
-	{
-		case West:
-		break;
-		
-		case North:
-		grid_rotation_left();
-		break;
-		
-		case East:
-		grid_rotation_full();
-		break;
-		
-		case South:
-		grid_rotation_right();;
-		break;
+void w2_turn_south() {
+	switch (g_w2_direction) {
+		case W2_ORT_SOUTH:
+			break;
+
+		case W2_ORT_WEST:
+			w2_grid_rotation_left();
+			break;
+
+		case W2_ORT_NORTH:
+			w2_grid_rotation_full();
+			break;
+
+		case W2_ORT_EAST:
+			w2_grid_rotation_right();
+			;
+			break;
 	}
-	
-	direction = West;
+
+	g_w2_direction = W2_ORT_SOUTH;
 }
 
-void turn_South()
-{
-	switch (direction)
-	{
-		case South:
-		break;
-		
-		case West:
-		grid_rotation_left();
-		break;
-		
-		case North:
-		grid_rotation_full();
-		break;
-		
-		case East:
-		grid_rotation_right();;
-		break;
+void w2_turn_east() {
+	switch (g_w2_direction) {
+		case W2_ORT_EAST:
+			break;
+
+		case W2_ORT_SOUTH:
+			w2_grid_rotation_left();
+			break;
+
+		case W2_ORT_WEST:
+			w2_grid_rotation_full();
+			break;
+
+		case W2_ORT_NORTH:
+			w2_grid_rotation_right();
+			;
+			break;
 	}
-	
-	direction = South;
+
+	g_w2_direction = W2_ORT_EAST;
 }
 
-void turn_East()
-{
-	switch (direction)
-	{
-		case East:
-		break;
-		
-		case South:
-		grid_rotation_left();
-		break;
-		
-		case West:
-		grid_rotation_full();
-		break;
-		
-		case North:
-		grid_rotation_right();;
-		break;
-	}
-	
-	direction = East;
-}
-
-void locationMessage(){
-	clear();
-	print_long(location.x);
-	print(",");
-	print_long(location.y);
-	delay(200); 
-}
-
-void arrivedMessage(){
-	if (location.x == destination.x && location.y == destination.y){
+void w2_arrived_message() {
+	if (g_w2_location.x == g_w2_destination.x && g_w2_location.y == g_w2_destination.y) {
 		clear();
 		print("ORDER ");
-		print_long(orderNumber);
-		play_frequency(400,500,7);
+		print_long(g_w2_order_number);
+		play_frequency(400, 500, 7);
 		delay(500);
 	}
 }
 
-void goToX(){
-	if (location.x != destination.x ){
-		while(location.x != destination.x ){
-			if (location.x > destination.x){
-				turn_West();
-				gridFollowLine();
-				grid_crossway_detection();
-				location.x--;
-				locationMessage();
+void w2_go_to_x() {
+	if (g_w2_location.x != g_w2_destination.x) {
+		while (g_w2_location.x != g_w2_destination.x) {
+			if (g_w2_location.x > g_w2_destination.x) {
+				w2_turn_west();
+				w2_grid_follow_line();
+				w2_grid_crossway_detection();
+				g_w2_location.x--;
 			}
-			
-			else if(location.x < destination.x){
-				turn_East();
-				gridFollowLine();
-				grid_crossway_detection();
-				location.x++;
-				locationMessage();
+
+			else if (g_w2_location.x < g_w2_destination.x) {
+				w2_turn_east();
+				w2_grid_follow_line();
+				w2_grid_crossway_detection();
+				g_w2_location.x++;
 			}
 		}
 	}
 }
 
-void goToY(){
-	if (location.y != destination.y ){
-		while(location.y != destination.y ){
-			if (location.y > destination.y){
-				turn_South();
-				gridFollowLine();
-				grid_crossway_detection();
-				location.y--;
-				locationMessage();
+void w2_go_to_y() {
+	if (g_w2_location.y != g_w2_destination.y) {
+		while (g_w2_location.y != g_w2_destination.y) {
+			if (g_w2_location.y > g_w2_destination.y) {
+				w2_turn_south();
+				w2_grid_follow_line();
+				w2_grid_crossway_detection();
+				g_w2_location.y--;
 			}
-			
-			else if(location.y < destination.y){
-				turn_North();
-				gridFollowLine();
-				grid_crossway_detection();
-				location.y++;
-				locationMessage();
+
+			else if (g_w2_location.y < g_w2_destination.y) {
+				w2_turn_north();
+				w2_grid_follow_line();
+				w2_grid_crossway_detection();
+				g_w2_location.y++;
 			}
 		}
 	}
 }
 
-void home(){
-	set_motors(0,0);
-	delay_ms(150);
-	clear();
-	print("CHARGING");
-	set_motors(30,30);
-	delay_ms(600);
-	set_motors(0,0);
-	play_frequency(300,500,7);
-	delay_ms(600);
-	position = read_line(sensors,IR_EMITTERS_ON);
-	chargedStatus = 1;
-	clear();
-	delay_ms(2000);
-}
-
-void charge(){
-	unsigned int last_proportional=0;
-	long integral=0;
-	//initialize();
-	chargedStatus = 0;
-	clear();
-	print("CHARGE");
-	
-	while(1){
-			// Get the position of the line.  Note that we *must* provide
-			// the "sensors" argument to read_line() here, even though we
-			// are not interested in the individual sensor readings.
-			position = read_line(sensors,IR_EMITTERS_ON);
-
-			// The "proportional" term should be 0 when we are on the line.
-			int proportional = ((int)position) - 2000;
-
-			// Compute the derivative (change) and integral (sum) of the
-			// position.
-			int derivative = proportional - last_proportional;
-			integral += proportional;
-
-			// Remember the last position.
-			last_proportional = proportional;
-
-			// Compute the difference between the two motor power settings,
-			// m1 - m2.  If this is a positive number the robot will turn
-			// to the right.  If it is a negative number, the robot will
-			// turn to the left, and the magnitude of the number determines
-			// the sharpness of the turn.
-			int power_difference = proportional/20 + integral/10000 + derivative*3/2;
-
-			// Compute the actual motor settings.  We never set either motor
-			// to a negative value.
-			
-			const int max = 60;
-			if(power_difference > max)
-			power_difference = max;
-			if(power_difference < -max)
-			power_difference = -max;
-			
-
-			if(sensors[0] < 100 && sensors[1] <100 && sensors[2] < 100 &&  sensors[3] < 100 && sensors[4] < 100){
-				charge_cross_walk();
-				if (parcourMode == mazeMode){
-					break;
-				}
-			}
-			
-			else if((sensors[0] >= 500 && sensors[1] >= 500  && sensors[2] >= 500  &&  sensors[3] >= 500  &&sensors[4] >= 500) && chargedStatus == 0){
-				home();
-				delay(200);
-				full_rotation();
-				shortDrive();
-			}
-			else if (sensors[0] >= 500 && sensors[1] >= 200 && sensors[4] < 100){
-				clear();
-				half_rotation_left();
-			}
-			
-			else if(sensors[0] >= 500 && sensors[1] >= 250  && sensors[2] >= 500  &&  sensors[3] >= 250  &&sensors[4] >= 500){
-				clear();
-				crossway_detection();
-			}
-			else{
-				if(power_difference < 0 && (sensors[2] > 100 || sensors[3] > 100 || sensors[1] > 100) ){
-				set_motors(max+power_difference, max);}
-				else if( power_difference > 0 && ( sensors[2] > 100 || sensors[3] > 100 || sensors[1] > 100)){
-				set_motors(max, max-power_difference);}
-			}			
-	}
-}
-
-void grid() {
-
-	set_motors(0,0);
+void w2_mode_grid() {
+	set_motors(0, 0);
 	clear();
 	print("GRID");
 	delay(500);
 
-	//coordinates of the orders
-	orderOne();
-	orderTwo();
-	orderThree();
-	orderFour();
-	
-	beginLocation();
+	w2_begin_location();
 
-	for (int i = 0; i < 4; i++ ){
-		orderNumber = i+1;
-		
-		destination.x = order[i].x;
-		destination.y = order[i].y;
-		
-		locationMessage();
+	// TODO: orders read here
+	for (int i = 0; i < 4; i++) {
+		g_w2_order_number = i + 1;
+
+		g_w2_destination.x = g_w2_order[i].x;
+		g_w2_destination.y = g_w2_order[i].y;
+
 		delay(1000);
-		goToX();
-		goToY();
-		arrivedMessage();
+		w2_go_to_x();
+		w2_go_to_y();
 	}
-	//go to the end of the grid, to transition to charge station
-	endDestination();
-	
-	locationMessage();
+	w2_end_destination();
+
 	delay(1000);
-	goToY();
-	goToX();
-	turn_East(); //this was uncommented (6.3)
-	parcourMode = chargeMode;
+	w2_go_to_y();
+	w2_go_to_x();
+	w2_turn_east(); // this was uncommented (6.3)
+	w2_modes_swap(W2_M_CHRG);
 }
 
+/*
+void w2_mode_maze() {
 
+	unsigned int last_proportional = 0;
+	long integral				   = 0;
 
-// This is the main function, where the code starts.  All C programs
-// must have a main() function defined somewhere.
-void maze()
-{
-	
-	unsigned int last_proportional=0;
-	long integral=0;
-	
 	// set up the 3pi
-	if (mazeStatus == 0){
-		initialize();
+	if (g_w2_maze_status == 0) {
+		w2_initialize();
 	}
 	clear();
 	print("MAZE");
-	
-	
-	transition = 0;
+
+	g_w2_transition = 0;
 
 	// This is the "main loop" - it will run forever.
-	while(1)
-	{    
+	while (1) {
 		// Get the position of the line.  Note that we *must* provide
 		// the "sensors" argument to read_line() here, even though we
 		// are not interested in the individual sensor readings.
-		position = read_line(sensors,IR_EMITTERS_ON);
+		g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 
 		// The "proportional" term should be 0 when we are on the line.
-		int proportional = ((int)position) - 2000;
+		int proportional = ((int)g_w2_position) - 2000;
 
 		// Compute the derivative (change) and integral (sum) of the
 		// position.
@@ -756,62 +324,35 @@ void maze()
 		// to the right.  If it is a negative number, the robot will
 		// turn to the left, and the magnitude of the number determines
 		// the sharpness of the turn.
-		int power_difference = proportional/20 + integral/10000 + derivative*3/2;
+		int power_difference = proportional / 20 + integral / 10000 + derivative * 3 / 2;
 
 		// Compute the actual motor settings.  We never set either motor
 		// to a negative value.
-		 
+
 		const int max = 60;
-		if(power_difference > max)
-			power_difference = max;
-		if(power_difference < -max)
-			power_difference = -max;
-		
-		if(sensors[0] < 100 && sensors[1] <100 && sensors[2] < 100 &&  sensors[3] < 100 && sensors[4] < 100){	
-				cross_walk();
-				if (parcourMode == gridMode){
-					break;
-				}
-				//full_rotation();			
-		}
-		else if(sensors[0] >= 500 && sensors[1] >= 250  && sensors[2] >= 500  &&  sensors[3] >= 250  &&sensors[4] >= 500){
-			crossway_detection();
-		}
-		else if (sensors[0] >= 500 && sensors[1] >= 200 && sensors[4] < 100){
-			half_rotation_left();
-		}
-		else{ 
-			if(power_difference < 0 && (sensors[2] > 100 || sensors[3] > 100 || sensors[1] > 100) )
-				set_motors(max+power_difference, max);
-			else if( power_difference > 0 && ( sensors[2] > 100 || sensors[3] > 100 || sensors[1] > 100)  )
-				set_motors(max, max-power_difference);			
-		}
-		       		
-	}
+		if (power_difference > max) power_difference = max;
+		if (power_difference < -max) power_difference = -max;
 
-}
-
-void mode(){
-	while(1){
-		if(parcourMode == mazeMode){
-			maze();
-		}
-		else if(parcourMode == gridMode){
-			grid();
-		}
-		else if(parcourMode == chargeMode){
-			charge();
+		if (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 && g_w2_sensors[3] < 100 &&
+			g_w2_sensors[4] < 100) {
+			w2_cross_walk();
+			if (g_w2_parcour_mode == gridMode) {
+				break;
+			}
+			// full_rotation();
+		} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 250 && g_w2_sensors[2] >= 500 &&
+				   g_w2_sensors[3] >= 250 && g_w2_sensors[4] >= 500) {
+			w2_crossway_detection();
+		} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 && g_w2_sensors[4] < 100) {
+			w2_half_rotation_left();
+		} else {
+			if (power_difference < 0 && (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100))
+				set_motors(max + power_difference, max);
+			else if (power_difference > 0 &&
+					 (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100))
+				set_motors(max, max - power_difference);
 		}
 	}
 }
-
-
-int main(){
-	chargedStatus = 0;
-	mazeStatus = 0;
-	
-	parcourMode = mazeMode;
-	
-	mode();
-}
+*/
 

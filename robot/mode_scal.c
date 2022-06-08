@@ -3,7 +3,6 @@
 #include "orangutan_shim.h"
 
 void w2_mode_scal() {
-	pololu_3pi_init(2000);
 	for (int counter = 0; counter < 80; counter++) {
 		if (counter < 20 || counter >= 60) {
 			set_motors(40, -40);

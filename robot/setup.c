@@ -37,6 +37,9 @@ void w2_setup_main() {
 	// send info
 	w2_cmd_info_rx(NULL);
 
+	// initialize sensors using pololu library function
+	pololu_3pi_init(2000);
+
 	// indicate startup done
 	play("L50 c>c");
 }
