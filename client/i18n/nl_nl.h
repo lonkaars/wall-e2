@@ -27,14 +27,14 @@
 #define W2_UI_TAB_LABEL_MODES "modus instellen"
 
 #define W2_UI_TAB_START_MESSAGE "" \
-	"welcome to the wall-e2 console application!\n" \
-	"this is client version " W2_BUILD_STR "\n" \
+	"welkom in de wall-e2 console applicatie!\n" \
+	"dit is client versie " W2_BUILD_STR "\n" \
 	"\n" \
-	"this application is functionally similar to a BIOS.\n" \
-	"here's a brief summary of keyboard commands:\n" \
+	"deze applicatie werkt soortvan als een BIOS\n" \
+	"hier is een lijst met sneltoetsen:\n" \
 	"\n" \
-	"<tab>        switch to next tab\n" \
-	"<ctrl-c>     exit\n" \
+	"<tab>        volgende tabblad\n" \
+	"<ctrl-c>     stoppen\n" \
 	"\n" \
 
 #define W2_UI_ERROR_SEVERITY_CRIT "CRIT"

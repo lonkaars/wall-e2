@@ -1,7 +1,7 @@
 CC = gcc
 LD = gcc
 RM = rm -f
-CFLAGS =
+CFLAGS = -DW2_LANG_NL_NL
 LDFLAGS = -lncursesw
 EXECNAME = main
 
