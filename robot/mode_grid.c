@@ -7,8 +7,13 @@ int g_w2_order_number;
 
 int g_w2_maze_status = 0;
 
-w2_s_grid_coordinate g_w2_order[16];
-unsigned int g_w2_order_index = 0;
+w2_s_grid_coordinate g_w2_order[16] = {
+	{0, 0},
+	{3, 4},
+	{2, 1},
+	{4, 2},
+};
+unsigned int g_w2_order_index = 4;
 w2_s_grid_coordinate g_w2_location;
 w2_s_grid_coordinate g_w2_destination;
 w2_e_orientation g_w2_direction;
