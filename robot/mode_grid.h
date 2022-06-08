@@ -9,7 +9,9 @@
  */
 void w2_mode_grid();
 
-void w2_crosswalk_detection();
+extern int g_w2_transition;
+
+void w2_crosswalk_stroll();
 
 typedef enum {
 	W2_ORT_NORTH,

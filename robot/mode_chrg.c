@@ -1,8 +1,8 @@
 #include "mode_chrg.h"
+#include "mode_grid.h"
 #include "orangutan_shim.h"
 #include "movement.h"
 #include "modes.h"
-#include "transition.h"
 
 int g_w2_charged_status;
 
@@ -46,13 +46,12 @@ void w2_charge_cross_walk() {
 				set_motors(0, 0);
 
 				g_w2_transition	= 0;
-				// g_w2_maze_status	= 1;
 				w2_modes_swap(W2_M_MAZE);
 				break;
 			}
 		} else {
 			g_w2_transition = 0;
-			w2_full_rotation();
+			w2_maze_rotation_full();
 		}
 	}
 }
@@ -62,7 +61,6 @@ void w2_mode_chrg() {
 	unsigned int last_proportional = 0;
 	long integral				   = 0;
 	// initialize();
-	g_w2_charged_status = 0;
 	clear();
 	print("CHARGE");
 
@@ -110,17 +108,17 @@ void w2_mode_chrg() {
 				 g_w2_charged_status == 0) {
 			w2_home();
 			delay(200);
-			w2_full_rotation();
+			w2_maze_rotation_full();
 			w2_short_drive();
 		} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 && g_w2_sensors[4] < 100) {
 			clear();
-			w2_half_rotation_left();
+			w2_maze_rotation_half_left();
 		}
 
 		else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 250 && g_w2_sensors[2] >= 500 && g_w2_sensors[3] >= 250 &&
 				 g_w2_sensors[4] >= 500) {
 			clear();
-			w2_crossway_detection();
+			w2_maze_rotation_half_left();
 		} else {
 			if (power_difference < 0 &&
 				(g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100)) {
