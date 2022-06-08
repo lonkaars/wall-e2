@@ -97,4 +97,3 @@ void w2_errcatch_throw_msg(w2_e_errorcode code, uint16_t length, const char *mes
  * TODO: doesn't handle null pointers from malloc
  */
 w2_s_error *w2_alloc_error(w2_e_errorcode code, uint16_t length, const char *message);
-

@@ -1,7 +1,7 @@
 #include "mode_grid.h"
-#include "orangutan_shim.h"
 #include "modes.h"
 #include "movement.h"
+#include "orangutan_shim.h"
 
 int g_w2_order_number;
 
@@ -22,7 +22,7 @@ void w2_location_message() {
 	print_long(g_w2_location.x);
 	print(",");
 	print_long(g_w2_location.y);
-	delay(200); 
+	delay(200);
 }
 
 int g_w2_detection = 0;
@@ -32,8 +32,8 @@ char g_w2_y_location = 0;
 
 void w2_crosswalk_stroll() {
 	print("hoi");
-	while (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 && g_w2_sensors[3] < 100 &&
-		   g_w2_sensors[4] < 100) {
+	while (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 &&
+		   g_w2_sensors[3] < 100 && g_w2_sensors[4] < 100) {
 		set_motors(15, 15);
 		delay(290);
 		g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
@@ -45,7 +45,7 @@ void w2_crosswalk_stroll() {
 			if (g_w2_transition == 3) {
 				set_motors(40, 40);
 				delay(600);
-				g_w2_transition	= 0;
+				g_w2_transition = 0;
 				w2_modes_swap(W2_M_GRID);
 				return;
 			}
@@ -66,41 +66,42 @@ void w2_grid_crossway_detection() {
 }
 
 void w2_grid_follow_line() {
-	unsigned int last_proportional=0;
-	long integral=0;
+	unsigned int last_proportional = 0;
+	long integral				   = 0;
 
-	while(1) {
-		g_w2_position = read_line(g_w2_sensors,IR_EMITTERS_ON);
+	while (1) {
+		g_w2_position	 = read_line(g_w2_sensors, IR_EMITTERS_ON);
 		int proportional = ((int)g_w2_position) - 2000;
-		int derivative = proportional - last_proportional;
+		int derivative	 = proportional - last_proportional;
 		integral += proportional;
-		last_proportional = proportional;
-		int power_difference = proportional/20 + integral/10000 + derivative*3/2;
+		last_proportional	 = proportional;
+		int power_difference = proportional / 20 + integral / 10000 + derivative * 3 / 2;
 
 		const int max = 60;
-		if(power_difference > max)
-		power_difference = max;
-		if(power_difference < -max)
-		power_difference = -max;
-		
-		if(g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 250  && g_w2_sensors[2] >= 500  &&  g_w2_sensors[3] >= 250  &&g_w2_sensors[4] >= 500){
+		if (power_difference > max) power_difference = max;
+		if (power_difference < -max) power_difference = -max;
+
+		if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 250 && g_w2_sensors[2] >= 500 &&
+			g_w2_sensors[3] >= 250 && g_w2_sensors[4] >= 500) {
 			break;
-		}
-		else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 && g_w2_sensors[4] < 100){
+		} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 && g_w2_sensors[4] < 100) {
 			break;
-		}
-		else if(g_w2_sensors[4] >= 500 && g_w2_sensors[3] >= 200 && g_w2_sensors[0] < 100){ //for the south and west borders of the grid
+		} else if (g_w2_sensors[4] >= 500 && g_w2_sensors[3] >= 200 &&
+				   g_w2_sensors[0] < 100) { // for the south and west borders of the grid
 			break;
-		}
-		else if(g_w2_sensors[4] >= 500 && g_w2_sensors[3] >= 200 && g_w2_sensors[2] <100 && g_w2_sensors[0] < 100){ //sharp right corners
+		} else if (g_w2_sensors[4] >= 500 && g_w2_sensors[3] >= 200 && g_w2_sensors[2] < 100 &&
+				   g_w2_sensors[0] < 100) { // sharp right corners
 			break;
 		}
 
-		else{
-			if(power_difference < 0 && (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100) ){
-			set_motors(max+power_difference, max);}
-			else if( power_difference > 0 && ( g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100)){
-			set_motors(max, max-power_difference);}
+		else {
+			if (power_difference < 0 &&
+				(g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100)) {
+				set_motors(max + power_difference, max);
+			} else if (power_difference > 0 &&
+					   (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100)) {
+				set_motors(max, max - power_difference);
+			}
 		}
 	}
 }
@@ -108,7 +109,7 @@ void w2_grid_follow_line() {
 void w2_begin_location() {
 	g_w2_location.x = 4;
 	g_w2_location.y = 0;
-	g_w2_direction  = W2_ORT_WEST;
+	g_w2_direction	= W2_ORT_WEST;
 }
 
 void w2_end_destination() {
@@ -325,21 +326,15 @@ void w2_mode_maze() {
 		if (power_difference > max) power_difference = max;
 		if (power_difference < -max) power_difference = -max;
 
-		if (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 && g_w2_sensors[3] < 100 &&
-			g_w2_sensors[4] < 100) {
-		} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 250 && g_w2_sensors[2] >= 500 &&
-				   g_w2_sensors[3] >= 250 && g_w2_sensors[4] >= 500) {
-			w2_crossway_detection();
-		} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 && g_w2_sensors[4] < 100) {
-			w2_half_rotation_left();
-		} else {
-			if (power_difference < 0 && (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100))
-				set_motors(max + power_difference, max);
-			else if (power_difference > 0 &&
-					 (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100))
-				set_motors(max, max - power_difference);
+		if (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 &&
+g_w2_sensors[3] < 100 && g_w2_sensors[4] < 100) { } else if (g_w2_sensors[0] >= 500 &&
+g_w2_sensors[1] >= 250 && g_w2_sensors[2] >= 500 && g_w2_sensors[3] >= 250 && g_w2_sensors[4] >=
+500) { w2_crossway_detection(); } else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 &&
+g_w2_sensors[4] < 100) { w2_half_rotation_left(); } else { if (power_difference < 0 &&
+(g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100)) set_motors(max +
+power_difference, max); else if (power_difference > 0 && (g_w2_sensors[2] > 100 || g_w2_sensors[3] >
+100 || g_w2_sensors[1] > 100)) set_motors(max, max - power_difference);
 		}
 	}
 }
 */
-

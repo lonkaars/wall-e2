@@ -1,8 +1,8 @@
 #include "mode_chrg.h"
 #include "mode_grid.h"
-#include "orangutan_shim.h"
-#include "movement.h"
 #include "modes.h"
+#include "movement.h"
+#include "orangutan_shim.h"
 
 int g_w2_charged_status;
 
@@ -22,20 +22,19 @@ void w2_home() {
 	set_motors(0, 0);
 	play_frequency(300, 500, 7);
 	delay_ms(600);
-	g_w2_position	  = read_line(g_w2_sensors, IR_EMITTERS_ON);
+	g_w2_position		= read_line(g_w2_sensors, IR_EMITTERS_ON);
 	g_w2_charged_status = 1;
 	clear();
 	delay_ms(2000);
 }
-
 
 void w2_charge_cross_walk() {
 	if (g_w2_transition == 0) {
 		set_motors(-30, 30);
 		delay(50);
 	}
-	while (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 && g_w2_sensors[3] < 100 &&
-		   g_w2_sensors[4] < 100) {
+	while (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 &&
+		   g_w2_sensors[3] < 100 && g_w2_sensors[4] < 100) {
 		set_motors(15, 15);
 		delay(550);
 		g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
@@ -44,12 +43,12 @@ void w2_charge_cross_walk() {
 			// clear();
 			print("WALK");
 			g_w2_transition++;
-			if (g_w2_transition == 3) { //TODO: document g_w2_transition
+			if (g_w2_transition == 3) { // TODO: document g_w2_transition
 				set_motors(40, 40);
 				delay(600);
 				set_motors(0, 0);
 
-				g_w2_transition	= 0;
+				g_w2_transition = 0;
 				w2_modes_swap(W2_M_MAZE);
 				break;
 			}
@@ -59,7 +58,6 @@ void w2_charge_cross_walk() {
 		}
 	}
 }
-
 
 void w2_mode_chrg() {
 	unsigned int last_proportional = 0;
@@ -99,8 +97,8 @@ void w2_mode_chrg() {
 		if (power_difference > max) power_difference = max;
 		if (power_difference < -max) power_difference = -max;
 
-		if (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 && g_w2_sensors[3] < 100 &&
-			g_w2_sensors[4] < 100) {
+		if (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 &&
+			g_w2_sensors[3] < 100 && g_w2_sensors[4] < 100) {
 			w2_charge_cross_walk();
 			if (g_w2_mode_history[g_w2_mode_history_index] == W2_M_MAZE) {
 				break;
@@ -119,8 +117,8 @@ void w2_mode_chrg() {
 			w2_maze_rotation_half_left();
 		}
 
-		else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 250 && g_w2_sensors[2] >= 500 && g_w2_sensors[3] >= 250 &&
-				 g_w2_sensors[4] >= 500) {
+		else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 250 && g_w2_sensors[2] >= 500 &&
+				 g_w2_sensors[3] >= 250 && g_w2_sensors[4] >= 500) {
 			clear();
 			w2_maze_rotation_half_left();
 		} else {
