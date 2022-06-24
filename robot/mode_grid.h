@@ -24,4 +24,3 @@ typedef struct {
 
 extern w2_s_grid_coordinate g_w2_order[16];
 extern unsigned int g_w2_order_index;
-

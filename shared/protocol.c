@@ -23,6 +23,7 @@ void w2_cmd_setup_handlers() {
 	g_w2_cmd_handlers[W2_CMD_DISP | W2_CMDDIR_RX] = w2_cmd_disp_rx;
 	g_w2_cmd_handlers[W2_CMD_PLAY | W2_CMDDIR_RX] = w2_cmd_play_rx;
 	g_w2_cmd_handlers[W2_CMD_CLED | W2_CMDDIR_RX] = w2_cmd_cled_rx;
+	g_w2_cmd_handlers[W2_CMD_TARQ | W2_CMDDIR_RX] = w2_cmd_tarq_rx;
 }
 
 size_t w2_cmd_sizeof(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_length) {
@@ -46,6 +47,8 @@ size_t w2_cmd_sizeof(uint8_t data[W2_SERIAL_READ_BUFFER_SIZE], uint8_t data_leng
 
 	if (data[0] == (W2_CMD_INFO | W2_CMDDIR_RX)) return sizeof(w2_s_cmd_info_rx);
 	if (data[0] == (W2_CMD_INFO | W2_CMDDIR_TX)) return sizeof(w2_s_cmd_info_tx);
+
+	if (data[0] == (W2_CMD_TARQ | W2_CMDDIR_RX)) return sizeof(w2_s_cmd_tarq_rx);
 
 	w2_s_bin *copy = w2_bin_s_alloc(data_length, data);
 	uint8_t length = 1;

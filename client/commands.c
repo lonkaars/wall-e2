@@ -64,3 +64,13 @@ void w2_send_mode(w2_e_mode mode) {
 		free(msg_bin);
 	}
 }
+
+void w2_send_tarq(w2_e_target_area target_area) {
+	W2_CREATE_MSG_BIN(w2_s_cmd_tarq_rx, msg, msg_bin);
+
+	msg->opcode		 = W2_CMD_TARQ | W2_CMDDIR_RX;
+	msg->target_area = target_area;
+
+	w2_send_bin(msg_bin);
+	free(msg_bin);
+}

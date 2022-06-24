@@ -17,7 +17,7 @@
 #define W2_CMD_CODE_MASK (~1)
 #define W2_CMD_DIRECTION_MASK (1)
 
-#define W2_CMD_COUNT 28
+#define W2_CMD_COUNT 30
 typedef enum {
 	/** ping command */
 	W2_CMD_PING = 0x00,
@@ -47,7 +47,15 @@ typedef enum {
 	W2_CMD_PLAY = 0x18,
 	/** control leds command */
 	W2_CMD_CLED = 0x1a,
+	/** target area request */
+	W2_CMD_TARQ = 0x1c,
 } w2_e_scmds;
+
+typedef enum {
+	W2_AREA_MAZE = 0,
+	W2_AREA_GRID = 1,
+	W2_AREA_CHRG = 2,
+} w2_e_target_area;
 
 #pragma pack(push, 1)
 
@@ -158,6 +166,11 @@ typedef struct {
 typedef struct {
 } w2_s_cmd_cled_rx;
 
+typedef struct {
+	uint8_t opcode;
+	w2_e_target_area target_area;
+} w2_s_cmd_tarq_rx;
+
 #pragma pack(pop)
 
 /** stores message handlers in array with opcode as index */
@@ -206,6 +219,8 @@ void w2_cmd_disp_rx(w2_s_bin *data);
 void w2_cmd_play_rx(w2_s_bin *data);
 /** handler for cled_rx (on complete message) */
 void w2_cmd_cled_rx(w2_s_bin *data);
+/** handler for tarq_rx (on complete message) */
+void w2_cmd_tarq_rx(w2_s_bin *data);
 
 /** calculate message length for expt_tx (incomplete message) */
 size_t w2_cmd_expt_tx_sizeof(w2_s_bin *data);

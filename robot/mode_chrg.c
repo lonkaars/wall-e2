@@ -4,7 +4,7 @@
 #include "movement.h"
 #include "orangutan_shim.h"
 
-int g_w2_charged_status;	//used to detect the charging station (once)
+int g_w2_charged_status; // used to detect the charging station (once)
 
 void w2_short_drive() {
 	set_motors(50, 50);
@@ -12,7 +12,7 @@ void w2_short_drive() {
 	set_motors(0, 0);
 }
 
-//charging station
+// charging station
 void w2_home() {
 	set_motors(0, 0);
 	delay_ms(150);
@@ -25,7 +25,7 @@ void w2_home() {
 	delay_ms(2000);
 }
 
-//crosswalk from charging station back to maze
+// crosswalk from charging station back to maze
 void w2_charge_cross_walk() {
 	if (g_w2_transition == 0) {
 		set_motors(-30, 30);
@@ -55,7 +55,7 @@ void w2_charge_cross_walk() {
 	}
 }
 
-//main function for charge mode
+// main function for charge mode
 void w2_mode_chrg() {
 	unsigned int last_proportional = 0;
 	long integral				   = 0;

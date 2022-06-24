@@ -10,6 +10,10 @@ void w2_ui_onkey_modes(int ch) {
 	if (ch == '5') w2_send_mode(W2_M_SPIN);
 	if (ch == '6') w2_send_mode(W2_M_SCAL);
 
+	if (ch == '7') w2_send_tarq(W2_AREA_MAZE);
+	if (ch == '8') w2_send_tarq(W2_AREA_GRID);
+	if (ch == '9') w2_send_tarq(W2_AREA_CHRG);
+
 	if (ch == '0') w2_send_mode(W2_M_PREV);
 }
 

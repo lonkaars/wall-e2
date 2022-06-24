@@ -2,7 +2,7 @@
 #include "modes.h"
 #include "orangutan_shim.h"
 
-//callibrates the robot
+// callibrates the robot
 void w2_mode_scal() {
 	for (int counter = 0; counter < 80; counter++) {
 		if (counter < 20 || counter >= 60) {

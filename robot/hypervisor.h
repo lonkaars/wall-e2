@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 #include "../shared/bool.h"
+#include "../shared/protocol.h"
 
 /** amount of parallel timers */
 #define W2_HYPERVISOR_TIMER_COUNT 2
@@ -25,6 +26,8 @@ extern uint8_t g_w2_ping_id;
 extern bool g_w2_ping_received;
 extern bool g_w2_ping_timeout;
 extern bool g_w2_connected;
+
+extern w2_e_target_area g_w2_target_area;
 
 /**
  * backbone of all other modules

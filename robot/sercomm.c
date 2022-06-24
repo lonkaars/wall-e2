@@ -4,10 +4,10 @@
 #include "../shared/bin.h"
 #include "../shared/errcatch.h"
 #include "../shared/serial_parse.h"
-#include "mode_grid.h"
 #include "hypervisor.h"
 #include "io.h"
 #include "mode_dirc.h"
+#include "mode_grid.h"
 #include "modes.h"
 #include "orangutan_shim.h"
 #include "sercomm.h"
@@ -124,10 +124,9 @@ void w2_cmd_bomd_rx(w2_s_bin *data) {
 
 	char buf[32];
 	clear();
-	sprintf(buf, "%lu, %lu", req->position % W2_MAP_DEFAULT_WIDTH, req->position / W2_MAP_DEFAULT_WIDTH);
-	print(buf);
-	g_w2_order[g_w2_order_index].x = req->position % W2_MAP_DEFAULT_WIDTH;
-	g_w2_order[g_w2_order_index].y = req->position / W2_MAP_DEFAULT_WIDTH;
+	sprintf(buf, "%lu, %lu", req->position % W2_MAP_DEFAULT_WIDTH, req->position /
+	W2_MAP_DEFAULT_WIDTH); print(buf); g_w2_order[g_w2_order_index].x = req->position %
+	W2_MAP_DEFAULT_WIDTH; g_w2_order[g_w2_order_index].y = req->position / W2_MAP_DEFAULT_WIDTH;
 	g_w2_order_index++; */
 }
 
@@ -161,7 +160,7 @@ void w2_cmd_info_rx(w2_s_bin *data) {
 	res_msg->mode_ms	 = (uint8_t)g_w2_hypervisor_ema_mode_ms;
 	res_msg->uptime_s	 = w2_bin_hton32((uint32_t)(g_w2_hypervisor_uptime_ms / 1e3));
 	res_msg->mode		 = g_w2_mode_history[g_w2_mode_history_index];
-	res_msg->battery_mv  = w2_bin_hton16(read_battery_millivolts());
+	res_msg->battery_mv	 = w2_bin_hton16(read_battery_millivolts());
 
 	w2_sercomm_append_msg(res_bin);
 	free(res_bin);
@@ -172,6 +171,11 @@ void w2_cmd_disp_rx(w2_s_bin *data) { return; }
 void w2_cmd_play_rx(w2_s_bin *data) { return; }
 
 void w2_cmd_cled_rx(w2_s_bin *data) { return; }
+
+void w2_cmd_tarq_rx(w2_s_bin *data) {
+	W2_CAST_BIN(w2_s_cmd_tarq_rx, data, req);
+	g_w2_target_area = req->target_area;
+}
 
 #pragma GCC diagnostic pop
 

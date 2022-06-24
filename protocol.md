@@ -25,10 +25,10 @@ is converted to a single `0xff` on the receiving end, so these duplicated bytes
 and the starting byte don't count towards message length.
 
 opcodes are picked sequentially, but the direction bit (LSB) is reserved to
-indicate a transfer from robot to client (`tx`). this means that the opcode for
-a sensor data request would be `0x12`, but the response opcode would be `0x13`.
-these opcodes are stored as enum constants inside shared/protocol.h for code
-readability.
+indicate a transfer from robot to client (`tx`) (with exception of the
+[PING](#ping) command). this means that the opcode for a sensor data request
+would be `0x12`, but the response opcode would be `0x13`. these opcodes are
+stored as enum constants inside shared/protocol.h for code readability.
 
 |code|name|implemented|directions|full name|
 |--:|---|:-:|:-:|---|
@@ -46,6 +46,7 @@ readability.
 |`0x16`|[DISP](#disp)|no|`r <-- c`|<u>disp</u>lay control
 |`0x18`|[PLAY](#play)|no|`r <-- c`|<u>play</u> midi
 |`0x1a`|[CLED](#cled)|no|`r <-- c`|<u>c</u>ontrol <u>led</u>s
+|`0x1c`|[TARQ](#tarq)|no|`r <-- c`|<u>t</u>arget <u>a</u>rea <u>r</u>e<u>q</u>uest
 
 the DISP, PLAY, and CLED commands have low implementation priority, and should
 be considered extra features
@@ -321,4 +322,17 @@ robot info response
 - DWBM display write bitmap
 -->
 
+### TARQ
+
+#### set target area (`r <-- c`) (1 byte)
+
+|type|description|
+|-:|-|
+|`uint8_t`|opcode (`0x1c + 0`)|
+|`uint8_t`|target area|
+
+_target area_ is one of:
+- 0: maze
+- 1: grid
+- 2: charging station
 

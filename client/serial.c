@@ -54,3 +54,4 @@ void w2_cmd_info_rx(w2_s_bin *data) { return; }
 void w2_cmd_disp_rx(w2_s_bin *data) { return; }
 void w2_cmd_play_rx(w2_s_bin *data) { return; }
 void w2_cmd_cled_rx(w2_s_bin *data) { return; }
+void w2_cmd_tarq_rx(w2_s_bin *data) { return; }

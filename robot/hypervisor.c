@@ -23,6 +23,8 @@ bool g_w2_ping_received	  = true;
 bool g_w2_ping_timeout	  = false;
 bool g_w2_connected		  = false;
 
+w2_e_target_area g_w2_target_area = W2_AREA_CHRG;
+
 void w2_hypervisor_main() {
 #ifdef W2_SIM
 	w2_sim_cycle_begin();

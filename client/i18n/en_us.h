@@ -110,6 +110,9 @@
 	"4 - set to charging station mode\n" \
 	"5 - set to spinning mode (wet floor simulation)\n" \
 	"6 - calibrate sensors\n" \
+	"7 - set target area to maze\n" \
+	"8 - set target area to grid\n" \
+	"9 - set target area to charging station\n" \
 	"\n" \
 	"0 - previous\n" \
 
