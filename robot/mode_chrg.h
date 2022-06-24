@@ -9,3 +9,6 @@
  * black circle is found
  */
 void w2_mode_chrg();
+
+/** called when mode is switched to charge station mode */
+void w2_mode_chrg_onswitch();

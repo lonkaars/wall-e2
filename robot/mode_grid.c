@@ -1,7 +1,12 @@
 #include "mode_grid.h"
+#include "hypervisor.h"
 #include "modes.h"
 #include "movement.h"
 #include "orangutan_shim.h"
+
+/**
+ * TODO: mode_grid g_w2_target_area laten volgen
+ */
 
 int g_w2_order_number;
 
@@ -30,7 +35,8 @@ void w2_crosswalk_stroll() {
 		set_motors(15, 15);
 		delay(290);
 		g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
-		if (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100) {
+		if ((g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100) &&
+			(g_w2_target_area != W2_AREA_MAZE)) {
 			set_motors(0, 0);
 			g_w2_transition++;
 			if (g_w2_transition == 3) {

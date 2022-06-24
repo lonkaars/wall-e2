@@ -1,28 +1,17 @@
 #include "mode_chrg.h"
+#include "../shared/bool.h"
+#include "hypervisor.h"
 #include "mode_grid.h"
 #include "modes.h"
 #include "movement.h"
 #include "orangutan_shim.h"
 
-int g_w2_charged_status; // used to detect the charging station (once)
+bool g_w2_chrg_aligned;
 
 void w2_short_drive() {
 	set_motors(50, 50);
 	delay(150);
 	set_motors(0, 0);
-}
-
-// charging station
-void w2_home() {
-	set_motors(0, 0);
-	delay_ms(150);
-	set_motors(30, 30);
-	delay_ms(600);
-	set_motors(0, 0);
-	delay_ms(600);
-	g_w2_position		= read_line(g_w2_sensors, IR_EMITTERS_ON);
-	g_w2_charged_status = 1;
-	delay_ms(2000);
 }
 
 // crosswalk from charging station back to maze
@@ -54,6 +43,8 @@ void w2_charge_cross_walk() {
 		}
 	}
 }
+
+void w2_mode_chrg_onswitch() { g_w2_chrg_aligned = false; }
 
 // main function for charge mode
 void w2_mode_chrg() {
@@ -99,13 +90,23 @@ void w2_mode_chrg() {
 			}
 		}
 
-		else if ((g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 500 && g_w2_sensors[2] >= 500 &&
-				  g_w2_sensors[3] >= 500 && g_w2_sensors[4] >= 500) &&
-				 g_w2_charged_status == 0) {
-			w2_home();
-			delay(200);
-			w2_maze_rotation_full();
-			w2_short_drive();
+		else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 500 && g_w2_sensors[2] >= 500 &&
+				 g_w2_sensors[3] >= 500 && g_w2_sensors[4] >= 500) {
+			if (g_w2_target_area == W2_AREA_CHRG) {
+				if (!g_w2_chrg_aligned) {
+					set_motors(0, 0);
+					delay_ms(150);
+					set_motors(30, 30);
+					delay_ms(600);
+					set_motors(0, 0);
+					delay_ms(600);
+					g_w2_chrg_aligned = true;
+				}
+			} else {
+				delay(200);
+				w2_maze_rotation_full();
+				w2_short_drive();
+			}
 		} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 && g_w2_sensors[4] < 100) {
 			w2_maze_rotation_half_left();
 		}
