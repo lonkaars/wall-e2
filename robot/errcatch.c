@@ -1,25 +1,35 @@
 #include <string.h>
+#include <stdio.h>
 
 #include "../shared/errcatch.h"
 #include "modes.h"
 #include "orangutan_shim.h"
 #include "sercomm.h"
 
-// #include <stdio.h>
-// unsigned int g_w2_err_index = 0;
-// unsigned int g_w2_err_disp[4] = {0};
+void w2_errcatch_display_error(uint8_t code) {
+	if (code == W2_E_WARN_UNCAUGHT_ERROR) {
+		lcd_goto_xy(5, 0);
+		print("[u]");
+	} else {
+		char code_str[5];
+		sprintf(code_str, "0x%02x", code);
+		lcd_goto_xy(0, 0);
+		print(code_str);
+	}
+}
+
+void w2_errcatch_error_beep(uint8_t code) {
+	if (code == W2_E_WARN_UNCAUGHT_ERROR) return;
+	uint8_t severity = code & W2_E_TYPE_MASK;
+	if ((severity ^ W2_E_TYPE_CRIT) == 0) {
+		play("L70 O6 fRfRfRfRf");
+	} else if ((severity ^ W2_E_TYPE_WARN) == 0) {
+		play("L40 O5 eRe");
+	}
+}
 
 void w2_errcatch_handle_error(w2_s_error *error) {
 	uint8_t severity = error->code & W2_E_TYPE_MASK;
-
-// 	clear();
-// 	g_w2_err_disp[g_w2_err_index++] = error->code;
-// 	char disp[32];
-// 	sprintf(disp, "%02x %02x", g_w2_err_disp[0], g_w2_err_disp[1]);
-// 	print(disp);
-// 	lcd_goto_xy(0, 1);
-// 	sprintf(disp, "%02x %02x", g_w2_err_disp[2], g_w2_err_disp[3]);
-// 	print(disp);
 
 	// trigger emergency mode for critical errors
 	if ((severity ^ W2_E_TYPE_CRIT) == 0) w2_modes_call(W2_M_HALT);
@@ -56,6 +66,9 @@ void w2_errcatch_handle_error(w2_s_error *error) {
 
 	w2_sercomm_append_msg(msg_bin);
 	free(msg_bin);
+
+	w2_errcatch_display_error(error->code);
+	w2_errcatch_error_beep(error->code);
 
 	return;
 }
