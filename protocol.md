@@ -299,7 +299,7 @@ packet.
 
 requests robot info
 
-#### robot info response (`r --> c`) (42 bytes)
+#### robot info response (`r --> c`) (45 bytes)
 
 |type|description|
 |-:|-|
@@ -311,6 +311,8 @@ requests robot info
 |`uint8_t`|exponential moving average modes module cycle time (ms)|
 |`uint32_t`|total robot uptime (s)|
 |`uint8_t`|current mode code|
+|`uint16_t`|battery level (millivolts)|
+|`uint8_t`|battery level (percentage)|
 
 robot info response
 
@@ -324,7 +326,7 @@ robot info response
 
 ### TARQ
 
-#### set target area (`r <-- c`) (1 byte)
+#### set target area (`r <-- c`) (2 bytes)
 
 |type|description|
 |-:|-|

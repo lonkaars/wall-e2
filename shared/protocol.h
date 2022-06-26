@@ -155,6 +155,7 @@ typedef struct {
 	uint32_t uptime_s;
 	uint8_t mode;
 	uint16_t battery_mv;
+	uint8_t battery_percent;
 } w2_s_cmd_info_tx;
 
 typedef struct {

@@ -33,5 +33,10 @@ int main(int argc, char **argv) {
 			g_w2_state.ping_received = false;
 			w2_send_ping();
 		}
+
+		if (w2_timer_end(W2_TIMER_INFO) > W2_BATTERY_MEAS_FREQ) {
+			w2_send_info();
+			w2_timer_start(W2_TIMER_INFO);
+		}
 	}
 }

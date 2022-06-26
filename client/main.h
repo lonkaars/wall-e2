@@ -9,7 +9,6 @@ typedef struct {
 	bool ping_timeout;
 
 	bool connected;
-	uint8_t battery_level;
 
 	uint8_t mode;
 

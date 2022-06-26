@@ -8,10 +8,11 @@
 #include "../shared/protocol.h"
 
 /** amount of parallel timers */
-#define W2_HYPERVISOR_TIMER_COUNT 2
+#define W2_HYPERVISOR_TIMER_COUNT 3
 
 #define W2_TIMER_PING 0
 #define W2_TIMER_OBJECT_DETECTION 1
+#define W2_TIMER_BATTERY_MEASUREMENT 2
 
 extern uint64_t g_w2_hypervisor_cycles;
 extern uint64_t g_w2_hypervisor_uptime_qs;

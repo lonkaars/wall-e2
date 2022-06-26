@@ -46,6 +46,8 @@ void w2_errcatch_handle_error(w2_s_error *error) {
 			break;
 		case W2_E_WARN_PING_TIMEOUT:
 			break;
+		case W2_E_WARN_BATTERY_LOW:
+			break;
 		default: {
 			g_w2_error_uncaught = true;
 #ifdef W2_SIM

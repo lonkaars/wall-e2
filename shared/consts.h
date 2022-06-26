@@ -52,3 +52,14 @@
 #define W2_BATTERY_PIN 6
 /** side-facing distance sensor pinout */
 #define W2_SIDE_SENSOR_PIN 7
+
+/** battery voltage measurement sample count */
+#define W2_BATTERY_SAMPLES 10
+/** battery full voltage (millivolts) */
+#define W2_BATTERY_FULL 4500
+/** battery empty voltage (millivolts) */
+#define W2_BATTERY_EMPTY 3300
+/** battery measurement interval (milliseconds) */
+#define W2_BATTERY_MEAS_FREQ 10e3
+/** battery low level percentage (target charging station) */
+#define W2_BATTERY_PERCENTAGE_LOW 30
