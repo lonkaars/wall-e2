@@ -14,7 +14,7 @@ unsigned long g_w2_hypervisor_ema_io_qs					   = 0;
 unsigned long g_w2_hypervisor_ema_mode_qs				   = 0;
 uint64_t g_w2_hypervisor_timers[W2_HYPERVISOR_TIMER_COUNT] = {0};
 
-uint64_t g_w2_hypervisor_qs_timer_offset	= 0;
+uint64_t g_w2_hypervisor_qs_timer_offset = 0;
 
 unsigned int g_w2_ping_ms = 0;
 uint8_t g_w2_ping_id	  = 0;
@@ -66,9 +66,7 @@ uint64_t w2_get_qs() {
 	return ticks_to_microseconds(get_ticks()) - g_w2_hypervisor_qs_timer_offset;
 }
 
-uint64_t w2_get_ms() {
-	return w2_get_qs() / 1e3;
-}
+uint64_t w2_get_ms() { return w2_get_qs() / 1e3; }
 
 void w2_time_reset() { g_w2_hypervisor_qs_timer_offset = ticks_to_microseconds(get_ticks()); }
 

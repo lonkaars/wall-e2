@@ -1,5 +1,5 @@
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "../shared/errcatch.h"
 #include "modes.h"
@@ -43,6 +43,8 @@ void w2_errcatch_handle_error(w2_s_error *error) {
 		case W2_E_CRIT_OBSTACLE_STUCK:
 			break;
 		case W2_E_WARN_MODE_HISTORY_BUFFER_IOB:
+			break;
+		case W2_E_WARN_PING_TIMEOUT:
 			break;
 		default: {
 			g_w2_error_uncaught = true;

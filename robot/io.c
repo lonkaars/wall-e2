@@ -7,8 +7,6 @@
 
 bool g_w2_io_object_detected = false;
 
-#include <stdio.h>
-
 void w2_io_object_detection() {
 	unsigned int front_distance = analog_read(W2_SIDE_SENSOR_PIN);
 

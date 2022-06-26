@@ -30,7 +30,8 @@ void w2_modes_init() {
 void w2_modes_main() { (*g_w2_modes[g_w2_mode_history[g_w2_mode_history_index]])(); }
 
 void w2_modes_switch(w2_e_mode new_mode, bool replace) {
-	int16_t next_history_index = g_w2_mode_history_index + (new_mode == W2_M_PREV ? -1 : 1) * !replace;
+	int16_t next_history_index =
+		g_w2_mode_history_index + (new_mode == W2_M_PREV ? -1 : 1) * !replace;
 	if (next_history_index == -1 || next_history_index == W2_MODE_HISTORY_BUFFER_SIZE - 1) {
 		next_history_index = W2_RANGE(0, next_history_index, W2_MODE_HISTORY_BUFFER_SIZE);
 		w2_errcatch_throw(W2_E_WARN_MODE_HISTORY_BUFFER_IOB);
