@@ -14,12 +14,12 @@
 #define W2_TIMER_OBJECT_DETECTION 1
 
 extern uint64_t g_w2_hypervisor_cycles;
-extern uint64_t g_w2_hypervisor_uptime_ms;
+extern uint64_t g_w2_hypervisor_uptime_qs;
 
-extern unsigned long g_w2_hypervisor_ema_sercomm_ms;
-extern unsigned long g_w2_hypervisor_ema_errcatch_ms;
-extern unsigned long g_w2_hypervisor_ema_io_ms;
-extern unsigned long g_w2_hypervisor_ema_mode_ms;
+extern unsigned long g_w2_hypervisor_ema_sercomm_qs;
+extern unsigned long g_w2_hypervisor_ema_errcatch_qs;
+extern unsigned long g_w2_hypervisor_ema_io_qs;
+extern unsigned long g_w2_hypervisor_ema_mode_qs;
 
 extern unsigned int g_w2_ping_ms;
 extern uint8_t g_w2_ping_id;
@@ -39,10 +39,12 @@ void w2_hypervisor_main();
 /**
  * pololu's `get_ms()` estimates run time by only adding the CPU time taken up
  * by pololu library functions. this function uses the `get_ticks()` function
- * to calculate elapsed milliseconds, and should therefore be more accurate.
+ * to calculate elapsed microseconds, and should therefore be more accurate.
  */
+uint64_t w2_get_qs();
+/** return uptime in milliseconds (less accurate) */
 uint64_t w2_get_ms();
-/** reset time returned by `w2_get_ms()` */
+/** reset time returned by `w2_get_qs()` */
 void w2_time_reset();
 
 /** start timer with label `label` */

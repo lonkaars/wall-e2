@@ -5,17 +5,29 @@
 #include "orangutan_shim.h"
 #include "sercomm.h"
 
+// #include <stdio.h>
+// unsigned int g_w2_err_index = 0;
+// unsigned int g_w2_err_disp[4] = {0};
+
 void w2_errcatch_handle_error(w2_s_error *error) {
 	uint8_t severity = error->code & W2_E_TYPE_MASK;
+
+// 	clear();
+// 	g_w2_err_disp[g_w2_err_index++] = error->code;
+// 	char disp[32];
+// 	sprintf(disp, "%02x %02x", g_w2_err_disp[0], g_w2_err_disp[1]);
+// 	print(disp);
+// 	lcd_goto_xy(0, 1);
+// 	sprintf(disp, "%02x %02x", g_w2_err_disp[2], g_w2_err_disp[3]);
+// 	print(disp);
 
 	// trigger emergency mode for critical errors
 	if ((severity ^ W2_E_TYPE_CRIT) == 0) w2_modes_call(W2_M_HALT);
 
 	// TODO: handle more error types
 	switch (error->code) {
-		case W2_E_WARN_UNCAUGHT_ERROR: {
+		case W2_E_WARN_UNCAUGHT_ERROR:
 			break;
-		}
 		case W2_E_WARN_OBSTACLE_DETECTED:
 			break;
 		case W2_E_CRIT_OBSTACLE_STUCK:

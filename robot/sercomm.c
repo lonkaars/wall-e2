@@ -154,11 +154,11 @@ void w2_cmd_info_rx(w2_s_bin *data) {
 	W2_CREATE_MSG_BIN(w2_s_cmd_info_tx, res_msg, res_bin);
 	res_msg->opcode = W2_CMD_INFO | W2_CMDDIR_TX;
 	strncpy((char *)res_msg->build_str, W2_BUILD_STR, sizeof(res_msg->build_str));
-	res_msg->errcatch_ms = (uint8_t)g_w2_hypervisor_ema_errcatch_ms;
-	res_msg->io_ms		 = (uint8_t)g_w2_hypervisor_ema_io_ms;
-	res_msg->sercomm_ms	 = (uint8_t)g_w2_hypervisor_ema_sercomm_ms;
-	res_msg->mode_ms	 = (uint8_t)g_w2_hypervisor_ema_mode_ms;
-	res_msg->uptime_s	 = w2_bin_hton32((uint32_t)(g_w2_hypervisor_uptime_ms / 1e3));
+	res_msg->errcatch_ms = (uint8_t)g_w2_hypervisor_ema_errcatch_qs / 1e3;
+	res_msg->io_ms		 = (uint8_t)g_w2_hypervisor_ema_io_qs / 1e3;
+	res_msg->sercomm_ms	 = (uint8_t)g_w2_hypervisor_ema_sercomm_qs / 1e3;
+	res_msg->mode_ms	 = (uint8_t)g_w2_hypervisor_ema_mode_qs / 1e3;
+	res_msg->uptime_s	 = w2_bin_hton32((uint32_t)(g_w2_hypervisor_uptime_qs / 1e6));
 	res_msg->mode		 = g_w2_mode_history[g_w2_mode_history_index];
 	res_msg->battery_mv	 = w2_bin_hton16(read_battery_millivolts());
 
