@@ -59,6 +59,7 @@
 #define TOP_BUTTON 3
 #define BOTTOM_BUTTON 4
 #define QTR_EMITTERS_ON 0
+#define IR_EMITTERS_ON 0
 
 /**
  * simulates pololu library functions for local testing
@@ -79,6 +80,16 @@ unsigned char get_single_debounced_button_press(unsigned char buttons); // NOLIN
 void qtr_read(unsigned int* sensor_values, unsigned char read_mode); // NOLINT
 unsigned int analog_read(unsigned char channel); // NOLINT
 void print(const char* str); // NOLINT
+void lcd_goto_xy(unsigned int x, unsigned int y); // NOLINT
+void delay(unsigned long duration); // NOLINT
+void delay_ms(unsigned long duration); // NOLINT
+int read_battery_millivolts(); // NOLINT
+unsigned long get_ticks(); // NOLINT
+unsigned long ticks_to_microseconds(unsigned long num_ticks); // NOLINT
+int read_line(); // NOLINT
+void play_frequency(unsigned int freq, unsigned int duration, unsigned char volume); // NOLINT
+void calibrate_line_sensors(unsigned char read_mode); // NOLINT
+unsigned char pololu_3pi_init(unsigned int line_sensor_timeout); // NOLINT
 
 void w2_sim_setup();
 void w2_sim_cycle_begin();

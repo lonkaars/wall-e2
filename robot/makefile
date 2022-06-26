@@ -9,7 +9,7 @@ PORT ?= /dev/ttyACM0
 # SIM = true
 
 CFLAGS=-g -Wall $(DEVICE_SPECIFIC_CFLAGS) -Os
-LDFLAGS=-Wl,-u,vfprintf -lprintf_flt -lm -Wl,-relax -Wl,-gc-sections
+LDFLAGS=-Wl,-u,vfprintf -lm -Wl,-relax -Wl,-gc-sections
 
 include ../shared/os.mk
 all: $(if $(SIM), $(TARGET), out.hex)
@@ -20,7 +20,7 @@ include ../shared/makefile
 
 # simulation
 CFLAGS += $(if $(SIM), -DW2_SIM -DDBG_ENABLE_COLOR, -mcall-prologues -mmcu=$(MCU))
-LDFLAGS += $(if $(SIM), , -lpololu_$(DEVICE))
+LDFLAGS += $(if $(SIM), , -lpololu_$(DEVICE) -lprintf_flt)
 PREFIX := $(if $(SIM), , avr-)
 SOURCES += $(if $(SIM), sim.c, )
 HEADERS += $(if $(SIM), sim.h, )

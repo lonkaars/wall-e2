@@ -169,7 +169,7 @@ typedef struct {
 
 typedef struct {
 	uint8_t opcode;
-	w2_e_target_area target_area;
+	uint8_t target_area;
 } w2_s_cmd_tarq_rx;
 
 #pragma pack(pop)

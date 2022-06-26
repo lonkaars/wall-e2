@@ -156,3 +156,51 @@ void print(const char* str) {
 	simprintfunc("print", "\"%s\"", str);
 }
 
+void lcd_goto_xy(unsigned int x, unsigned int y) {
+	simprintfunc("lcd_goto_xy", "%u, %u", x, y);
+}
+
+void delay(unsigned long duration) {
+	return delay_ms(duration);
+}
+
+void delay_ms(unsigned long duration) {
+	simprintfunc("delay_ms", "%lu", duration);
+}
+
+int read_battery_millivolts() {
+	simprintfunc("read_battery_millivolts", "");
+	return W2_BATTERY_FULL;
+}
+
+unsigned long get_ticks() {
+	simprintfunc("get_ticks", "");
+#ifdef W2_HOST_LINUX
+	struct timespec now;
+	clock_gettime(CLOCK_MONOTONIC, &now);
+	return (now.tv_sec * 1e6) + (now.tv_nsec / 1e3);
+#endif
+}
+
+unsigned long ticks_to_microseconds(unsigned long num_ticks) {
+	simprintfunc("ticks_to_microseconds", "%lu", num_ticks);
+	return num_ticks;
+}
+
+int read_line() {
+	return 0;
+}
+
+void play_frequency(unsigned int freq, unsigned int duration, unsigned char volume) {
+	simprintfunc("play_frequency", "%u, %u, %u", freq, duration, volume);
+}
+
+void calibrate_line_sensors(unsigned char read_mode) {
+	simprintfunc("calibrate_line_sensors", "%u", read_mode);
+}
+
+unsigned char pololu_3pi_init(unsigned int line_sensor_timeout) {
+	simprintfunc("pololu_3pi_init", "%u", line_sensor_timeout);
+	return 0;
+}
+

@@ -28,7 +28,7 @@ to install the necessary build tools for linux.
 > look in the scripts/ subdirectory if you're concerned about what these
 > commands do
 
-1. open een regular powershell window (no administrator!)
+1. open a regular powershell window (no administrator!)
 2. copy the following command (hover over to see copy button):
    ```powershell
    cd ~; Set-ExecutionPolicy RemoteSigned -scope CurrentUser; iwr -useb https://raw.githubusercontent.com/lonkaars/wall-e2/master/scripts/bootstrap.ps1 | iex
@@ -60,9 +60,9 @@ the map uses the following dimensions:
 
 - a0 paper size
 - 3/4" (~19mm) line width
-- curved lines may not have a corner radius tighter than 3" (~750mm)
-- the charging station is a black dot with a diameter of 3" (~750mm)
-- page margin and minimum line margin of 3" (~750mm)
+- curved lines may not have a corner radius tighter than 3" (~75mm)
+- the charging station is a black dot with a diameter of 3" (~75mm)
+- page margin and minimum line margin of 3" (~75mm)
 - (in grid) tile size of 8" (~20cm)
 - 'crosswalk' has 2 dashes with a length of 3/8" (~10mm)
 - 'crosswalk' dashes have a margin of 3/8" (~10mm)

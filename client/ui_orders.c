@@ -64,8 +64,9 @@ void w2_ui_orders_cmd_send() {
 	for (int i = 0; i < g_w2_order_buffer_index; i++) {
 		W2_CREATE_MSG_BIN(w2_s_cmd_bomd_rx, msg, bin);
 
-		msg->position = w2_bin_hton16(g_w2_order_buffer[i]);
-		msg->id		  = rand();
+		msg->opcode   = W2_CMD_BOMD | W2_CMDDIR_RX;
+		msg->id		  = w2_bin_hton32(rand());
+		msg->position = w2_bin_hton32(g_w2_order_buffer[i]);
 
 		w2_send_bin(bin);
 		free(bin);
