@@ -27,9 +27,11 @@ void w2_io_object_detection() {
 		if (front_distance <= W2_IO_DISTANCE_FAR_THRESHOLD) g_w2_io_object_detected = false;
 		if (w2_hypervisor_time_end(W2_TIMER_OBJECT_DETECTION) >= W2_IO_DISTANCE_TOO_CLOSE_TIMEOUT)
 			w2_errcatch_throw(W2_E_CRIT_OBSTACLE_STUCK);
-
-		set_motors(0, 0);
 	}
+}
+
+void w2_set_motors(int left, int right) {
+	set_motors(left * (1 - g_w2_io_object_detected), right * (1 - g_w2_io_object_detected));
 }
 
 void w2_io_battery_logic() {

@@ -1,5 +1,6 @@
 #include "mode_grid.h"
 #include "hypervisor.h"
+#include "io.h"
 #include "modes.h"
 #include "movement.h"
 #include "orangutan_shim.h"
@@ -12,13 +13,8 @@ int g_w2_order_number;
 
 int g_w2_maze_status = 0;
 
-w2_s_grid_coordinate g_w2_order[16] = {
-	{0, 0},
-	{3, 4},
-	{2, 1},
-	{4, 2},
-};
-unsigned int g_w2_order_index = 4;
+w2_s_grid_coordinate g_w2_order[16];
+unsigned int g_w2_order_index = 0;
 w2_s_grid_coordinate g_w2_location;
 w2_s_grid_coordinate g_w2_destination;
 w2_e_orientation g_w2_direction;
@@ -32,15 +28,15 @@ char g_w2_y_location = 0;
 void w2_crosswalk_stroll() {
 	while (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 &&
 		   g_w2_sensors[3] < 100 && g_w2_sensors[4] < 100) {
-		set_motors(15, 15);
+		w2_set_motors(15, 15);
 		delay(290);
 		g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 		if ((g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100) &&
 			(g_w2_target_area != W2_AREA_MAZE)) {
-			set_motors(0, 0);
+			w2_set_motors(0, 0);
 			g_w2_transition++;
 			if (g_w2_transition == 3) {
-				set_motors(40, 40);
+				w2_set_motors(40, 40);
 				delay(600);
 				g_w2_transition = 0;
 				w2_modes_swap(W2_M_GRID);
@@ -56,9 +52,9 @@ void w2_crosswalk_stroll() {
 }
 
 void w2_grid_crossway_detection() {
-	set_motors(50, 50);
+	w2_set_motors(50, 50);
 	delay_ms(150);
-	set_motors(10, 10);
+	w2_set_motors(10, 10);
 	g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 }
 
@@ -96,10 +92,10 @@ void w2_grid_follow_line() {
 		else {
 			if (power_difference < 0 &&
 				(g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100)) {
-				set_motors(max + power_difference, max);
+				w2_set_motors(max + power_difference, max);
 			} else if (power_difference > 0 &&
 					   (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100)) {
-				set_motors(max, max - power_difference);
+				w2_set_motors(max, max - power_difference);
 			}
 		}
 	}
@@ -257,7 +253,7 @@ void w2_go_to_y() {
 
 // main function for grid mode
 void w2_mode_grid() {
-	set_motors(0, 0);
+	w2_set_motors(0, 0);
 	delay(500);
 
 	w2_begin_location();

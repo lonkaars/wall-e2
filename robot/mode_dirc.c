@@ -11,4 +11,4 @@
 int16_t g_w2_mode_dirc_motor_l = 0;
 int16_t g_w2_mode_dirc_motor_r = 0;
 
-void w2_mode_dirc() { set_motors(g_w2_mode_dirc_motor_l, g_w2_mode_dirc_motor_r); }
+void w2_mode_dirc() { w2_set_motors(g_w2_mode_dirc_motor_l, g_w2_mode_dirc_motor_r); }

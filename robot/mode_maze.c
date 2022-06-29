@@ -2,6 +2,7 @@
 #include "mode_grid.h"
 #include "movement.h"
 #include "orangutan_shim.h"
+#include "io.h"
 
 unsigned int g_w2_last_proportional = 0;
 long g_w2_integral					= 0;
@@ -32,9 +33,9 @@ void w2_mode_maze() {
 	} else { // normal line following
 		if (power_difference < 0 &&
 			(g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100))
-			set_motors(max + power_difference, max);
+			w2_set_motors(max + power_difference, max);
 		else if (power_difference > 0 &&
 				 (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100))
-			set_motors(max, max - power_difference);
+			w2_set_motors(max, max - power_difference);
 	}
 }
