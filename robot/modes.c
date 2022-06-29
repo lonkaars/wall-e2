@@ -44,8 +44,6 @@ void w2_modes_switch(w2_e_mode new_mode, bool replace) {
 		g_w2_mode_history[g_w2_mode_history_index] = new_mode;
 	}
 
-	if (new_mode == W2_M_CHRG) w2_mode_chrg_onswitch();
-
 	// forward mode change to sercomm
 	W2_CREATE_MSG_BIN(w2_s_cmd_mode_tx, msg, msg_bin);
 	msg->opcode = W2_CMD_MODE | W2_CMDDIR_TX;

@@ -47,12 +47,21 @@ void w2_charge_cross_walk() {
 	}
 }
 
-void w2_mode_chrg_onswitch() { g_w2_chrg_aligned = false; }
-
 // main function for charge mode
 void w2_mode_chrg() {
 	static unsigned int last_proportional = 0;
 	static long integral				   = 0;
+
+	if (g_w2_chrg_aligned) {
+		if (g_w2_target_area == W2_AREA_CHRG) return;
+
+		delay(200);
+		w2_maze_rotation_full();
+		w2_short_drive();
+
+		g_w2_chrg_aligned = false;
+		return;
+	}
 
 	g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 
@@ -91,20 +100,14 @@ void w2_mode_chrg() {
 
 	else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 500 && g_w2_sensors[2] >= 500 &&
 			 g_w2_sensors[3] >= 500 && g_w2_sensors[4] >= 500) {
-		if (g_w2_target_area == W2_AREA_CHRG) {
-			if (!g_w2_chrg_aligned) {
-				w2_set_motors(0, 0);
-				delay_ms(150);
-				w2_set_motors(30, 30);
-				delay_ms(600);
-				w2_set_motors(0, 0);
-				delay_ms(600);
-				g_w2_chrg_aligned = true;
-			}
-		} else {
-			delay(200);
-			w2_maze_rotation_full();
-			w2_short_drive();
+		if (!g_w2_chrg_aligned) {
+			w2_set_motors(0, 0);
+			delay_ms(150);
+			w2_set_motors(30, 30);
+			delay_ms(600);
+			w2_set_motors(0, 0);
+			delay_ms(600);
+			g_w2_chrg_aligned = true;
 		}
 	} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 && g_w2_sensors[4] < 100) {
 		w2_maze_rotation_half_left();
