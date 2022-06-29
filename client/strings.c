@@ -58,6 +58,7 @@ void w2_strings_errors_internal() {
 	g_w2_error_internal_strings[W2_E_WARN_MODE_HISTORY_BUFFER_IOB] =
 		W2_UI_ERROR_INT_W2_E_WARN_MODE_HISTORY_BUFFER_IOB;
 	g_w2_error_internal_strings[W2_E_WARN_PING_TIMEOUT] = W2_UI_ERROR_INT_W2_E_WARN_PING_TIMEOUT;
+	g_w2_error_internal_strings[W2_E_INFO_ORDER_ARRIVED] = W2_UI_ERROR_INT_W2_E_INFO_ORDER_ARRIVED;
 }
 
 void w2_strings_errors_user() {
@@ -82,6 +83,7 @@ void w2_strings_errors_user() {
 	g_w2_error_user_strings[W2_E_WARN_MODE_HISTORY_BUFFER_IOB] =
 		W2_UI_ERROR_USR_W2_E_WARN_MODE_HISTORY_BUFFER_IOB;
 	g_w2_error_user_strings[W2_E_WARN_PING_TIMEOUT] = W2_UI_ERROR_USR_W2_E_WARN_PING_TIMEOUT;
+	g_w2_error_user_strings[W2_E_INFO_ORDER_ARRIVED] = W2_UI_ERROR_USR_W2_E_INFO_ORDER_ARRIVED;
 }
 
 void w2_strings_init() {

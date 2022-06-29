@@ -48,7 +48,9 @@ int w2_avg(int *samples, unsigned int sample_count) {
 W2_DIRC_MOTOR_DRIVER(l);
 W2_DIRC_MOTOR_DRIVER(r);
 
-void w2_ui_dirc_init() { w2_send_mode(W2_M_DIRC); }
+void w2_ui_dirc_init() {
+	return;
+}
 
 void w2_ui_bar_graph(unsigned int y, unsigned int x, unsigned int width, double value) {
 	char temp[width];

@@ -59,6 +59,7 @@
 #define W2_UI_ERROR_INT_W2_E_WARN_SERIAL_NOISY "W2_E_WARN_SERIAL_NOISY"
 #define W2_UI_ERROR_INT_W2_E_WARN_MODE_HISTORY_BUFFER_IOB "W2_E_WARN_MODE_HISTORY_BUFFER_IOB"
 #define W2_UI_ERROR_INT_W2_E_WARN_PING_TIMEOUT "W2_E_WARN_PING_TIMEOUT"
+#define W2_UI_ERROR_INT_W2_E_INFO_ORDER_ARRIVED "W2_E_INFO_ORDER_ARRIVED"
 
 #define W2_UI_ERROR_USR_W2_E_UNKNOWN "unknown error code"
 #define W2_UI_ERROR_USR_W2_E_CRIT_CONN_LOST "connection to robot lost"
@@ -77,6 +78,7 @@
 #define W2_UI_ERROR_USR_W2_E_WARN_SERIAL_NOISY "invalid serial data received (noisy channel / check connection?)"
 #define W2_UI_ERROR_USR_W2_E_WARN_MODE_HISTORY_BUFFER_IOB "mode history buffer index out of bounds"
 #define W2_UI_ERROR_USR_W2_E_WARN_PING_TIMEOUT "ping timed out"
+#define W2_UI_ERROR_USR_W2_E_INFO_ORDER_ARRIVED "arrived at order location"
 
 #define W2_UI_ORDER_CMD_HELP "help"
 #define W2_UI_ORDER_CMD_START "start"
