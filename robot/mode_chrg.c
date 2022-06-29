@@ -9,8 +9,6 @@
 
 #include <stdio.h>
 
-bool g_w2_chrg_aligned;
-
 void w2_short_drive() {
 	w2_set_motors(50, 50);
 	delay(150);
@@ -18,7 +16,7 @@ void w2_short_drive() {
 }
 
 // crosswalk from charging station back to maze
-void w2_charge_cross_walk() {
+bool w2_charge_cross_walk() {
 	if (g_w2_transition == 0) {
 		w2_set_motors(-30, 30);
 		delay(50);
@@ -26,31 +24,36 @@ void w2_charge_cross_walk() {
 	while (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 &&
 		   g_w2_sensors[3] < 100 && g_w2_sensors[4] < 100) {
 		w2_set_motors(15, 15);
-		delay(550);
+		delay(W2_GRID_CROSSWALK_DISTANCE);
 		g_w2_position = read_line(g_w2_sensors, IR_EMITTERS_ON);
 		if (g_w2_sensors[2] > 100 || g_w2_sensors[3] > 100 || g_w2_sensors[1] > 100) {
 			w2_set_motors(0, 0);
 			g_w2_transition++;
 			if (g_w2_transition == 3) { // TODO: document g_w2_transition
 				w2_set_motors(40, 40);
-				delay(600);
+				delay(W2_GRID_CROSSWALK_DISTANCE);
 				w2_set_motors(0, 0);
 
 				g_w2_transition = 0;
 				w2_modes_swap(W2_M_MAZE);
-				break;
+
+				return true;
 			}
 		} else {
 			g_w2_transition = 0;
 			w2_maze_rotation_full();
+
+			return false;
 		}
 	}
+	return false;
 }
 
 // main function for charge mode
 void w2_mode_chrg() {
 	static unsigned int last_proportional = 0;
-	static long integral				   = 0;
+	static long integral				  = 0;
+	static bool g_w2_chrg_aligned         = false;
 
 	if (g_w2_chrg_aligned) {
 		if (g_w2_target_area == W2_AREA_CHRG) return;
@@ -92,29 +95,26 @@ void w2_mode_chrg() {
 
 	if (g_w2_sensors[0] < 100 && g_w2_sensors[1] < 100 && g_w2_sensors[2] < 100 &&
 		g_w2_sensors[3] < 100 && g_w2_sensors[4] < 100) {
-		w2_charge_cross_walk();
-		if (g_w2_mode_history[g_w2_mode_history_index] == W2_M_MAZE) {
-			return;
-		}
+		bool success = w2_charge_cross_walk();
+		if (success) return;
 	}
 
 	else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 500 && g_w2_sensors[2] >= 500 &&
 			 g_w2_sensors[3] >= 500 && g_w2_sensors[4] >= 500) {
-		if (!g_w2_chrg_aligned) {
-			w2_set_motors(0, 0);
-			delay_ms(150);
-			w2_set_motors(30, 30);
-			delay_ms(600);
-			w2_set_motors(0, 0);
-			delay_ms(600);
-			g_w2_chrg_aligned = true;
+		if (g_w2_target_area == W2_AREA_CHRG) {
+			if (!g_w2_chrg_aligned) {
+				w2_set_motors(0, 0);
+				delay_ms(150);
+				w2_set_motors(30, 30);
+				delay_ms(600);
+				w2_set_motors(0, 0);
+				delay_ms(600);
+				g_w2_chrg_aligned = true;
+			}
+		} else {
+			w2_maze_rotation_half_left();
 		}
 	} else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 200 && g_w2_sensors[4] < 100) {
-		w2_maze_rotation_half_left();
-	}
-
-	else if (g_w2_sensors[0] >= 500 && g_w2_sensors[1] >= 250 && g_w2_sensors[2] >= 500 &&
-			 g_w2_sensors[3] >= 250 && g_w2_sensors[4] >= 500) {
 		w2_maze_rotation_half_left();
 	} else {
 		if (power_difference < 0 &&

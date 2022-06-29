@@ -56,10 +56,14 @@
 /** battery voltage measurement sample count */
 #define W2_BATTERY_SAMPLES 10
 /** battery full voltage (millivolts) */
-#define W2_BATTERY_FULL 4500
+#define W2_BATTERY_FULL 5000
 /** battery empty voltage (millivolts) */
-#define W2_BATTERY_EMPTY 3300
+#define W2_BATTERY_EMPTY 100
 /** battery measurement interval (milliseconds) */
 #define W2_BATTERY_MEAS_FREQ 10e3
 /** battery low level percentage (target charging station) */
 #define W2_BATTERY_PERCENTAGE_LOW 30
+
+/** arbitrary grid constants */
+#define W2_GRID_CROSSWALK_DISTANCE 400
+
