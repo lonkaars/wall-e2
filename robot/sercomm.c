@@ -118,17 +118,11 @@ void w2_cmd_dirc_rx(w2_s_bin *data) {
 
 void w2_cmd_cord_rx(w2_s_bin *data) { return; }
 
-#include <stdio.h>
 void w2_cmd_bomd_rx(w2_s_bin *data) {
 	W2_CAST_BIN(w2_s_cmd_bomd_rx, data, req);
 
 	req->position = w2_bin_hton32(req->position);
 
-	char buf[32];
-	clear();
-	// sprintf(buf, "%lu, %lu", req->position % W2_MAP_DEFAULT_WIDTH, req->position / W2_MAP_DEFAULT_WIDTH);
-	sprintf(buf, "%lu", req->position);
-	print(buf);
 	g_w2_order[g_w2_order_index].x = req->position % W2_MAP_DEFAULT_WIDTH;
 	g_w2_order[g_w2_order_index].y = req->position / W2_MAP_DEFAULT_WIDTH;
 	g_w2_order_index++;

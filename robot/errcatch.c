@@ -20,6 +20,7 @@ void w2_errcatch_display_error(uint8_t code) {
 
 void w2_errcatch_error_beep(uint8_t code) {
 	if (code == W2_E_WARN_UNCAUGHT_ERROR) return;
+	if (code == W2_E_WARN_CYCLE_EXPIRED) return;
 	uint8_t severity = code & W2_E_TYPE_MASK;
 	if ((severity ^ W2_E_TYPE_CRIT) == 0) {
 		play("L70 O6 fRfRfRfRf");
@@ -47,6 +48,8 @@ void w2_errcatch_handle_error(w2_s_error *error) {
 		case W2_E_WARN_PING_TIMEOUT:
 			break;
 		case W2_E_WARN_BATTERY_LOW:
+			break;
+		case W2_E_WARN_CYCLE_EXPIRED:
 			break;
 		default: {
 			g_w2_error_uncaught = true;

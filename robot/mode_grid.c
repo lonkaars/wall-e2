@@ -1,9 +1,13 @@
+#include <stdio.h>
+#include <string.h>
+
 #include "mode_grid.h"
 #include "hypervisor.h"
 #include "io.h"
 #include "modes.h"
 #include "movement.h"
 #include "orangutan_shim.h"
+#include "../shared/errcatch.h"
 
 /**
  * TODO: mode_grid g_w2_target_area laten volgen
@@ -204,6 +208,11 @@ void w2_turn_east() {
 // signals when the product is picked
 void w2_arrived_message() {
 	if (g_w2_location.x == g_w2_destination.x && g_w2_location.y == g_w2_destination.y) {
+		char msg[64];
+		sprintf(msg, "reached %i, %i", g_w2_destination.x, g_w2_destination.y);
+		size_t len = strlen(msg);
+		w2_errcatch_throw_msg(W2_E_INFO_ORDER_ARRIVED, len, msg);
+
 		play_frequency(400, 500, 7);
 		delay(500);
 	}

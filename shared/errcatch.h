@@ -54,6 +54,9 @@ typedef enum {
 	W2_E_WARN_MODE_HISTORY_BUFFER_IOB = 0x0a | W2_E_TYPE_WARN,
 	/** ping timeout reached */
 	W2_E_WARN_PING_TIMEOUT = 0x0b | W2_E_TYPE_WARN,
+
+	/** order reached */
+	W2_E_INFO_ORDER_ARRIVED = 0x00 | W2_E_TYPE_INFO,
 } w2_e_errorcode;
 
 /**
