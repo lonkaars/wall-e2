@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "mode_grid.h"
+#include "../shared/errcatch.h"
 #include "hypervisor.h"
 #include "io.h"
+#include "mode_grid.h"
 #include "modes.h"
 #include "movement.h"
 #include "orangutan_shim.h"
-#include "../shared/errcatch.h"
 
 /**
  * TODO: mode_grid g_w2_target_area laten volgen

@@ -1,6 +1,6 @@
 #include "movement.h"
-#include "orangutan_shim.h"
 #include "io.h"
+#include "orangutan_shim.h"
 
 unsigned int g_w2_sensors[5] = {0}; // IR sensors on the bottom of the robot
 unsigned int g_w2_position	 = 0;	// position on the black line

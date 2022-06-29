@@ -10,10 +10,10 @@
 #define _SHIFT_1B (8 * 1)
 #define _SHIFT_2B (8 * 2)
 #define _SHIFT_3B (8 * 3)
-#define _BYTE_0 ((uint32_t) 0xff << (_SHIFT_0B))
-#define _BYTE_1 ((uint32_t) 0xff << (_SHIFT_1B))
-#define _BYTE_2 ((uint32_t) 0xff << (_SHIFT_2B))
-#define _BYTE_3 ((uint32_t) 0xff << (_SHIFT_3B))
+#define _BYTE_0 ((uint32_t)0xff << (_SHIFT_0B))
+#define _BYTE_1 ((uint32_t)0xff << (_SHIFT_1B))
+#define _BYTE_2 ((uint32_t)0xff << (_SHIFT_2B))
+#define _BYTE_3 ((uint32_t)0xff << (_SHIFT_3B))
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wshift-count-overflow"

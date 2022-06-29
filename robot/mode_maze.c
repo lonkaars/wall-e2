@@ -1,8 +1,8 @@
 #include "mode_maze.h"
+#include "io.h"
 #include "mode_grid.h"
 #include "movement.h"
 #include "orangutan_shim.h"
-#include "io.h"
 
 unsigned int g_w2_last_proportional = 0;
 long g_w2_integral					= 0;

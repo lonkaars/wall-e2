@@ -1,7 +1,7 @@
 #include "mode_chrg.h"
-#include "io.h"
 #include "../shared/bool.h"
 #include "hypervisor.h"
+#include "io.h"
 #include "mode_grid.h"
 #include "modes.h"
 #include "movement.h"
@@ -53,7 +53,7 @@ bool w2_charge_cross_walk() {
 void w2_mode_chrg() {
 	static unsigned int last_proportional = 0;
 	static long integral				  = 0;
-	static bool g_w2_chrg_aligned         = false;
+	static bool g_w2_chrg_aligned		  = false;
 
 	if (g_w2_chrg_aligned) {
 		if (g_w2_target_area == W2_AREA_CHRG) return;
@@ -88,7 +88,7 @@ void w2_mode_chrg() {
 
 	// Compute the actual motor settings.  We never set either motor
 	// to a negative value.
-	
+
 	const int max = 60;
 	if (power_difference > max) power_difference = max;
 	if (power_difference < -max) power_difference = -max;
@@ -126,4 +126,3 @@ void w2_mode_chrg() {
 		}
 	}
 }
-

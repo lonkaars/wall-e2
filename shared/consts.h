@@ -66,4 +66,3 @@
 
 /** arbitrary grid constants */
 #define W2_GRID_CROSSWALK_DISTANCE 400
-

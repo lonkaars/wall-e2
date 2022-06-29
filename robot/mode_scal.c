@@ -1,7 +1,7 @@
 #include "mode_scal.h"
+#include "io.h"
 #include "modes.h"
 #include "orangutan_shim.h"
-#include "io.h"
 
 // callibrates the robot
 void w2_mode_scal() {
