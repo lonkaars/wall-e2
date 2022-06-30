@@ -53,7 +53,7 @@ void w2_io_battery_logic() {
 	if (g_w2_io_battery_percentage <= W2_BATTERY_PERCENTAGE_LOW &&
 		g_w2_target_area != W2_AREA_CHRG) {
 		w2_errcatch_throw(W2_E_WARN_BATTERY_LOW);
-		g_w2_target_area = W2_AREA_CHRG;
+		// g_w2_target_area = W2_AREA_CHRG;
 	}
 }
 

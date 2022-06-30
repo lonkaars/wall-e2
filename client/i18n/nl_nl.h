@@ -59,6 +59,7 @@
 #define W2_UI_ERROR_INT_W2_E_WARN_SERIAL_NOISY "W2_E_WARN_SERIAL_NOISY"
 #define W2_UI_ERROR_INT_W2_E_WARN_MODE_HISTORY_BUFFER_IOB "W2_E_WARN_MODE_HISTORY_BUFFER_IOB"
 #define W2_UI_ERROR_INT_W2_E_WARN_PING_TIMEOUT "W2_E_WARN_PING_TIMEOUT"
+#define W2_UI_ERROR_INT_W2_E_INFO_ORDER_ARRIVED "W2_E_INFO_ORDER_ARRIVED"
 
 #define W2_UI_ERROR_USR_W2_E_UNKNOWN "onbekende error code"
 #define W2_UI_ERROR_USR_W2_E_CRIT_CONN_LOST "verbinding met de robot verloren"
@@ -77,6 +78,7 @@
 #define W2_UI_ERROR_USR_W2_E_WARN_SERIAL_NOISY "ongeldige seriele informatie gedetecteerd, (ruisend kanaal / controleer de verbinding?)"
 #define W2_UI_ERROR_USR_W2_E_WARN_MODE_HISTORY_BUFFER_IOB "mode geschiedenisbuffer index is buiten bereik"
 #define W2_UI_ERROR_USR_W2_E_WARN_PING_TIMEOUT "ping time-out"
+#define W2_UI_ERROR_USR_W2_E_INFO_ORDER_ARRIVED "bij order locatie aangekomen"
 
 #define W2_UI_ORDER_CMD_HELP "help"
 #define W2_UI_ORDER_CMD_START "start"
@@ -107,9 +109,12 @@
     "1 - kies doolhof modus\n" \
     "2 - kies grid modus\n" \
     "3 - noodstop\n" \
-    "4 - kies oplaad modus\n" \
+    "4 - stel in op oplaad modus\n" \
     "5 - natte vloer simulatie\n" \
     "6 - calibreer sensoren\n" \
+	"7 - doelgebied instelen op doolhof\n" \
+	"8 - doelgebied instelen op grid\n" \
+	"9 - doelgebied instelen op oplaadstation\n" \
     "\n" \
     "0 - vorige\n" \
 

@@ -67,6 +67,7 @@ int w2_serial_read() {
 }
 
 bool w2_serial_write(char *data, uint8_t length) {
+	usleep(1e3);
 	return write(g_w2_serial_handle, data, length) == length;
 }
 
